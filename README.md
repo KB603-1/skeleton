@@ -1,38 +1,77 @@
-# vue-project
-
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Recommended Browser Setup
-
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+## 데이터 스키마
+### 유저
+```json
+{
+  "users": [
+    {
+      "id": "XSfIiNUnHGo",
+      "nickname": "nickname",
+      "username": "username",
+      "password": "password"
+    }
+  ]
+}
+```
+### 카테고리
+```json
+{
+  "categories": [
+    {
+      "id": "tzwSI3hbWfY",
+      "type": "income",
+      "name": "월급"
+    },
+    {
+      "id": "djfw3IvhfWy",
+      "type": "expense",
+      "name": "식비"
+    }
+  ]
+}
 ```
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
+### 그룹
+```json
+{
+  "groups": [
+    {
+      "id": "UbbWrW3NB2A",
+      "userId": "XSfIiNUnHGo",
+      "name": "단체 그룹",
+      "password": "group_password"
+    }
+  ]
+}
 ```
 
-### Compile and Minify for Production
+### 그룹 맴버
+```json
+{
+  "groupMembers": [
+    {
+      "id": "XHX1W2qId0g",
+      "groupId": "UbbWrW3NB2A",
+      "userId": "XSfIiNUnHGo"
+    }
+  ]
+}
+```
 
-```sh
-npm run build
+### 수입/지출
+```json
+{
+  "records": [
+    {
+      "id": "LxaJuMWGId4",
+      "userId": "XSfIiNUnHGo",
+      "type": "outcome",
+      "groupId": null,
+      "title": "점심식사",
+      "memo": "메모",
+      "categoryId": "djfw3IvhfWy",
+      "amount": 10000,
+      "date": "YYYY-MM-DD HH:mm:ss"
+    }
+  ]
+}
 ```
