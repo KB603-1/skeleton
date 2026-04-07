@@ -1,13 +1,11 @@
 import {defineStore} from "pinia";
 import api from "@/plugin/api.js";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 
 export const useUserStore = defineStore("user", () => {
-    const user = ref({
-        id: "",
-        nickname: "",
-        isLoggedIn: false,
-    });
+    const user = ref(null);
+
+    const isLoggedIn = computed(() => !!user.value);
 
     async function register(registerData) {
         let isUsed = true;
@@ -37,18 +35,14 @@ export const useUserStore = defineStore("user", () => {
         if (response.data.length === 0 || response.data[0]?.password !== loginData.password) {
             throw new Error("잘못된 아이디 혹은 비밀번호 입니다.");
         }
-        const found = response.data[0];
-        localStorage.setItem("userId", found.id);
-        setUser(found);
+        const data = response.data[0];
+        localStorage.setItem("userId", data.id);
+        setUser(data);
     }
 
     function logout() {
         localStorage.removeItem("userId");
-        user.value = {
-            id: "",
-            nickname: "",
-            isLoggedIn: false,
-        };
+        user.value = null;
     }
 
     async function fetchUser() {
@@ -69,10 +63,9 @@ export const useUserStore = defineStore("user", () => {
     function setUser(data) {
         user.value = {
             id: data.id,
-            nickname: data.nickname,
-            isLoggedIn: true,
+            nickname: data.nickname
         };
     }
 
-    return {user, login, register, fetchUser, logout};
+    return {user, isLoggedIn, login, register, fetchUser, logout};
 });
