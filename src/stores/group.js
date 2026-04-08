@@ -2,16 +2,24 @@ import {defineStore} from "pinia";
 import {ref, watch} from "vue";
 import {useUserStore} from "@/stores/user.js";
 import api from "@/plugin/api.js";
+import {useRecordStore} from "@/stores/record.js";
 
 export const useGroupStore = defineStore("group", () => {
 
-    const currentGroup = ref(null);
+    const currentGroup = ref();
     const myGroups = ref([]);
 
     watch(myGroups, (newGroups) => {
-        if (currentGroup.value == null) return;
+        if (!currentGroup.value) {
+            currentGroup.value = null;
+            return;
+        }
         const group = newGroups.find(g => g.id === currentGroup.value.id);
         currentGroup.value = group || null;
+    });
+
+    watch(currentGroup, (newValue, oldValue) => {
+        useRecordStore().fetchRecord(newValue);
     });
 
     async function fetchGroup() {
@@ -54,6 +62,9 @@ export const useGroupStore = defineStore("group", () => {
 
     async function makeGroup(groupData) {
         const user = getLoggedInUser();
+        if (!user) {
+            throw new Error("로그인이 필요합니다.");
+        }
 
         const payload = {
             ...groupData,
@@ -74,22 +85,18 @@ export const useGroupStore = defineStore("group", () => {
                 await api.delete(`/groups/${group.id}`);
                 throw e;
             }
-
-            myGroups.value.push({
-                id: group.id,
-                name: group.name,
-                password: group.password,
-                isOwner: true,
-            });
-
         } catch (e) {
             console.error(e);
             throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
         }
+        await fetchGroup();
     }
 
     async function deleteGroup(groupId) {
         const user = getLoggedInUser();
+        if (!user) {
+            throw new Error("로그인이 필요합니다.");
+        }
 
         const group = myGroups.value.find((group) => group.id === groupId);
         if (!group) throw new Error("해당 그룹을 찾을 수 없습니다.");
@@ -97,10 +104,10 @@ export const useGroupStore = defineStore("group", () => {
 
         try {
             const res = await api.delete(`/groups/${groupId}?_dependent=groupMembers&_dependent=records`);
-            myGroups.value = myGroups.value.filter(g => g.id !== groupId);
         } catch (e) {
             throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
         }
+        await fetchGroup();
     }
 
     function generateInviteLink(inviteData) {
@@ -114,6 +121,9 @@ export const useGroupStore = defineStore("group", () => {
 
     async function joinGroup(joinData) {
         const user = getLoggedInUser();
+        if (!user) {
+            throw new Error("로그인이 필요합니다.");
+        }
 
         let isAlreadyJoined = true;
         try {
@@ -143,21 +153,17 @@ export const useGroupStore = defineStore("group", () => {
                 groupId: group.id,
                 userId: user.id,
             });
-            myGroups.value.push(
-                {
-                    id: group.id,
-                    name: group.name,
-                    password: group.password,
-                    isOwner: false,
-                }
-            );
         } catch (e) {
             throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
         }
+        await fetchGroup();
     }
 
     async function leaveGroup(leaveData) {
         const user = getLoggedInUser();
+        if (!user) {
+            throw new Error("로그인이 필요합니다.");
+        }
 
         const group = myGroups.value.find((group) => {
             return group.id === leaveData.groupId;
@@ -180,17 +186,17 @@ export const useGroupStore = defineStore("group", () => {
             for (const gm of res.data) {
                 await api.delete(`/groupMembers/${gm.id}`);
             }
-            myGroups.value = myGroups.value.filter(g => g.id !== leaveData.groupId);
         } catch (e) {
             console.error(e);
             throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
         }
+        await fetchGroup();
     }
 
     // ====== 헬퍼 함수 ======
     function getLoggedInUser() {
         const userStore = useUserStore();
-        if (!userStore.isLoggedIn) throw new Error("로그인이 필요합니다.");
+        if (!userStore.isLoggedIn) return null;
         return userStore.user;
     }
 
