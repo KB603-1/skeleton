@@ -12,7 +12,7 @@ import {Label} from "@/components/ui/label";
 import {useRouter} from "vue-router";
 import {ref} from "vue";
 import {useUserStore} from "@/stores/user.js";
-import {Alert, AlertTitle} from "@/components/ui/alert/index.js";
+import AlertError from "@/components/ui/alert/AlertError.vue";
 
 const store = useUserStore();
 const router = useRouter();
@@ -85,14 +85,12 @@ async function signUp() {
             </div>
 
           </div>
-          <Alert
+          <AlertError
               v-if="errorMessage"
-              class="mt-4 bg-red-50 border-red-50"
+              class="mt-4"
           >
-            <AlertTitle class="text-red-400">
-              {{ errorMessage }}
-            </AlertTitle>
-          </Alert>
+            {{ errorMessage }}
+          </AlertError>
         </CardContent>
 
         <CardFooter class="grid w-full items-center gap-1.5 mt-4">
