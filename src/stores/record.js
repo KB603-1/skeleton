@@ -1,10 +1,16 @@
-import {defineStore} from "pinia";
-import {computed, ref} from "vue";
+import {defineStore, storeToRefs} from "pinia";
+import {computed, ref, watch} from "vue";
 import {useUserStore} from "@/stores/user.js";
 import api from "@/plugin/api.js";
 import {useGroupStore} from "@/stores/group.js";
 
 export const useRecordStore = defineStore("record", () => {
+
+    const groupStore = useGroupStore();
+    const {currentGroup} = storeToRefs(groupStore);
+    watch(currentGroup, (newValue, oldValue) => {
+        fetchRecord();
+    });
 
     const records = ref([]);
     const incomes = computed(() => {
@@ -39,14 +45,13 @@ export const useRecordStore = defineStore("record", () => {
             throw new Error("로그인이 필요합니다");
         }
 
-        const groupStore = useGroupStore();
-        const currentGroup = groupStore.currentGroup;
+        const group = currentGroup.value;
 
-        if (currentGroup) {
+        if (group) {
             let res;
 
             try {
-                res = await api.get(`/groupMembers?userId=${user.id}&groupId=${currentGroup.id}`);
+                res = await api.get(`/groupMembers?userId=${user.id}&groupId=${group.id}`);
             } catch (e) {
                 throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
             }
@@ -58,7 +63,7 @@ export const useRecordStore = defineStore("record", () => {
         const payload = {
             ...recordData,
             userId: user.id,
-            groupId: currentGroup?.id ?? null,
+            groupId: group?.id ?? null,
         };
 
         try {
@@ -123,10 +128,10 @@ export const useRecordStore = defineStore("record", () => {
             records.value = [];
             return;
         }
-        const groupStore = useGroupStore();
-        const currentGroup = groupStore.currentGroup;
 
-        if (!currentGroup) {
+        const group = currentGroup.value;
+
+        if (!group) {
             try {
                 const res = await api.get(`/records?userId=${user.id}&_embed=category`);
                 records.value = res.data;
@@ -138,7 +143,7 @@ export const useRecordStore = defineStore("record", () => {
         }
 
         try {
-            const res = await api.get(`/records?groupId=${currentGroup.id}&_embed=category`);
+            const res = await api.get(`/records?groupId=${group.id}&_embed=category`);
             records.value = res.data;
         } catch (e) {
             throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
@@ -160,5 +165,5 @@ export const useRecordStore = defineStore("record", () => {
         return userStore.user;
     }
 
-    return {incomes, expenses, fetchRecord, incomeCategories, expenseCategories, fetchCategories};
+    return {records, incomes, expenses, fetchRecord, incomeCategories, expenseCategories, fetchCategories};
 });

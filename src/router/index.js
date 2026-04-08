@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import MonthlyHistory from '@/pages/MonthlyHistory.vue';
+import EditRecord from '@/pages/EditRecord.vue';
 import { useUserStore } from '@/stores/user.js';
 import ShareListPage from '@/pages/share/ShareListPage.vue';
 import MainPage from '@/page/MainPage.vue';
@@ -18,6 +20,8 @@ const router = createRouter({
     { path: '/', component: MainPage },
     { path: '/stats', component: ChartPage },
     { path: '/add', component: AddPage },
+    { path: '/monthly', component: MonthlyHistory },
+    { path: '/edit', component: EditRecord },
   ],
 });
 

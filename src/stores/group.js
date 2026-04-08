@@ -1,14 +1,19 @@
-import {defineStore} from "pinia";
+import {defineStore, storeToRefs} from "pinia";
 import {ref, watch} from "vue";
 import {useUserStore} from "@/stores/user.js";
 import api from "@/plugin/api.js";
-import {useRecordStore} from "@/stores/record.js";
 
 export const useGroupStore = defineStore("group", () => {
 
+    const userStore = useUserStore();
+    const {user, isLoggedIn} = storeToRefs(userStore);
+
+    watch(isLoggedIn, (newValue, oldValue) => {
+        fetchGroup();
+    });
+
     const currentGroup = ref();
     const myGroups = ref([]);
-
     watch(myGroups, (newGroups) => {
         if (!currentGroup.value) {
             currentGroup.value = null;
@@ -16,10 +21,6 @@ export const useGroupStore = defineStore("group", () => {
         }
         const group = newGroups.find(g => g.id === currentGroup.value.id);
         currentGroup.value = group || null;
-    });
-
-    watch(currentGroup, (newValue, oldValue) => {
-        useRecordStore().fetchRecord(newValue);
     });
 
     async function fetchGroup() {
@@ -195,9 +196,8 @@ export const useGroupStore = defineStore("group", () => {
 
     // ====== 헬퍼 함수 ======
     function getLoggedInUser() {
-        const userStore = useUserStore();
-        if (!userStore.isLoggedIn) return null;
-        return userStore.user;
+        if (!isLoggedIn.value) return null;
+        return user.value;
     }
 
 

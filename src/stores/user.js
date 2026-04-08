@@ -8,10 +8,6 @@ export const useUserStore = defineStore("user", () => {
 
     const isLoggedIn = computed(() => !!user.value);
 
-    watch(isLoggedIn, async (newValue, oldValue) => {
-        await useGroupStore().fetchGroup();
-    });
-
     async function register(registerData) {
         let isUsed = true;
         try {
