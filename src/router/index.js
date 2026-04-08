@@ -3,13 +3,17 @@ import { useUserStore } from '@/stores/user.js';
 import MainPage from '@/pages/main/MainPage.vue';
 import ChartPage from '@/pages/chart/ChartPage.vue';
 import AddPage from '@/pages/add/AddPage.vue';
+import ShareListPage from '@/pages/share/ShareListPage.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    { path: '/share', name: 'share', component: ShareListPage },
     { path: '/', component: MainPage },
     { path: '/stats', component: ChartPage },
     { path: '/add', component: AddPage },
+    {path: '/login', component: SignInPage },
+    {path: '/signUp', component: SignUpPage },
   ],
 });
 

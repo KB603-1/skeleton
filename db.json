@@ -1,0 +1,13 @@
+{
+  "users": [
+  ],
+  "categories": [
+  ],
+  "records": [
+  ],
+  "groups": [
+  ],
+  "groupMembers": [
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
