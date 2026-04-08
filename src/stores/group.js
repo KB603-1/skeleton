@@ -2,6 +2,7 @@ import {defineStore} from "pinia";
 import {ref, watch} from "vue";
 import {useUserStore} from "@/stores/user.js";
 import api from "@/plugin/api.js";
+import {useRecordStore} from "@/stores/record.js";
 
 export const useGroupStore = defineStore("group", () => {
 
@@ -12,6 +13,10 @@ export const useGroupStore = defineStore("group", () => {
         if (currentGroup.value == null) return;
         const group = newGroups.find(g => g.id === currentGroup.value.id);
         currentGroup.value = group || null;
+    });
+
+    watch(currentGroup, (newValue, oldValue) => {
+        useRecordStore().fetchRecord(newValue);
     });
 
     async function fetchGroup() {
