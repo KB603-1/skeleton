@@ -16,6 +16,10 @@ export const useGroupStore = defineStore("group", () => {
 
     async function fetchGroup() {
         const user = getLoggedInUser();
+        if (!user) {
+            myGroups.value = [];
+            return;
+        }
         try {
             const res = await api.get(`/groupMembers?userId=${user.id}&_embed=group`);
             myGroups.value = res.data.map(groupMember => {
@@ -25,8 +29,8 @@ export const useGroupStore = defineStore("group", () => {
                     name: group.name,
                     password: group.password,
                     isOwner: group.userId === user.id,
-                }
-            })
+                };
+            });
         } catch (e) {
         }
     }
@@ -39,7 +43,7 @@ export const useGroupStore = defineStore("group", () => {
 
         const group = myGroups.value.find((group) => {
             return group.id === groupId;
-        })
+        });
 
         if (!group) {
             currentGroup.value = null;
@@ -101,7 +105,7 @@ export const useGroupStore = defineStore("group", () => {
 
     function generateInviteLink(inviteData) {
         const group = myGroups.value.find(group => {
-            return group.id === inviteData.groupId
+            return group.id === inviteData.groupId;
         });
         if (!group) throw new Error("해당 그룹에 참여하고 있지 않습니다.");
         if (!group.isOwner) throw new Error("그룹의 관리자만 초대 링크를 만들 수 있습니다.");
@@ -146,7 +150,7 @@ export const useGroupStore = defineStore("group", () => {
                     password: group.password,
                     isOwner: false,
                 }
-            )
+            );
         } catch (e) {
             throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
         }
@@ -156,7 +160,7 @@ export const useGroupStore = defineStore("group", () => {
         const user = getLoggedInUser();
 
         const group = myGroups.value.find((group) => {
-            return group.id === leaveData.groupId
+            return group.id === leaveData.groupId;
         });
 
         if (!group) {
@@ -201,5 +205,5 @@ export const useGroupStore = defineStore("group", () => {
         generateInviteLink,
         joinGroup,
         leaveGroup,
-    }
-})
+    };
+});
