@@ -1,0 +1,151 @@
+{
+  "users": [
+    {
+      "nickname": "김철수",
+      "id": "user001",
+      "password": "password123"
+    },
+    {
+      "nickname": "이영희",
+      "id": "user002",
+      "password": "password456"
+    },
+    {
+      "nickname": "박민준",
+      "id": "user003",
+      "password": "password789"
+    }
+  ],
+  "categories": [
+    {
+      "type": "income",
+      "name": "급여",
+      "id": "cat001"
+    },
+    {
+      "type": "income",
+      "name": "부업",
+      "id": "cat002"
+    },
+    {
+      "type": "expense",
+      "name": "식비",
+      "id": "cat003"
+    },
+    {
+      "type": "expense",
+      "name": "교통비",
+      "id": "cat004"
+    },
+    {
+      "type": "expense",
+      "name": "문화생활",
+      "id": "cat005"
+    }
+  ],
+  "records": [
+    {
+      "userId": "user001",
+      "type": "income",
+      "groupId": null,
+      "title": "3월 급여",
+      "memo": "정기 급여",
+      "categoryId": "cat001",
+      "amount": 3000000,
+      "date": "2026-03-25",
+      "id": "rec001"
+    },
+    {
+      "userId": "user001",
+      "type": "expense",
+      "groupId": null,
+      "title": "점심 식사",
+      "memo": "팀 점심",
+      "categoryId": "cat003",
+      "amount": 15000,
+      "date": "2026-04-01",
+      "id": "rec002"
+    },
+    {
+      "userId": "user001",
+      "type": "expense",
+      "groupId": "grp001",
+      "title": "지하철",
+      "memo": "",
+      "categoryId": "cat004",
+      "amount": 1400,
+      "date": "2026-04-02",
+      "id": "rec003"
+    },
+    {
+      "userId": "user002",
+      "type": "income",
+      "groupId": null,
+      "title": "3월 급여",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 2800000,
+      "date": "2026-03-25",
+      "id": "rec004"
+    },
+    {
+      "userId": "user002",
+      "type": "expense",
+      "groupId": "grp001",
+      "title": "영화 관람",
+      "memo": "어벤져스",
+      "categoryId": "cat005",
+      "amount": 14000,
+      "date": "2026-04-03",
+      "id": "rec005"
+    },
+    {
+      "userId": "user003",
+      "type": "income",
+      "groupId": null,
+      "title": "프리랜서 수입",
+      "memo": "디자인 외주",
+      "categoryId": "cat002",
+      "amount": 500000,
+      "date": "2026-04-05",
+      "id": "rec006"
+    }
+  ],
+  "groups": [
+    {
+      "password": "group123",
+      "userId": "user001",
+      "name": "가족 가계부",
+      "id": "grp001"
+    },
+    {
+      "password": "group456",
+      "userId": "user002",
+      "name": "자취방 공동 지출",
+      "id": "grp002"
+    }
+  ],
+  "groupMembers": [
+    {
+      "groupId": "grp001",
+      "userId": "user001",
+      "id": "gm001"
+    },
+    {
+      "groupId": "grp001",
+      "userId": "user002",
+      "id": "gm002"
+    },
+    {
+      "groupId": "grp002",
+      "userId": "user002",
+      "id": "gm003"
+    },
+    {
+      "groupId": "grp002",
+      "userId": "user003",
+      "id": "gm004"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
