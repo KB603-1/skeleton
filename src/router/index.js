@@ -4,10 +4,14 @@ import ShareListPage from '@/pages/share/ShareListPage.vue';
 import MainPage from '@/page/MainPage.vue';
 import ChartPage from '@/page/ChartPage.vue';
 import AddPage from '@/page/AddPage.vue';
+import MonthlyHistory from '@/page/MonthlyHistory.vue';
+import EditRecord from '@/page/EditRecord.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    { path: '/monthly', component: MonthlyHistory },
+    { path: '/edit', component: EditRecord },
     { path: '/share', name: 'share', component: ShareListPage },
     { path: '/', component: MainPage },
     { path: '/stats', component: ChartPage },
