@@ -110,7 +110,7 @@ export const useRecordStore = defineStore("record", () => {
         }
 
         try {
-            const res = await api.patch(`/records/${record.id}`, changes);
+            const res = await api.patch(`/records/${recordId}`, changes);
         } catch (e) {
             throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
         }

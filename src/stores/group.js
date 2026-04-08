@@ -159,14 +159,14 @@ export const useGroupStore = defineStore("group", () => {
         await fetchGroup();
     }
 
-    async function leaveGroup(leaveData) {
+    async function leaveGroup(groupId) {
         const user = getLoggedInUser();
         if (!user) {
             throw new Error("로그인이 필요합니다.");
         }
 
         const group = myGroups.value.find((group) => {
-            return group.id === leaveData.groupId;
+            return group.id === groupId;
         });
 
         if (!group) {
@@ -179,7 +179,7 @@ export const useGroupStore = defineStore("group", () => {
 
         try {
             const res =
-                await api.get(`/groupMembers?userId=${user.id}&groupId=${leaveData.groupId}`);
+                await api.get(`/groupMembers?userId=${user.id}&groupId=${groupId}`);
             if (res.data.length === 0) {
                 throw new Error();
             }
