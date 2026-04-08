@@ -1,10 +1,11 @@
 <script>
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
+import ChartStyle from './ChartStyle.vue';
 </script>
 
 <script setup>
-import { toRefs, computed, useId } from "vue";
-import { provideChartContext } from "./index.js";
+import { toRefs, computed, useId } from 'vue';
+import { provideChartContext } from './index.js';
 const props = defineProps({
   id: { type: null, required: false },
   class: {
@@ -21,7 +22,7 @@ defineSlots();
 const { config } = toRefs(props);
 const uniqueId = useId();
 const chartId = computed(
-  () => `chart-${props.id || uniqueId.replace(/:/g, "")}`,
+  () => `chart-${props.id || uniqueId.replace(/:/g, '')}`,
 );
 
 provideChartContext({
