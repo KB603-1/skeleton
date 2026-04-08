@@ -3,16 +3,19 @@
     {
       "nickname": "김철수",
       "id": "user001",
+      "username": "username123",
       "password": "password123"
     },
     {
       "nickname": "이영희",
       "id": "user002",
+      "username": "username456",
       "password": "password456"
     },
     {
       "nickname": "박민준",
       "id": "user003",
+      "username": "username789",
       "password": "password789"
     }
   ],
