@@ -1,15 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import MonthlyHistory from '@/pages/MonthlyHistory.vue';
-import EditRecord from '@/pages/EditRecord.vue';
 import { useUserStore } from '@/stores/user.js';
-import ShareListPage from '@/pages/share/ShareListPage.vue';
-import MainPage from '@/page/MainPage.vue';
-import ChartPage from '@/page/ChartPage.vue';
-import AddPage from '@/page/AddPage.vue';
-import MonthlyHistory from '@/page/MonthlyHistory.vue';
-import EditRecord from '@/page/EditRecord.vue';
+
 import MonthlyHistory from '@/pages/MonthlyHistory.vue';
 import EditRecord from '@/pages/EditRecord.vue';
+import MainPage from '@/pages/main/MainPage.vue';
+import ChartPage from '@/pages/chart/ChartPage.vue';
+import AddPage from '@/pages/add/AddPage.vue';
+import ShareListPage from '@/pages/share/ShareListPage.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,8 +17,8 @@ const router = createRouter({
     { path: '/', component: MainPage },
     { path: '/stats', component: ChartPage },
     { path: '/add', component: AddPage },
-    { path: '/monthly', component: MonthlyHistory },
-    { path: '/edit', component: EditRecord },
+    {path: '/login', component: SignInPage },
+    {path: '/signUp', component: SignUpPage },
   ],
 });
 
