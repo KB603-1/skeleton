@@ -85,18 +85,11 @@ export const useGroupStore = defineStore("group", () => {
                 await api.delete(`/groups/${group.id}`);
                 throw e;
             }
-
-            myGroups.value.push({
-                id: group.id,
-                name: group.name,
-                password: group.password,
-                isOwner: true,
-            });
-
         } catch (e) {
             console.error(e);
             throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
         }
+        await fetchGroup();
     }
 
     async function deleteGroup(groupId) {
@@ -111,10 +104,10 @@ export const useGroupStore = defineStore("group", () => {
 
         try {
             const res = await api.delete(`/groups/${groupId}?_dependent=groupMembers&_dependent=records`);
-            myGroups.value = myGroups.value.filter(g => g.id !== groupId);
         } catch (e) {
             throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
         }
+        await fetchGroup();
     }
 
     function generateInviteLink(inviteData) {
@@ -160,17 +153,10 @@ export const useGroupStore = defineStore("group", () => {
                 groupId: group.id,
                 userId: user.id,
             });
-            myGroups.value.push(
-                {
-                    id: group.id,
-                    name: group.name,
-                    password: group.password,
-                    isOwner: false,
-                }
-            );
         } catch (e) {
             throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
         }
+        await fetchGroup();
     }
 
     async function leaveGroup(leaveData) {
@@ -200,11 +186,11 @@ export const useGroupStore = defineStore("group", () => {
             for (const gm of res.data) {
                 await api.delete(`/groupMembers/${gm.id}`);
             }
-            myGroups.value = myGroups.value.filter(g => g.id !== leaveData.groupId);
         } catch (e) {
             console.error(e);
             throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
         }
+        await fetchGroup();
     }
 
     // ====== 헬퍼 함수 ======
