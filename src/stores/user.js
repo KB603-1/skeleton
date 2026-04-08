@@ -1,11 +1,16 @@
 import {defineStore} from "pinia";
 import api from "@/plugin/api.js";
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
+import {useGroupStore} from "@/stores/group.js";
 
 export const useUserStore = defineStore("user", () => {
     const user = ref(null);
 
     const isLoggedIn = computed(() => !!user.value);
+
+    watch(isLoggedIn, async (newValue, oldValue) => {
+        await useGroupStore().fetchGroup();
+    });
 
     async function register(registerData) {
         let isUsed = true;
