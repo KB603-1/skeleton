@@ -165,5 +165,16 @@ export const useRecordStore = defineStore("record", () => {
         return userStore.user;
     }
 
-    return {records, incomes, expenses, fetchRecord, incomeCategories, expenseCategories, fetchCategories};
+    return {
+        records,
+        incomes,
+        expenses,
+        makeRecord,
+        editRecord,
+        deleteRecord,
+        fetchRecord,
+        incomeCategories,
+        expenseCategories,
+        fetchCategories
+    };
 });
