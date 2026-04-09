@@ -165,29 +165,16 @@ const removeMember = async (nickname) => {
 // 🚀 생명주기 훅
 // ==========================================
 onMounted(() => {
-  if (!user.value) {
-    userStore.user = {
-      id: 'user001',
-      nickname: '김철수',
-    };
-  }
-  //   // 만약 그룹이 선택되지 않은 상태로 이 페이지에 들어왔다면 메인으로 튕겨냄
-  //   if (!currentGroup.value) {
-  //     alert('선택된 그룹이 없습니다. 메인 화면으로 이동합니다.');
-  //     router.push('/');
-  //   }
+  // if (!user.value) {
+  //   userStore.user = {
+  //     id: 'user001',
+  //     nickname: '김철수',
+  //   };
+  // }
+  // 그룹 없으면 return
   if (!currentGroup.value) {
-    console.warn("⚠️ 테스트 모드: 강제로 '가족 가계부' 그룹을 세팅합니다.");
-    groupStore.currentGroup = {
-      id: 'grp001',
-      name: '가족 가계부',
-      password: 'group123',
-      isOwner: true,
-      members: [
-        { id: 'user001', nickname: '김철수', icon: '👨' },
-        { id: 'user002', nickname: '이영희', icon: '👩' },
-      ],
-    };
+    alert('선택된 그룹이 없습니다. 메인 화면으로 이동합니다.');
+    router.push('/');
   }
 });
 </script>
