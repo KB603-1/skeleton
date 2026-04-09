@@ -1,22 +1,378 @@
 {
   "users": [
     {
-      "nickname": "김철수",
-      "id": "user001",
-      "username": "username123",
-      "password": "password123"
+      "id": "user01",
+      "nickname": "유저1",
+      "username": "user1",
+      "password": "pass1"
     },
     {
-      "nickname": "이영희",
-      "id": "user002",
-      "username": "username456",
-      "password": "password456"
+      "id": "user02",
+      "nickname": "유저2",
+      "username": "user2",
+      "password": "pass2"
     },
     {
-      "nickname": "박민준",
-      "id": "user003",
-      "username": "username789",
-      "password": "password789"
+      "id": "user03",
+      "nickname": "유저3",
+      "username": "user3",
+      "password": "pass3"
+    },
+    {
+      "id": "user04",
+      "nickname": "유저4",
+      "username": "user4",
+      "password": "pass4"
+    },
+    {
+      "id": "user05",
+      "nickname": "유저5",
+      "username": "user5",
+      "password": "pass5"
+    },
+    {
+      "id": "user06",
+      "nickname": "유저6",
+      "username": "user6",
+      "password": "pass6"
+    },
+    {
+      "id": "user07",
+      "nickname": "유저7",
+      "username": "user7",
+      "password": "pass7"
+    },
+    {
+      "id": "user08",
+      "nickname": "유저8",
+      "username": "user8",
+      "password": "pass8"
+    },
+    {
+      "id": "user09",
+      "nickname": "유저9",
+      "username": "user9",
+      "password": "pass9"
+    },
+    {
+      "id": "user10",
+      "nickname": "유저10",
+      "username": "user10",
+      "password": "pass10"
+    }
+  ],
+  "groups": [
+    {
+      "id": "grp01",
+      "name": "그룹1",
+      "userId": "user01",
+      "password": "g1"
+    },
+    {
+      "id": "grp02",
+      "name": "그룹2",
+      "userId": "user02",
+      "password": "g2"
+    },
+    {
+      "id": "grp03",
+      "name": "그룹3",
+      "userId": "user03",
+      "password": "g3"
+    },
+    {
+      "id": "grp04",
+      "name": "그룹4",
+      "userId": "user04",
+      "password": "g4"
+    },
+    {
+      "id": "grp05",
+      "name": "그룹5",
+      "userId": "user05",
+      "password": "g5"
+    },
+    {
+      "id": "grp06",
+      "name": "그룹6",
+      "userId": "user06",
+      "password": "g6"
+    },
+    {
+      "id": "grp07",
+      "name": "그룹7",
+      "userId": "user07",
+      "password": "g7"
+    },
+    {
+      "id": "grp08",
+      "name": "그룹8",
+      "userId": "user08",
+      "password": "g8"
+    },
+    {
+      "id": "grp09",
+      "name": "그룹9",
+      "userId": "user09",
+      "password": "g9"
+    },
+    {
+      "id": "grp10",
+      "name": "그룹10",
+      "userId": "user10",
+      "password": "g10"
+    }
+  ],
+  "groupMembers": [
+    {
+      "id": "gm01",
+      "groupId": "grp01",
+      "userId": "user01"
+    },
+    {
+      "id": "gm02",
+      "groupId": "grp01",
+      "userId": "user02"
+    },
+    {
+      "id": "gm03",
+      "groupId": "grp01",
+      "userId": "user03"
+    },
+    {
+      "id": "gm04",
+      "groupId": "grp01",
+      "userId": "user04"
+    },
+    {
+      "id": "gm05",
+      "groupId": "grp01",
+      "userId": "user05"
+    },
+    {
+      "id": "gm06",
+      "groupId": "grp02",
+      "userId": "user02"
+    },
+    {
+      "id": "gm07",
+      "groupId": "grp02",
+      "userId": "user03"
+    },
+    {
+      "id": "gm08",
+      "groupId": "grp02",
+      "userId": "user04"
+    },
+    {
+      "id": "gm09",
+      "groupId": "grp02",
+      "userId": "user05"
+    },
+    {
+      "id": "gm10",
+      "groupId": "grp02",
+      "userId": "user06"
+    },
+    {
+      "id": "gm11",
+      "groupId": "grp03",
+      "userId": "user03"
+    },
+    {
+      "id": "gm12",
+      "groupId": "grp03",
+      "userId": "user04"
+    },
+    {
+      "id": "gm13",
+      "groupId": "grp03",
+      "userId": "user05"
+    },
+    {
+      "id": "gm14",
+      "groupId": "grp03",
+      "userId": "user06"
+    },
+    {
+      "id": "gm15",
+      "groupId": "grp03",
+      "userId": "user07"
+    },
+    {
+      "id": "gm16",
+      "groupId": "grp04",
+      "userId": "user04"
+    },
+    {
+      "id": "gm17",
+      "groupId": "grp04",
+      "userId": "user05"
+    },
+    {
+      "id": "gm18",
+      "groupId": "grp04",
+      "userId": "user06"
+    },
+    {
+      "id": "gm19",
+      "groupId": "grp04",
+      "userId": "user07"
+    },
+    {
+      "id": "gm20",
+      "groupId": "grp04",
+      "userId": "user08"
+    },
+    {
+      "id": "gm21",
+      "groupId": "grp05",
+      "userId": "user05"
+    },
+    {
+      "id": "gm22",
+      "groupId": "grp05",
+      "userId": "user06"
+    },
+    {
+      "id": "gm23",
+      "groupId": "grp05",
+      "userId": "user07"
+    },
+    {
+      "id": "gm24",
+      "groupId": "grp05",
+      "userId": "user08"
+    },
+    {
+      "id": "gm25",
+      "groupId": "grp05",
+      "userId": "user09"
+    },
+    {
+      "id": "gm26",
+      "groupId": "grp06",
+      "userId": "user06"
+    },
+    {
+      "id": "gm27",
+      "groupId": "grp06",
+      "userId": "user07"
+    },
+    {
+      "id": "gm28",
+      "groupId": "grp06",
+      "userId": "user08"
+    },
+    {
+      "id": "gm29",
+      "groupId": "grp06",
+      "userId": "user09"
+    },
+    {
+      "id": "gm30",
+      "groupId": "grp06",
+      "userId": "user10"
+    },
+    {
+      "id": "gm31",
+      "groupId": "grp07",
+      "userId": "user07"
+    },
+    {
+      "id": "gm32",
+      "groupId": "grp07",
+      "userId": "user08"
+    },
+    {
+      "id": "gm33",
+      "groupId": "grp07",
+      "userId": "user09"
+    },
+    {
+      "id": "gm34",
+      "groupId": "grp07",
+      "userId": "user10"
+    },
+    {
+      "id": "gm35",
+      "groupId": "grp07",
+      "userId": "user01"
+    },
+    {
+      "id": "gm36",
+      "groupId": "grp08",
+      "userId": "user08"
+    },
+    {
+      "id": "gm37",
+      "groupId": "grp08",
+      "userId": "user09"
+    },
+    {
+      "id": "gm38",
+      "groupId": "grp08",
+      "userId": "user10"
+    },
+    {
+      "id": "gm39",
+      "groupId": "grp08",
+      "userId": "user01"
+    },
+    {
+      "id": "gm40",
+      "groupId": "grp08",
+      "userId": "user02"
+    },
+    {
+      "id": "gm41",
+      "groupId": "grp09",
+      "userId": "user09"
+    },
+    {
+      "id": "gm42",
+      "groupId": "grp09",
+      "userId": "user10"
+    },
+    {
+      "id": "gm43",
+      "groupId": "grp09",
+      "userId": "user01"
+    },
+    {
+      "id": "gm44",
+      "groupId": "grp09",
+      "userId": "user02"
+    },
+    {
+      "id": "gm45",
+      "groupId": "grp09",
+      "userId": "user03"
+    },
+    {
+      "id": "gm46",
+      "groupId": "grp10",
+      "userId": "user10"
+    },
+    {
+      "id": "gm47",
+      "groupId": "grp10",
+      "userId": "user01"
+    },
+    {
+      "id": "gm48",
+      "groupId": "grp10",
+      "userId": "user02"
+    },
+    {
+      "id": "gm49",
+      "groupId": "grp10",
+      "userId": "user03"
+    },
+    {
+      "id": "gm50",
+      "groupId": "grp10",
+      "userId": "user04"
     }
   ],
   "categories": [
@@ -95,106 +451,2204 @@
   ],
   "records": [
     {
-      "userId": "user001",
+      "id": "rec001",
+      "userId": "user02",
+      "groupId": "grp01",
       "type": "income",
-      "groupId": null,
-      "title": "3월 급여",
-      "memo": "정기 급여",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat002",
+      "amount": 1015554,
+      "date": "2026-04-03"
+    },
+    {
+      "id": "rec002",
+      "userId": "user03",
+      "groupId": "grp01",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat010",
+      "amount": 39604,
+      "date": "2026-04-07"
+    },
+    {
+      "id": "rec003",
+      "userId": "user04",
+      "groupId": "grp01",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 1242585,
+      "date": "2026-04-22"
+    },
+    {
+      "id": "rec004",
+      "userId": "user05",
+      "groupId": "grp01",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 2390037,
+      "date": "2026-04-08"
+    },
+    {
+      "id": "rec005",
+      "userId": "user06",
+      "groupId": "grp01",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat011",
+      "amount": 22803,
+      "date": "2026-04-12"
+    },
+    {
+      "id": "rec006",
+      "userId": "user07",
+      "groupId": "grp01",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 582793,
+      "date": "2026-04-26"
+    },
+    {
+      "id": "rec007",
+      "userId": "user08",
+      "groupId": "grp01",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat008",
+      "amount": 24043,
+      "date": "2026-04-22"
+    },
+    {
+      "id": "rec008",
+      "userId": "user09",
+      "groupId": "grp01",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
       "categoryId": "cat001",
-      "amount": 3000000,
-      "date": "2026-03-25",
-      "id": "rec001"
+      "amount": 2210685,
+      "date": "2026-04-13"
     },
     {
-      "userId": "user001",
-      "type": "expense",
-      "groupId": null,
-      "title": "점심 식사",
-      "memo": "팀 점심",
-      "categoryId": "cat003",
-      "amount": 15000,
-      "date": "2026-04-01",
-      "id": "rec002"
+      "id": "rec009",
+      "userId": "user10",
+      "groupId": "grp01",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 2208357,
+      "date": "2026-04-14"
     },
     {
-      "userId": "user001",
+      "id": "rec010",
+      "userId": "user01",
+      "groupId": "grp01",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 2403368,
+      "date": "2026-04-28"
+    },
+    {
+      "id": "rec011",
+      "userId": "user03",
+      "groupId": "grp02",
       "type": "expense",
-      "groupId": "grp001",
-      "title": "지하철",
+      "title": "그룹지출",
       "memo": "",
       "categoryId": "cat004",
-      "amount": 1400,
-      "date": "2026-04-30",
-      "id": "rec003"
+      "amount": 13450,
+      "date": "2026-04-18"
     },
     {
-      "userId": "user002",
+      "id": "rec012",
+      "userId": "user04",
+      "groupId": "grp02",
       "type": "income",
-      "groupId": null,
-      "title": "3월 급여",
+      "title": "그룹수입",
       "memo": "",
       "categoryId": "cat001",
-      "amount": 2800000,
-      "date": "2026-03-25",
-      "id": "rec004"
+      "amount": 2337050,
+      "date": "2026-04-12"
     },
     {
-      "userId": "user002",
+      "id": "rec013",
+      "userId": "user05",
+      "groupId": "grp02",
       "type": "expense",
-      "groupId": "grp001",
-      "title": "영화 관람",
-      "memo": "어벤져스",
-      "categoryId": "cat005",
-      "amount": 14000,
-      "date": "2026-04-03",
-      "id": "rec005"
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat003",
+      "amount": 27843,
+      "date": "2026-04-08"
     },
     {
-      "userId": "user003",
+      "id": "rec014",
+      "userId": "user06",
+      "groupId": "grp02",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat008",
+      "amount": 28768,
+      "date": "2026-04-11"
+    },
+    {
+      "id": "rec015",
+      "userId": "user07",
+      "groupId": "grp02",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat010",
+      "amount": 41152,
+      "date": "2026-04-20"
+    },
+    {
+      "id": "rec016",
+      "userId": "user08",
+      "groupId": "grp02",
       "type": "income",
-      "groupId": null,
-      "title": "프리랜서 수입",
-      "memo": "디자인 외주",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 1303857,
+      "date": "2026-04-06"
+    },
+    {
+      "id": "rec017",
+      "userId": "user09",
+      "groupId": "grp02",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat004",
+      "amount": 50512,
+      "date": "2026-04-10"
+    },
+    {
+      "id": "rec018",
+      "userId": "user10",
+      "groupId": "grp02",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 1115493,
+      "date": "2026-04-08"
+    },
+    {
+      "id": "rec019",
+      "userId": "user01",
+      "groupId": "grp02",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat005",
+      "amount": 21674,
+      "date": "2026-04-17"
+    },
+    {
+      "id": "rec020",
+      "userId": "user02",
+      "groupId": "grp02",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat009",
+      "amount": 25925,
+      "date": "2026-04-14"
+    },
+    {
+      "id": "rec021",
+      "userId": "user04",
+      "groupId": "grp03",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 2004699,
+      "date": "2026-04-02"
+    },
+    {
+      "id": "rec022",
+      "userId": "user05",
+      "groupId": "grp03",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 1969152,
+      "date": "2026-04-22"
+    },
+    {
+      "id": "rec023",
+      "userId": "user06",
+      "groupId": "grp03",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat009",
+      "amount": 36880,
+      "date": "2026-04-27"
+    },
+    {
+      "id": "rec024",
+      "userId": "user07",
+      "groupId": "grp03",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
       "categoryId": "cat002",
-      "amount": 500000,
-      "date": "2026-04-05",
-      "id": "rec006"
-    }
-  ],
-  "groups": [
-    {
-      "password": "group123",
-      "userId": "user001",
-      "name": "가족 가계부",
-      "id": "grp001"
+      "amount": 616761,
+      "date": "2026-04-05"
     },
     {
-      "password": "group456",
-      "userId": "user002",
-      "name": "자취방 공동 지출",
-      "id": "grp002"
-    }
-  ],
-  "groupMembers": [
-    {
-      "groupId": "grp001",
-      "userId": "user001",
-      "id": "gm001"
+      "id": "rec025",
+      "userId": "user08",
+      "groupId": "grp03",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 2404136,
+      "date": "2026-04-03"
     },
     {
-      "groupId": "grp001",
-      "userId": "user002",
-      "id": "gm002"
+      "id": "rec026",
+      "userId": "user09",
+      "groupId": "grp03",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat002",
+      "amount": 1057819,
+      "date": "2026-04-26"
     },
     {
-      "groupId": "grp002",
-      "userId": "user002",
-      "id": "gm003"
+      "id": "rec027",
+      "userId": "user10",
+      "groupId": "grp03",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 1326334,
+      "date": "2026-04-08"
     },
     {
-      "groupId": "grp002",
-      "userId": "user003",
-      "id": "gm004"
+      "id": "rec028",
+      "userId": "user01",
+      "groupId": "grp03",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 1781225,
+      "date": "2026-04-05"
+    },
+    {
+      "id": "rec029",
+      "userId": "user02",
+      "groupId": "grp03",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 813884,
+      "date": "2026-04-13"
+    },
+    {
+      "id": "rec030",
+      "userId": "user03",
+      "groupId": "grp03",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat003",
+      "amount": 5266,
+      "date": "2026-04-03"
+    },
+    {
+      "id": "rec031",
+      "userId": "user05",
+      "groupId": "grp04",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat003",
+      "amount": 24605,
+      "date": "2026-04-26"
+    },
+    {
+      "id": "rec032",
+      "userId": "user06",
+      "groupId": "grp04",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat004",
+      "amount": 28523,
+      "date": "2026-04-23"
+    },
+    {
+      "id": "rec033",
+      "userId": "user07",
+      "groupId": "grp04",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat008",
+      "amount": 36005,
+      "date": "2026-04-27"
+    },
+    {
+      "id": "rec034",
+      "userId": "user08",
+      "groupId": "grp04",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 1669867,
+      "date": "2026-04-24"
+    },
+    {
+      "id": "rec035",
+      "userId": "user09",
+      "groupId": "grp04",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 1404111,
+      "date": "2026-04-06"
+    },
+    {
+      "id": "rec036",
+      "userId": "user10",
+      "groupId": "grp04",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 1985813,
+      "date": "2026-04-12"
+    },
+    {
+      "id": "rec037",
+      "userId": "user01",
+      "groupId": "grp04",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat005",
+      "amount": 1749,
+      "date": "2026-04-02"
+    },
+    {
+      "id": "rec038",
+      "userId": "user02",
+      "groupId": "grp04",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat002",
+      "amount": 1373454,
+      "date": "2026-04-27"
+    },
+    {
+      "id": "rec039",
+      "userId": "user03",
+      "groupId": "grp04",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat010",
+      "amount": 27196,
+      "date": "2026-04-27"
+    },
+    {
+      "id": "rec040",
+      "userId": "user04",
+      "groupId": "grp04",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat002",
+      "amount": 2378652,
+      "date": "2026-04-05"
+    },
+    {
+      "id": "rec041",
+      "userId": "user06",
+      "groupId": "grp05",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat010",
+      "amount": 10946,
+      "date": "2026-04-08"
+    },
+    {
+      "id": "rec042",
+      "userId": "user07",
+      "groupId": "grp05",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat005",
+      "amount": 1946,
+      "date": "2026-04-06"
+    },
+    {
+      "id": "rec043",
+      "userId": "user08",
+      "groupId": "grp05",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat003",
+      "amount": 11850,
+      "date": "2026-04-08"
+    },
+    {
+      "id": "rec044",
+      "userId": "user09",
+      "groupId": "grp05",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 1446706,
+      "date": "2026-04-19"
+    },
+    {
+      "id": "rec045",
+      "userId": "user10",
+      "groupId": "grp05",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat005",
+      "amount": 30185,
+      "date": "2026-04-27"
+    },
+    {
+      "id": "rec046",
+      "userId": "user01",
+      "groupId": "grp05",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat006",
+      "amount": 1466917,
+      "date": "2026-04-05"
+    },
+    {
+      "id": "rec047",
+      "userId": "user02",
+      "groupId": "grp05",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat004",
+      "amount": 8811,
+      "date": "2026-04-20"
+    },
+    {
+      "id": "rec048",
+      "userId": "user03",
+      "groupId": "grp05",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat006",
+      "amount": 846171,
+      "date": "2026-04-24"
+    },
+    {
+      "id": "rec049",
+      "userId": "user04",
+      "groupId": "grp05",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat009",
+      "amount": 42445,
+      "date": "2026-04-21"
+    },
+    {
+      "id": "rec050",
+      "userId": "user05",
+      "groupId": "grp05",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat003",
+      "amount": 23060,
+      "date": "2026-04-10"
+    },
+    {
+      "id": "rec051",
+      "userId": "user07",
+      "groupId": "grp06",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat011",
+      "amount": 47351,
+      "date": "2026-04-15"
+    },
+    {
+      "id": "rec052",
+      "userId": "user08",
+      "groupId": "grp06",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 1806815,
+      "date": "2026-04-10"
+    },
+    {
+      "id": "rec053",
+      "userId": "user09",
+      "groupId": "grp06",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat008",
+      "amount": 47385,
+      "date": "2026-04-20"
+    },
+    {
+      "id": "rec054",
+      "userId": "user10",
+      "groupId": "grp06",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 1956237,
+      "date": "2026-04-02"
+    },
+    {
+      "id": "rec055",
+      "userId": "user01",
+      "groupId": "grp06",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat006",
+      "amount": 874557,
+      "date": "2026-04-16"
+    },
+    {
+      "id": "rec056",
+      "userId": "user02",
+      "groupId": "grp06",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 649355,
+      "date": "2026-04-03"
+    },
+    {
+      "id": "rec057",
+      "userId": "user03",
+      "groupId": "grp06",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat011",
+      "amount": 39590,
+      "date": "2026-04-09"
+    },
+    {
+      "id": "rec058",
+      "userId": "user04",
+      "groupId": "grp06",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat002",
+      "amount": 1390429,
+      "date": "2026-04-28"
+    },
+    {
+      "id": "rec059",
+      "userId": "user05",
+      "groupId": "grp06",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat002",
+      "amount": 2101580,
+      "date": "2026-04-10"
+    },
+    {
+      "id": "rec060",
+      "userId": "user06",
+      "groupId": "grp06",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 1155724,
+      "date": "2026-04-12"
+    },
+    {
+      "id": "rec061",
+      "userId": "user08",
+      "groupId": "grp07",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 1622483,
+      "date": "2026-04-19"
+    },
+    {
+      "id": "rec062",
+      "userId": "user09",
+      "groupId": "grp07",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 594862,
+      "date": "2026-04-02"
+    },
+    {
+      "id": "rec063",
+      "userId": "user10",
+      "groupId": "grp07",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat011",
+      "amount": 13915,
+      "date": "2026-04-20"
+    },
+    {
+      "id": "rec064",
+      "userId": "user01",
+      "groupId": "grp07",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat008",
+      "amount": 10803,
+      "date": "2026-04-12"
+    },
+    {
+      "id": "rec065",
+      "userId": "user02",
+      "groupId": "grp07",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat004",
+      "amount": 35238,
+      "date": "2026-04-06"
+    },
+    {
+      "id": "rec066",
+      "userId": "user03",
+      "groupId": "grp07",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat002",
+      "amount": 1713383,
+      "date": "2026-04-11"
+    },
+    {
+      "id": "rec067",
+      "userId": "user04",
+      "groupId": "grp07",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat010",
+      "amount": 6670,
+      "date": "2026-04-20"
+    },
+    {
+      "id": "rec068",
+      "userId": "user05",
+      "groupId": "grp07",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat009",
+      "amount": 18010,
+      "date": "2026-04-16"
+    },
+    {
+      "id": "rec069",
+      "userId": "user06",
+      "groupId": "grp07",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat010",
+      "amount": 4296,
+      "date": "2026-04-03"
+    },
+    {
+      "id": "rec070",
+      "userId": "user07",
+      "groupId": "grp07",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat003",
+      "amount": 21434,
+      "date": "2026-04-13"
+    },
+    {
+      "id": "rec071",
+      "userId": "user09",
+      "groupId": "grp08",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 2383675,
+      "date": "2026-04-03"
+    },
+    {
+      "id": "rec072",
+      "userId": "user10",
+      "groupId": "grp08",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat006",
+      "amount": 2474169,
+      "date": "2026-04-12"
+    },
+    {
+      "id": "rec073",
+      "userId": "user01",
+      "groupId": "grp08",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat003",
+      "amount": 11539,
+      "date": "2026-04-03"
+    },
+    {
+      "id": "rec074",
+      "userId": "user02",
+      "groupId": "grp08",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat003",
+      "amount": 5485,
+      "date": "2026-04-06"
+    },
+    {
+      "id": "rec075",
+      "userId": "user03",
+      "groupId": "grp08",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat004",
+      "amount": 9488,
+      "date": "2026-04-23"
+    },
+    {
+      "id": "rec076",
+      "userId": "user04",
+      "groupId": "grp08",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 2100652,
+      "date": "2026-04-06"
+    },
+    {
+      "id": "rec077",
+      "userId": "user05",
+      "groupId": "grp08",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 866243,
+      "date": "2026-04-06"
+    },
+    {
+      "id": "rec078",
+      "userId": "user06",
+      "groupId": "grp08",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat008",
+      "amount": 23514,
+      "date": "2026-04-21"
+    },
+    {
+      "id": "rec079",
+      "userId": "user07",
+      "groupId": "grp08",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat010",
+      "amount": 23093,
+      "date": "2026-04-14"
+    },
+    {
+      "id": "rec080",
+      "userId": "user08",
+      "groupId": "grp08",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat005",
+      "amount": 49321,
+      "date": "2026-04-07"
+    },
+    {
+      "id": "rec081",
+      "userId": "user10",
+      "groupId": "grp09",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat002",
+      "amount": 1825190,
+      "date": "2026-04-12"
+    },
+    {
+      "id": "rec082",
+      "userId": "user01",
+      "groupId": "grp09",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat010",
+      "amount": 4092,
+      "date": "2026-04-11"
+    },
+    {
+      "id": "rec083",
+      "userId": "user02",
+      "groupId": "grp09",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 1494522,
+      "date": "2026-04-09"
+    },
+    {
+      "id": "rec084",
+      "userId": "user03",
+      "groupId": "grp09",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat006",
+      "amount": 2232167,
+      "date": "2026-04-24"
+    },
+    {
+      "id": "rec085",
+      "userId": "user04",
+      "groupId": "grp09",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat009",
+      "amount": 9393,
+      "date": "2026-04-02"
+    },
+    {
+      "id": "rec086",
+      "userId": "user05",
+      "groupId": "grp09",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 1815255,
+      "date": "2026-04-13"
+    },
+    {
+      "id": "rec087",
+      "userId": "user06",
+      "groupId": "grp09",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat004",
+      "amount": 19178,
+      "date": "2026-04-22"
+    },
+    {
+      "id": "rec088",
+      "userId": "user07",
+      "groupId": "grp09",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat009",
+      "amount": 6769,
+      "date": "2026-04-04"
+    },
+    {
+      "id": "rec089",
+      "userId": "user08",
+      "groupId": "grp09",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 1868759,
+      "date": "2026-04-28"
+    },
+    {
+      "id": "rec090",
+      "userId": "user09",
+      "groupId": "grp09",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat002",
+      "amount": 544101,
+      "date": "2026-04-21"
+    },
+    {
+      "id": "rec091",
+      "userId": "user01",
+      "groupId": "grp10",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 527227,
+      "date": "2026-04-28"
+    },
+    {
+      "id": "rec092",
+      "userId": "user02",
+      "groupId": "grp10",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat009",
+      "amount": 7998,
+      "date": "2026-04-08"
+    },
+    {
+      "id": "rec093",
+      "userId": "user03",
+      "groupId": "grp10",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat002",
+      "amount": 1216490,
+      "date": "2026-04-05"
+    },
+    {
+      "id": "rec094",
+      "userId": "user04",
+      "groupId": "grp10",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat004",
+      "amount": 19456,
+      "date": "2026-04-07"
+    },
+    {
+      "id": "rec095",
+      "userId": "user05",
+      "groupId": "grp10",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat011",
+      "amount": 10702,
+      "date": "2026-04-15"
+    },
+    {
+      "id": "rec096",
+      "userId": "user06",
+      "groupId": "grp10",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat002",
+      "amount": 1203669,
+      "date": "2026-04-27"
+    },
+    {
+      "id": "rec097",
+      "userId": "user07",
+      "groupId": "grp10",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 1227502,
+      "date": "2026-04-23"
+    },
+    {
+      "id": "rec098",
+      "userId": "user08",
+      "groupId": "grp10",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat003",
+      "amount": 18274,
+      "date": "2026-04-25"
+    },
+    {
+      "id": "rec099",
+      "userId": "user09",
+      "groupId": "grp10",
+      "type": "income",
+      "title": "그룹수입",
+      "memo": "",
+      "categoryId": "cat006",
+      "amount": 1347330,
+      "date": "2026-04-07"
+    },
+    {
+      "id": "rec100",
+      "userId": "user10",
+      "groupId": "grp10",
+      "type": "expense",
+      "title": "그룹지출",
+      "memo": "",
+      "categoryId": "cat009",
+      "amount": 45953,
+      "date": "2026-04-05"
+    },
+    {
+      "id": "rec101",
+      "userId": "user01",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 1192713,
+      "date": "2026-03-13"
+    },
+    {
+      "id": "rec102",
+      "userId": "user01",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat008",
+      "amount": 12398,
+      "date": "2026-03-26"
+    },
+    {
+      "id": "rec103",
+      "userId": "user01",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat006",
+      "amount": 621566,
+      "date": "2026-03-13"
+    },
+    {
+      "id": "rec104",
+      "userId": "user01",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 1667590,
+      "date": "2026-03-06"
+    },
+    {
+      "id": "rec105",
+      "userId": "user01",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 819238,
+      "date": "2026-03-26"
+    },
+    {
+      "id": "rec106",
+      "userId": "user01",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat011",
+      "amount": 32649,
+      "date": "2026-03-08"
+    },
+    {
+      "id": "rec107",
+      "userId": "user01",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat004",
+      "amount": 17166,
+      "date": "2026-03-01"
+    },
+    {
+      "id": "rec108",
+      "userId": "user01",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 557049,
+      "date": "2026-03-03"
+    },
+    {
+      "id": "rec109",
+      "userId": "user01",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 1547985,
+      "date": "2026-03-19"
+    },
+    {
+      "id": "rec110",
+      "userId": "user01",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 1819485,
+      "date": "2026-03-21"
+    },
+    {
+      "id": "rec111",
+      "userId": "user02",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 1235762,
+      "date": "2026-03-17"
+    },
+    {
+      "id": "rec112",
+      "userId": "user02",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 1468563,
+      "date": "2026-03-08"
+    },
+    {
+      "id": "rec113",
+      "userId": "user02",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat011",
+      "amount": 46031,
+      "date": "2026-03-28"
+    },
+    {
+      "id": "rec114",
+      "userId": "user02",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat005",
+      "amount": 15667,
+      "date": "2026-03-01"
+    },
+    {
+      "id": "rec115",
+      "userId": "user02",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 1826931,
+      "date": "2026-03-10"
+    },
+    {
+      "id": "rec116",
+      "userId": "user02",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 635193,
+      "date": "2026-03-01"
+    },
+    {
+      "id": "rec117",
+      "userId": "user02",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat004",
+      "amount": 22603,
+      "date": "2026-03-20"
+    },
+    {
+      "id": "rec118",
+      "userId": "user02",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat009",
+      "amount": 31885,
+      "date": "2026-03-17"
+    },
+    {
+      "id": "rec119",
+      "userId": "user02",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat002",
+      "amount": 2353832,
+      "date": "2026-03-25"
+    },
+    {
+      "id": "rec120",
+      "userId": "user02",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat006",
+      "amount": 1805818,
+      "date": "2026-03-17"
+    },
+    {
+      "id": "rec121",
+      "userId": "user03",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 2109457,
+      "date": "2026-03-11"
+    },
+    {
+      "id": "rec122",
+      "userId": "user03",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 1123827,
+      "date": "2026-03-14"
+    },
+    {
+      "id": "rec123",
+      "userId": "user03",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat008",
+      "amount": 36120,
+      "date": "2026-03-03"
+    },
+    {
+      "id": "rec124",
+      "userId": "user03",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat009",
+      "amount": 47999,
+      "date": "2026-03-09"
+    },
+    {
+      "id": "rec125",
+      "userId": "user03",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat008",
+      "amount": 27420,
+      "date": "2026-03-10"
+    },
+    {
+      "id": "rec126",
+      "userId": "user03",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat006",
+      "amount": 2435010,
+      "date": "2026-03-02"
+    },
+    {
+      "id": "rec127",
+      "userId": "user03",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat006",
+      "amount": 1005015,
+      "date": "2026-03-10"
+    },
+    {
+      "id": "rec128",
+      "userId": "user03",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat005",
+      "amount": 48202,
+      "date": "2026-03-06"
+    },
+    {
+      "id": "rec129",
+      "userId": "user03",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 1409286,
+      "date": "2026-03-10"
+    },
+    {
+      "id": "rec130",
+      "userId": "user03",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 993806,
+      "date": "2026-03-06"
+    },
+    {
+      "id": "rec131",
+      "userId": "user04",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat003",
+      "amount": 40675,
+      "date": "2026-03-20"
+    },
+    {
+      "id": "rec132",
+      "userId": "user04",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat004",
+      "amount": 11533,
+      "date": "2026-03-19"
+    },
+    {
+      "id": "rec133",
+      "userId": "user04",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat005",
+      "amount": 45932,
+      "date": "2026-03-10"
+    },
+    {
+      "id": "rec134",
+      "userId": "user04",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat006",
+      "amount": 735109,
+      "date": "2026-03-21"
+    },
+    {
+      "id": "rec135",
+      "userId": "user04",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat003",
+      "amount": 15827,
+      "date": "2026-03-08"
+    },
+    {
+      "id": "rec136",
+      "userId": "user04",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat008",
+      "amount": 36977,
+      "date": "2026-03-27"
+    },
+    {
+      "id": "rec137",
+      "userId": "user04",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat010",
+      "amount": 41397,
+      "date": "2026-03-07"
+    },
+    {
+      "id": "rec138",
+      "userId": "user04",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 1586877,
+      "date": "2026-03-02"
+    },
+    {
+      "id": "rec139",
+      "userId": "user04",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat002",
+      "amount": 647316,
+      "date": "2026-03-21"
+    },
+    {
+      "id": "rec140",
+      "userId": "user04",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat003",
+      "amount": 49746,
+      "date": "2026-03-18"
+    },
+    {
+      "id": "rec141",
+      "userId": "user05",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat002",
+      "amount": 1592154,
+      "date": "2026-03-13"
+    },
+    {
+      "id": "rec142",
+      "userId": "user05",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat009",
+      "amount": 44835,
+      "date": "2026-03-16"
+    },
+    {
+      "id": "rec143",
+      "userId": "user05",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat008",
+      "amount": 24840,
+      "date": "2026-03-07"
+    },
+    {
+      "id": "rec144",
+      "userId": "user05",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat004",
+      "amount": 36063,
+      "date": "2026-03-01"
+    },
+    {
+      "id": "rec145",
+      "userId": "user05",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 682458,
+      "date": "2026-03-17"
+    },
+    {
+      "id": "rec146",
+      "userId": "user05",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat009",
+      "amount": 16954,
+      "date": "2026-03-02"
+    },
+    {
+      "id": "rec147",
+      "userId": "user05",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat011",
+      "amount": 17310,
+      "date": "2026-03-02"
+    },
+    {
+      "id": "rec148",
+      "userId": "user05",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat009",
+      "amount": 43006,
+      "date": "2026-03-01"
+    },
+    {
+      "id": "rec149",
+      "userId": "user05",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 870655,
+      "date": "2026-03-07"
+    },
+    {
+      "id": "rec150",
+      "userId": "user05",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 1696947,
+      "date": "2026-03-07"
+    },
+    {
+      "id": "rec151",
+      "userId": "user06",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat011",
+      "amount": 10460,
+      "date": "2026-03-19"
+    },
+    {
+      "id": "rec152",
+      "userId": "user06",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 2228408,
+      "date": "2026-03-18"
+    },
+    {
+      "id": "rec153",
+      "userId": "user06",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat003",
+      "amount": 33689,
+      "date": "2026-03-11"
+    },
+    {
+      "id": "rec154",
+      "userId": "user06",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 663640,
+      "date": "2026-03-04"
+    },
+    {
+      "id": "rec155",
+      "userId": "user06",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat010",
+      "amount": 21363,
+      "date": "2026-03-17"
+    },
+    {
+      "id": "rec156",
+      "userId": "user06",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat011",
+      "amount": 27165,
+      "date": "2026-03-09"
+    },
+    {
+      "id": "rec157",
+      "userId": "user06",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 2230875,
+      "date": "2026-03-01"
+    },
+    {
+      "id": "rec158",
+      "userId": "user06",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat003",
+      "amount": 22171,
+      "date": "2026-03-04"
+    },
+    {
+      "id": "rec159",
+      "userId": "user06",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat006",
+      "amount": 2476856,
+      "date": "2026-03-01"
+    },
+    {
+      "id": "rec160",
+      "userId": "user06",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat008",
+      "amount": 5451,
+      "date": "2026-03-23"
+    },
+    {
+      "id": "rec161",
+      "userId": "user07",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat002",
+      "amount": 2062450,
+      "date": "2026-03-07"
+    },
+    {
+      "id": "rec162",
+      "userId": "user07",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 1392201,
+      "date": "2026-03-17"
+    },
+    {
+      "id": "rec163",
+      "userId": "user07",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat009",
+      "amount": 29653,
+      "date": "2026-03-27"
+    },
+    {
+      "id": "rec164",
+      "userId": "user07",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat006",
+      "amount": 1179018,
+      "date": "2026-03-21"
+    },
+    {
+      "id": "rec165",
+      "userId": "user07",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat003",
+      "amount": 21603,
+      "date": "2026-03-23"
+    },
+    {
+      "id": "rec166",
+      "userId": "user07",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat011",
+      "amount": 29108,
+      "date": "2026-03-11"
+    },
+    {
+      "id": "rec167",
+      "userId": "user07",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 1057609,
+      "date": "2026-03-17"
+    },
+    {
+      "id": "rec168",
+      "userId": "user07",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat006",
+      "amount": 2418756,
+      "date": "2026-03-10"
+    },
+    {
+      "id": "rec169",
+      "userId": "user07",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 831304,
+      "date": "2026-03-20"
+    },
+    {
+      "id": "rec170",
+      "userId": "user07",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat004",
+      "amount": 46369,
+      "date": "2026-03-18"
+    },
+    {
+      "id": "rec171",
+      "userId": "user08",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 2207736,
+      "date": "2026-03-11"
+    },
+    {
+      "id": "rec172",
+      "userId": "user08",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat002",
+      "amount": 1551419,
+      "date": "2026-03-04"
+    },
+    {
+      "id": "rec173",
+      "userId": "user08",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat002",
+      "amount": 1564620,
+      "date": "2026-03-13"
+    },
+    {
+      "id": "rec174",
+      "userId": "user08",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 2329842,
+      "date": "2026-03-06"
+    },
+    {
+      "id": "rec175",
+      "userId": "user08",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat008",
+      "amount": 25076,
+      "date": "2026-03-16"
+    },
+    {
+      "id": "rec176",
+      "userId": "user08",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 2238935,
+      "date": "2026-03-02"
+    },
+    {
+      "id": "rec177",
+      "userId": "user08",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat002",
+      "amount": 1034915,
+      "date": "2026-03-04"
+    },
+    {
+      "id": "rec178",
+      "userId": "user08",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat011",
+      "amount": 34921,
+      "date": "2026-03-24"
+    },
+    {
+      "id": "rec179",
+      "userId": "user08",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat005",
+      "amount": 14558,
+      "date": "2026-03-09"
+    },
+    {
+      "id": "rec180",
+      "userId": "user08",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat010",
+      "amount": 20227,
+      "date": "2026-03-07"
+    },
+    {
+      "id": "rec181",
+      "userId": "user09",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat009",
+      "amount": 49195,
+      "date": "2026-03-21"
+    },
+    {
+      "id": "rec182",
+      "userId": "user09",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat005",
+      "amount": 50615,
+      "date": "2026-03-17"
+    },
+    {
+      "id": "rec183",
+      "userId": "user09",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat010",
+      "amount": 10712,
+      "date": "2026-03-09"
+    },
+    {
+      "id": "rec184",
+      "userId": "user09",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 2454858,
+      "date": "2026-03-27"
+    },
+    {
+      "id": "rec185",
+      "userId": "user09",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 1405571,
+      "date": "2026-03-16"
+    },
+    {
+      "id": "rec186",
+      "userId": "user09",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 894704,
+      "date": "2026-03-01"
+    },
+    {
+      "id": "rec187",
+      "userId": "user09",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat005",
+      "amount": 38821,
+      "date": "2026-03-04"
+    },
+    {
+      "id": "rec188",
+      "userId": "user09",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat008",
+      "amount": 22232,
+      "date": "2026-03-24"
+    },
+    {
+      "id": "rec189",
+      "userId": "user09",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat002",
+      "amount": 672756,
+      "date": "2026-03-25"
+    },
+    {
+      "id": "rec190",
+      "userId": "user09",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 2303378,
+      "date": "2026-03-13"
+    },
+    {
+      "id": "rec191",
+      "userId": "user10",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 918054,
+      "date": "2026-03-10"
+    },
+    {
+      "id": "rec192",
+      "userId": "user10",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 2261829,
+      "date": "2026-03-18"
+    },
+    {
+      "id": "rec193",
+      "userId": "user10",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 723830,
+      "date": "2026-03-26"
+    },
+    {
+      "id": "rec194",
+      "userId": "user10",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat001",
+      "amount": 731633,
+      "date": "2026-03-11"
+    },
+    {
+      "id": "rec195",
+      "userId": "user10",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat012",
+      "amount": 1433741,
+      "date": "2026-03-16"
+    },
+    {
+      "id": "rec196",
+      "userId": "user10",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat002",
+      "amount": 635763,
+      "date": "2026-03-15"
+    },
+    {
+      "id": "rec197",
+      "userId": "user10",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat005",
+      "amount": 16094,
+      "date": "2026-03-01"
+    },
+    {
+      "id": "rec198",
+      "userId": "user10",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat006",
+      "amount": 2426082,
+      "date": "2026-03-09"
+    },
+    {
+      "id": "rec199",
+      "userId": "user10",
+      "groupId": null,
+      "type": "income",
+      "title": "개인수입",
+      "memo": "",
+      "categoryId": "cat007",
+      "amount": 1216551,
+      "date": "2026-03-04"
+    },
+    {
+      "id": "rec200",
+      "userId": "user10",
+      "groupId": null,
+      "type": "expense",
+      "title": "개인지출",
+      "memo": "",
+      "categoryId": "cat011",
+      "amount": 16724,
+      "date": "2026-03-01"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
