@@ -273,10 +273,10 @@ function selectMode(groupId) {
         <span
           v-else-if="lastMonthResult.percent > 0"
           class="text-green-300 font-semibold"
-          >지난 달 대비 ▼ {{ lastMonthSaving.percent }}% 절약</span
+          >지난 달 대비 ▼ {{ lastMonthResult.percent }}% 절약</span
         >
         <span v-else class="text-green-300 font-semibold"
-          >지난 달 대비 ▲ {{ Math.abs(lastMonthSaving.percent) }}% 증가</span
+          >지난 달 대비 ▲ {{ Math.abs(lastMonthResult.percent) }}% 증가</span
         >
       </div>
     </div>
