@@ -133,7 +133,7 @@ export const useRecordStore = defineStore("record", () => {
 
         if (!group) {
             try {
-                const res = await api.get(`/records?userId=${user.id}&_embed=category`);
+                const res = await api.get(`/records?userId=${user.id}&groupId=${null}&_embed=category`);
                 records.value = res.data;
             } catch (e) {
                 throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
