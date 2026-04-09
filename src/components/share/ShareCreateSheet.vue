@@ -68,7 +68,7 @@ const submit = () => {
       class="absolute inset-x-0 bottom-0 rounded-t-[32px] bg-white p-5 pb-6 shadow-2xl max-h-[85vh] overflow-hidden"
     >
       <div class="flex items-center justify-between mb-5">
-        <h2 class="text-lg font-semibold text-slate-900">새 그룹 만들기</h2>
+        <h2 class="text-lg font-semibold text-slate-900">새 모임 만들기</h2>
         <button
           type="button"
           class="text-slate-400 hover:text-slate-700"
@@ -81,7 +81,7 @@ const submit = () => {
 
       <div class="space-y-5 overflow-y-auto pr-1 max-h-[64vh]">
         <div>
-          <p class="text-sm font-medium text-slate-500 mb-3">그룹 아이콘</p>
+          <p class="text-sm font-medium text-slate-500 mb-3">모임 아이콘</p>
           <div class="flex items-center gap-2 overflow-x-auto pb-1">
             <button
               v-for="icon in icons"
@@ -104,7 +104,7 @@ const submit = () => {
           <label
             class="block text-sm font-medium text-slate-500 mb-2"
             for="group-name"
-            >그룹 이름</label
+            >모임 이름</label
           >
           <input
             id="group-name"
@@ -116,9 +116,9 @@ const submit = () => {
         </div>
 
         <div class="bg-violet-50 rounded-3xl p-4">
-          <p class="text-sm font-medium text-violet-700 mb-2">그룹 생성 시</p>
+          <p class="text-sm font-medium text-violet-700 mb-2">모임 생성 시</p>
           <p class="text-sm text-violet-600">
-            • 본인이 그룹장으로 참여합니다<br />
+            • 본인이 모임장으로 참여합니다<br />
             • 추후 초대링크로 멤버들을 초대할 수 있습니다
           </p>
         </div>
@@ -129,7 +129,7 @@ const submit = () => {
         class="mt-5 w-full rounded-3xl bg-violet-600 px-5 py-4 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition hover:bg-violet-700"
         @click="submit"
       >
-        그룹 만들기
+        모임 만들기
       </button>
     </section>
   </div>

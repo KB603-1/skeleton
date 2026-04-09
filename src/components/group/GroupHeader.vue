@@ -68,7 +68,7 @@ const emit = defineEmits(['close', 'changeMonth', 'update:activeTab']);
         <div class="flex justify-between items-end mb-4">
           <div>
             <p class="text-sm text-violet-200 mb-1 font-medium">
-              우리 그룹 총 지출
+              우리 모임 총 지출
             </p>
             <div class="flex items-baseline gap-1">
               <p class="text-3xl font-extrabold tracking-tight">

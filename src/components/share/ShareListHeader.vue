@@ -12,7 +12,7 @@ defineEmits(['addGroup']);
         class="bg-purple-600 hover:bg-purple-700 text-white rounded-full px-4 py-2 flex items-center gap-2 transition-colors"
       >
         <span class="text-xl">+</span>
-        <span class="text-sm font-medium">그룹 만들기</span>
+        <span class="text-sm font-medium">모임 만들기</span>
       </button>
     </div>
   </header>

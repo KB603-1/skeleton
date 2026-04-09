@@ -29,10 +29,10 @@ const activeTab = ref('expenses'); // 'expenses', 'members', 'play'
 const currentYear = ref(new Date().getFullYear());
 const currentMonth = ref(new Date().getMonth() + 1);
 
-// 1. 그룹 이름
+// 1. 모임 이름
 const groupName = computed(() => currentGroup.value?.name || '로딩 중...');
 
-// 2. 그룹 멤버 리스트 (결제 금액 합산 + 기본 아이콘 추가)
+// 2. 모임 멤버 리스트 (결제 금액 합산 + 기본 아이콘 추가)
 const members = computed(() => {
   const baseMembers = currentGroup.value?.members || [];
 
@@ -171,9 +171,9 @@ onMounted(() => {
   //     nickname: '김철수',
   //   };
   // }
-  // 그룹 없으면 return
+  // 모임 없으면 return
   if (!currentGroup.value) {
-    alert('선택된 그룹이 없습니다. 메인 화면으로 이동합니다.');
+    alert('선택된 모임이 없습니다. 메인 화면으로 이동합니다.');
     router.push('/');
   }
 });

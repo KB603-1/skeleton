@@ -30,21 +30,21 @@
 }
 ```
 
-### 그룹
+### 모임
 ```json
 {
   "groups": [
     {
       "id": "UbbWrW3NB2A",
       "userId": "XSfIiNUnHGo",
-      "name": "단체 그룹",
+      "name": "단체 모임",
       "password": "group_password"
     }
   ]
 }
 ```
 
-### 그룹 맴버
+### 모임 맴버
 ```json
 {
   "groupMembers": [

@@ -100,8 +100,8 @@ export const useGroupStore = defineStore("group", () => {
         }
 
         const group = myGroups.value.find((group) => group.id === groupId);
-        if (!group) throw new Error("해당 그룹을 찾을 수 없습니다.");
-        if (!group.isOwner) throw new Error("그룹의 관리자만 그룹을 삭제할 수 있습니다.");
+        if (!group) throw new Error("해당 모임을 찾을 수 없습니다.");
+        if (!group.isOwner) throw new Error("모임의 관리자만 모임을 삭제할 수 있습니다.");
 
         try {
             const res = await api.delete(`/groups/${groupId}?_dependent=groupMembers&_dependent=records`);
@@ -115,8 +115,8 @@ export const useGroupStore = defineStore("group", () => {
         const group = myGroups.value.find(group => {
             return group.id === inviteData.groupId;
         });
-        if (!group) throw new Error("해당 그룹에 참여하고 있지 않습니다.");
-        if (!group.isOwner) throw new Error("그룹의 관리자만 초대 링크를 만들 수 있습니다.");
+        if (!group) throw new Error("해당 모임에 참여하고 있지 않습니다.");
+        if (!group.isOwner) throw new Error("모임의 관리자만 초대 링크를 만들 수 있습니다.");
         return `${import.meta.env.BASE_URL}/invite?groupId=${group.id}&password=${group.password}`;
     }
 
@@ -136,7 +136,7 @@ export const useGroupStore = defineStore("group", () => {
         }
 
         if (isAlreadyJoined) {
-            throw new Error("이미 가입한 그룹입니다.");
+            throw new Error("이미 가입한 모임입니다.");
         }
 
         let group;
@@ -171,11 +171,11 @@ export const useGroupStore = defineStore("group", () => {
         });
 
         if (!group) {
-            throw new Error("해당 그룹에 참여하고 있지 않습니다.");
+            throw new Error("해당 모임에 참여하고 있지 않습니다.");
         }
 
         if (group.isOwner) {
-            throw new Error("그룹의 관리자는 그룹을 나갈 수 없습니다.");
+            throw new Error("모임의 관리자는 모임을 나갈 수 없습니다.");
         }
 
         try {

@@ -47,7 +47,7 @@ const selectedLabel = computed(() =>
         <!-- 핸들 -->
         <div class="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-4"></div>
         <p class="text-center font-bold text-gray-800 text-base mb-4">
-          그룹 변경
+          모임 변경
         </p>
 
         <!-- 검색 -->
@@ -57,7 +57,7 @@ const selectedLabel = computed(() =>
           <span class="text-gray-400 text-sm">🔍</span>
           <input
               v-model="searchQuery"
-              placeholder="그룹명으로 검색..."
+              placeholder="모임명으로 검색..."
               class="bg-transparent text-sm flex-1 outline-none text-gray-700"
           />
         </div>
@@ -84,8 +84,8 @@ const selectedLabel = computed(() =>
             >
           </button>
 
-          <!-- 그룹 -->
-          <p class="text-xs text-gray-400 font-semibold mb-1">그룹</p>
+          <!-- 모임 -->
+          <p class="text-xs text-gray-400 font-semibold mb-1">모임</p>
           <button
               v-for="group in filteredGroups"
               :key="group.id"
