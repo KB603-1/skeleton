@@ -45,8 +45,8 @@ async function makeRecord() {
       type: selectedType.value,
       category: selectedCategory.value.id,
       title: title.value,
-      amount: amount.value,
-      date: format(dateTime.value, "yyyy-MM-dd HH:mm:ss"),
+      amount: Number(amount.value),
+      date: format(dateTime.value, "yyyy-MM-dd'T'HH:mm:ss"),
       memo: memo.value,
     });
     emit("close");
