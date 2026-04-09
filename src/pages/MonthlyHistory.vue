@@ -19,7 +19,7 @@ const transactions = computed(() => {
       date: record.date,
       title: record.title,
       category: record.category.name,
-      amount: record.type === 'income' ? 1 : -1 * record.amount,
+      amount: (record.type === 'income' ? 1 : -1) * record.amount,
     };
   });
 });
