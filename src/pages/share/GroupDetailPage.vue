@@ -29,10 +29,10 @@ const activeTab = ref('expenses'); // 'expenses', 'members', 'play'
 const currentYear = ref(new Date().getFullYear());
 const currentMonth = ref(new Date().getMonth() + 1);
 
-// 1. 그룹 이름
+// 그룹 이름
 const groupName = computed(() => currentGroup.value?.name || '로딩 중...');
 
-// 2. 그룹 멤버 리스트 (결제 금액 합산 + 기본 아이콘 추가)
+// 그룹 멤버 리스트 (결제 금액 합산 + 기본 아이콘 추가)
 const members = computed(() => {
   const baseMembers = currentGroup.value?.members || [];
 
@@ -48,7 +48,7 @@ const members = computed(() => {
       0,
     );
 
-    // 3) 기존 멤버 정보에 amount와 icon을 끼워 넣어서 반환!
+    // 3) 기존 멤버 정보에 amount와 icon을 끼워 넣어서 반환
     return {
       ...member,
       amount: totalSpent, // <--- 에러의 원인이었던 amount를 여기서 만들어줍니다!
@@ -72,7 +72,7 @@ const currentMonthExpenses = computed(() => {
   });
 });
 
-// 4. 총 지출액, 1인당 평균액 계산
+// 총 지출액, 1인당 평균액 계산
 const totalInfo = computed(() => {
   if (currentMonthExpenses.value.length === 0) {
     return { totalAmount: 0, perPersonAmount: 0 };
@@ -91,7 +91,7 @@ const totalInfo = computed(() => {
   return { totalAmount: total, perPersonAmount: perPerson };
 });
 
-// 5. '내가' 결제한 총 금액 계산 (내 id와 지출내역의 userId 비교)
+// 내가 결제한 총 금액
 const myTotalSpent = computed(() => {
   if (!user.value) return 0;
 
@@ -100,11 +100,7 @@ const myTotalSpent = computed(() => {
     .reduce((sum, record) => sum + (record.amount || 0), 0);
 });
 
-// ==========================================
-// 🕹️ 핸들러 함수들
-// ==========================================
-
-// 월 변경 시 (현재는 UI만 바뀌고 서버 요청은 나중에 구현)
+// 월 변경 메서드
 const changeMonth = (delta) => {
   let newMonth = currentMonth.value + delta;
   let newYear = currentYear.value;
@@ -119,15 +115,13 @@ const changeMonth = (delta) => {
 
   currentYear.value = newYear;
   currentMonth.value = newMonth;
-
-  // TODO: 나중에 이 부분에 fetchRecord()에 year, month 파라미터를 넘겨서
-  // 해당 월의 데이터만 가져오도록 record.js를 수정할 수 있습니다.
 };
 
 // 메인 화면으로 돌아가기 (currentGroup을 비우고 홈으로)
 const handleClose = () => {
-  groupStore.changeCurrentGroup(null);
-  router.push('/');
+  // groupStore.changeCurrentGroup(null);
+  // router.push('/');
+  router.back();
 };
 
 // 지출 내역 삭제
@@ -143,14 +137,49 @@ const handleDeleteExpense = async (recordId) => {
 };
 
 // 초대 링크 복사
+// ==========================================
 const copyInviteLink = () => {
   if (!currentGroup.value) return;
+
   try {
     const link = groupStore.generateInviteLink({
       groupId: currentGroup.value.id,
     });
-    navigator.clipboard.writeText(link);
-    alert('초대 링크가 클립보드에 복사되었습니다!\n' + link);
+
+    // 1. 안전한 환경 (https 또는 localhost)일 때는 최신 API 사용
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(link).then(() => {
+        alert('초대 링크가 복사되었습니다!\n\n' + link);
+      });
+    }
+    // 2. HTTP IP 접속 (휴대폰 테스트)일 때는 우회 방식 사용
+    else {
+      // 투명한 입력창을 몰래 만들어서 글자를 넣고 복사하는 꼼수입니다.
+      const textArea = document.createElement('textarea');
+      textArea.value = link;
+
+      // 화면에 안 보이게 저 멀리 숨김
+      textArea.style.position = 'absolute';
+      textArea.style.left = '-999999px';
+      document.body.appendChild(textArea);
+
+      textArea.focus();
+      textArea.select();
+
+      try {
+        // 구형 브라우저에서도 작동하는 복사 명령어
+        document.execCommand('copy');
+        alert('초대 링크가 복사되었습니다!\n\n' + link);
+      } catch (err) {
+        alert(
+          '복사가 차단되었습니다. 아래 링크를 직접 선택해서 복사해주세요:\n\n' +
+            link,
+        );
+      } finally {
+        // 복사 끝나면 몰래 만든 입력창 지우기
+        textArea.remove();
+      }
+    }
   } catch (e) {
     alert(e.message);
   }
@@ -161,22 +190,13 @@ const removeMember = async (nickname) => {
   alert(`[개발 중] ${nickname}님을 내보내는 기능은 아직 준비 중입니다.`);
 };
 
-// ==========================================
-// 🚀 생명주기 훅
-// ==========================================
-onMounted(() => {
-  // if (!user.value) {
-  //   userStore.user = {
-  //     id: 'user001',
-  //     nickname: '김철수',
-  //   };
-  // }
-  // 그룹 없으면 return
-  if (!currentGroup.value) {
-    alert('선택된 그룹이 없습니다. 메인 화면으로 이동합니다.');
-    router.push('/');
-  }
-});
+// onMounted(() => {
+//   groupStore.changeCurrentGroup('grp001');
+//   // if (!currentGroup.value) {
+//   //   alert('선택된 그룹이 없습니다. 메인 화면으로 이동합니다.');
+//   //   router.push('/');
+//   // }
+// });
 </script>
 
 <template>
