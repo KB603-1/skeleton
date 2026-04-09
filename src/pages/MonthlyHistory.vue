@@ -1,113 +1,28 @@
 <script setup>
+import { useRecordStore } from '@/stores/record';
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
+const recordStore = useRecordStore();
 const currentYear = ref(2026);
 const currentMonth = ref(4);
-const selectedDate = ref('2026-04-07');
+const selectedDate = ref(null);
 const searchQuery = ref('');
 
 // 목업 데이터
-const transactions = ref([
-  {
-    id: 1,
-    date: '2026-04-07',
-    title: '점심 - 제육볶음',
-    category: '식비',
-    emoji: '🍔',
-    amount: -12000,
-  },
-  {
-    id: 2,
-    date: '2026-04-07',
-    title: '아이스 아메리카노',
-    category: '카페',
-    emoji: '☕',
-    amount: -4500,
-  },
-  {
-    id: 3,
-    date: '2026-04-06',
-    title: '지하철',
-    category: '교통',
-    emoji: '🚌',
-    amount: -1500,
-  },
-  {
-    id: 4,
-    date: '2026-04-06',
-    title: '옷 구매',
-    category: '쇼핑',
-    emoji: '🛍️',
-    amount: -35000,
-  },
-  {
-    id: 5,
-    date: '2026-04-05',
-    title: '편의점',
-    category: '식비',
-    emoji: '🍔',
-    amount: -24000,
-  },
-  {
-    id: 6,
-    date: '2026-04-05',
-    title: '용돈',
-    category: '기타',
-    emoji: '💰',
-    amount: 30000,
-  },
-  {
-    id: 7,
-    date: '2026-04-04',
-    title: '마트',
-    category: '식비',
-    emoji: '🍔',
-    amount: -14000,
-  },
-  {
-    id: 8,
-    date: '2026-04-03',
-    title: '버스',
-    category: '교통',
-    emoji: '🚌',
-    amount: -25000,
-  },
-  {
-    id: 9,
-    date: '2026-04-03',
-    title: '알바비',
-    category: '기타',
-    emoji: '💰',
-    amount: 50000,
-  },
-  {
-    id: 10,
-    date: '2026-04-02',
-    title: '점심',
-    category: '식비',
-    emoji: '🍔',
-    amount: -57000,
-  },
-  {
-    id: 11,
-    date: '2026-04-01',
-    title: '월급',
-    category: '기타',
-    emoji: '💰',
-    amount: 1500000,
-  },
-  {
-    id: 12,
-    date: '2026-04-01',
-    title: '스타벅스',
-    category: '카페',
-    emoji: '☕',
-    amount: -23000,
-  },
-]);
+const transactions = computed(() => {
+  return recordStore.records.map((record) => {
+    return {
+      id: record.id,
+      date: record.date,
+      title: record.title,
+      category: record.category.name,
+      amount: record.type === 'income' ? 1 : -1 * record.amount,
+    };
+  });
+});
 
 const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -197,6 +112,7 @@ const groupedTransactions = computed(() => {
   const q = searchQuery.value.trim();
   const filtered = transactions.value.filter((t) => {
     if (!t.date.startsWith(monthPrefix.value)) return false;
+    if (selectedDate.value && t.date !== selectedDate.value) return false;
     if (q && !t.title.includes(q) && !t.category.includes(q)) return false;
     return true;
   });
@@ -227,7 +143,8 @@ function formatAmount(amount) {
 
 function selectDate(day) {
   if (!day) return;
-  selectedDate.value = getDateKey(day);
+  const key = getDateKey(day);
+  selectedDate.value = selectedDate.value === key ? null : key;
 }
 
 function isSelected(day) {
@@ -344,10 +261,16 @@ function deleteTransaction(id) {
               {{ day }}
             </div>
             <span class="text-[9px] text-red-400 leading-tight h-3 block">
-              {{ getDayExpense(day) < 0 ? formatShort(getDayExpense(day)) : '' }}
+              {{
+                getDayExpense(day) < 0 ? formatShort(getDayExpense(day)) : ''
+              }}
             </span>
             <span class="text-[9px] text-blue-400 leading-tight h-3 block">
-              {{ getDayIncome(day) > 0 ? '+' + formatShort(getDayIncome(day)) : '' }}
+              {{
+                getDayIncome(day) > 0
+                  ? '+' + formatShort(getDayIncome(day))
+                  : ''
+              }}
             </span>
           </template>
         </div>
@@ -399,6 +322,22 @@ function deleteTransaction(id) {
       </div>
     </div>
 
+    <!-- 날짜 필터 표시 -->
+    <div
+      v-if="selectedDate"
+      class="mx-4 mb-2 flex items-center justify-between"
+    >
+      <span class="text-sm font-medium text-[#7c4dff]">
+        {{ formatDateLabel(selectedDate) }} 내역
+      </span>
+      <button
+        @click="selectedDate = null"
+        class="text-xs text-gray-400 hover:text-gray-600 underline"
+      >
+        전체 보기
+      </button>
+    </div>
+
     <!-- 내역 목록 -->
     <div class="mx-4 flex flex-col gap-4">
       <div v-for="group in groupedTransactions" :key="group.date">
@@ -442,7 +381,19 @@ function deleteTransaction(id) {
             </span>
             <div class="flex items-center gap-2 flex-shrink-0">
               <button
-                @click="router.push({ path: '/edit', query: { id: item.id, amount: Math.abs(item.amount), category: item.category, date: item.date, title: item.title, type: item.amount < 0 ? 'expense' : 'income' } })"
+                @click="
+                  router.push({
+                    path: '/edit',
+                    query: {
+                      id: item.id,
+                      amount: Math.abs(item.amount),
+                      category: item.category,
+                      date: item.date,
+                      title: item.title,
+                      type: item.amount < 0 ? 'expense' : 'income',
+                    },
+                  })
+                "
                 class="text-gray-300 hover:text-[#7c4dff]"
               >
                 <svg

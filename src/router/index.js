@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useUserStore } from '@/stores/user.js';
+
 import MainPage from '@/pages/main/MainPage.vue';
 import ChartPage from '@/pages/chart/ChartPage.vue';
 import AddPage from '@/pages/add/AddPage.vue';
@@ -8,7 +9,6 @@ import SignUpPage from '@/pages/SignUpPage.vue';
 import LoggedIn from '@/layouts/LoggedIn.vue';
 import MonthlyHistory from '@/pages/MonthlyHistory.vue';
 import EditRecord from '@/pages/EditRecord.vue';
-import GroupDetailPage from '@/pages/share/GroupDetailPage.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,7 +18,7 @@ const router = createRouter({
       component: LoggedIn,
       children: [
         { path: '', component: MainPage },
-        { path: '/group', name: 'group', component: GroupDetailPage },
+        { path: '/share', name: 'share', component: ShareListPage },
         { path: '/stats', component: ChartPage },
         { path: '/add', component: AddPage },
         { path: '/monthly', component: MonthlyHistory },

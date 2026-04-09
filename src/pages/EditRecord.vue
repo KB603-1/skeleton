@@ -54,7 +54,8 @@ function handleSubmit() {
       <div class="text-center">
         <p class="text-sm opacity-75 mb-1">얼마 썼나요?</p>
         <p class="text-5xl font-bold">
-          {{ route.query.type === 'income' ? '+' : '-' }}{{ formattedAmount }}<span class="text-3xl font-semibold">원</span>
+          {{ route.query.type === 'income' ? '+' : '-' }}{{ formattedAmount
+          }}<span class="text-3xl font-semibold">원</span>
         </p>
       </div>
     </div>

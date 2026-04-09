@@ -1,13 +1,15 @@
 {
   "users": [
+    {
+      "nickname": "a123",
+      "username": "a123",
+      "password": "a123",
+      "id": "jPkcgUWgaVg"
+    }
   ],
-  "categories": [
-  ],
-  "records": [
-  ],
-  "groups": [
-  ],
-  "groupMembers": [
-  ],
+  "categories": [],
+  "records": [],
+  "groups": [],
+  "groupMembers": [],
   "$schema": "./node_modules/json-server/schema.json"
 }
