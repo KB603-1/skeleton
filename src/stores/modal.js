@@ -1,28 +1,22 @@
 import {defineStore} from "pinia";
-import {ref, shallowRef} from "vue";
+import {computed, markRaw, ref} from "vue";
 
 export const useModalStore = defineStore("modal", () => {
-    const isOpen = ref(false);
-    const component = shallowRef(null);
-    const props = ref({});
+    const stack = ref([]) // [{ component, props }]
+    const isOpen = computed(() => stack.value.length > 0)
+    const current = computed(() => stack.value[stack.value.length - 1])
 
     function openModal(c, p = {}) {
-        isOpen.value = true;
-        component.value = c;
-        props.value = p;
+        stack.value.push({ component: markRaw(c), props: p })
     }
 
     function closeModal() {
-        isOpen.value = false;
-        component.value = null;
-        props.value = {};
+        stack.value.pop()
     }
 
-    return {
-        isOpen,
-        component,
-        props,
-        openModal,
-        closeModal
-    };
+    function closeAll() {
+        stack.value = []
+    }
+
+    return { stack, isOpen, current, openModal, closeModal, closeAll }
 });

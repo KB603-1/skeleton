@@ -2,20 +2,22 @@
 import {useModalStore} from "@/stores/modal.js";
 import {Dialog, DialogContent} from "@/components/ui/dialog/index.js";
 
-const modal = useModalStore();
+const modalStore = useModalStore();
 </script>
 
+
 <template>
-  <Dialog :open="modal.isOpen" @update:open="modal.closeModal">
-    <DialogContent class="max-h-[90vh] overflow-y-auto overflow-x-hidden">
-      <component
-          v-if="modal.component"
-          :is="modal.component"
-          v-bind="modal.props"
-          @close="modal.closeModal"
-      />
-    </DialogContent>
-  </Dialog>
+  <template v-for="(modal, index) in modalStore.stack" :key="index">
+    <Dialog :open="true" @update:open="modalStore.closeModal">
+      <DialogContent class="max-h-[90vh] overflow-y-auto overflow-x-hidden">
+        <component
+            :is="modal.component"
+            v-bind="modal.props"
+            @close="modalStore.closeModal"
+        />
+      </DialogContent>
+    </Dialog>
+  </template>
 </template>
 
 <style scoped>
