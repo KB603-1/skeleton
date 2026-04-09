@@ -2,7 +2,6 @@
 import { useRouter } from 'vue-router';
 import BottomNav from '@/components/BottomNav.vue';
 import Card from '@/components/ui/card/Card.vue';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Carousel,
   CarouselContent,
@@ -10,12 +9,28 @@ import {
   CarouselDots,
 } from '@/components/ui/carousel';
 import { useRecordStore } from '@/stores/record';
+import { useGroupStore } from '@/stores/group';
 import { storeToRefs } from 'pinia';
 import { computed, onMounted, ref } from 'vue';
+import { useUserStore } from '@/stores/user';
 
 const router = useRouter();
 const recordStore = useRecordStore();
 const { expenses } = storeToRefs(recordStore);
+
+const groupStore = useGroupStore();
+const { myGroups, currentGroup } = storeToRefs(groupStore);
+
+const today = new Date();
+const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
+const month = today.getMonth() + 1;
+const day = today.getDate();
+const weekday = WEEKDAYS[today.getDay()];
+const todayLabel = `${month}월 ${day}일 ${weekday}요일`;
+const currentMonthLabel = `${month}월 총 지출`;
+
+const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
 
 const totalExpenses = computed(() => {
   let sum = 0;
@@ -25,35 +40,107 @@ const totalExpenses = computed(() => {
   return sum;
 });
 
-onMounted(() => {
-  recordStore.fetchRecord();
+// 지난달과 비교
+const lastMonthResult = computed(() => {
+  const lastMonth = today.getMonth() === 0 ? 12 : today.getMonth();
+  const lastYear =
+    today.getMonth() === 0 ? today.getFullYear() - 1 : today.getFullYear();
+  const sum = expenses.value
+    .filter((e) => {
+      const d = new Date(e.date);
+      return d.getMonth() + 1 === lastMonth && d.getFullYear() === lastYear;
+    })
+    .reduce((acc, e) => acc + e.amount, 0);
+  if (sum === 0) return { hasData: false };
+  const percent = Math.round(((sum - totalExpenses.value) / sum) * 100);
+  return { hasData: true, percent };
 });
 
-const activeTab = ref('개인');
+onMounted(() => {
+  recordStore.fetchRecord();
+  recordStore.fetchCategories();
+});
 
-const transactions = [
-  {
-    emoji: '🍔',
-    bg: 'bg-orange-100',
-    title: '점심 식사',
-    sub: '오늘 12:30',
-    amount: '-12,000원',
-  },
-  {
-    emoji: '🚌',
-    bg: 'bg-blue-100',
-    title: '교통카드',
-    sub: '오늘 09:10',
-    amount: '-1,500원',
-  },
-  {
-    emoji: '☕',
-    bg: 'bg-yellow-100',
-    title: '카페라떼',
-    sub: '어제 15:00',
-    amount: '-5,500원',
-  },
-];
+// 최근 내역
+const CATEGORY_STYLE = {
+  식비: { emoji: '🍔', bg: 'bg-orange-100' },
+  교통비: { emoji: '🚌', bg: 'bg-blue-100' },
+  문화생활: { emoji: '🎭', bg: 'bg-purple-100' },
+  급여: { emoji: '💰', bg: 'bg-green-100' },
+  부업: { emoji: '💼', bg: 'bg-yellow-100' },
+};
+
+function formatDate(dateStr) {
+  const d = new Date(dateStr);
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+  if (d.toDateString() === today.toDateString()) return '오늘';
+  if (d.toDateString() === yesterday.toDateString()) return '어제';
+  return `${d.getMonth() + 1}월 ${d.getDate()}일`;
+}
+
+const recentTransactions = computed(() => {
+  return [...expenses.value]
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 3)
+    .map((e) => {
+      const style = CATEGORY_STYLE[e.category?.name] ?? {
+        emoji: '💸',
+        bg: 'bg-gray-100',
+      };
+      const sign = e.type === 'expense' ? '-' : '+';
+      return {
+        emoji: style.emoji,
+        bg: style.bg,
+        title: e.title,
+        sub: formatDate(e.date),
+        amount: `${sign}${e.amount.toLocaleString()}원`,
+        type: e.type,
+      };
+    });
+});
+
+// 소비 유형
+const SPENDING_TYPES = {
+  식비: { label: '식도락가형', emoji: '🍽️', desc: '맛있는 걸 아는 당신!' },
+  교통비: { label: '이동왕형', emoji: '🚌', desc: '어디든 달려가는 당신!' },
+  문화생활: { label: '문화인형', emoji: '🎭', desc: '삶의 여유를 아는 당신!' },
+};
+
+const spendingType = computed(() => {
+  if (expenses.value.length === 0) return null;
+  const totals = {};
+  for (const e of expenses.value) {
+    const name = e.category?.name ?? '기타';
+    totals[name] = (totals[name] ?? 0) + e.amount;
+  }
+  const top = Object.entries(totals).sort((a, b) => b[1] - a[1])[0][0];
+  return (
+    SPENDING_TYPES[top] ?? {
+      label: '절약가형',
+      emoji: '💰',
+      desc: '알뜰살뜰 당신!',
+    }
+  );
+});
+
+// 모드 선택 모달
+const isModalOpen = ref(false);
+const searchQuery = ref('');
+
+const filteredGroups = computed(() =>
+  myGroups.value.filter((g) => g.name.includes(searchQuery.value)),
+);
+
+const selectedLabel = computed(() =>
+  currentGroup.value ? currentGroup.value.name : '개인',
+);
+
+function selectMode(groupId) {
+  groupStore.changeCurrentGroup(groupId);
+  isModalOpen.value = false;
+  searchQuery.value = '';
+}
 </script>
 
 <template>
@@ -61,18 +148,103 @@ const transactions = [
     <!-- 상단 헤더 -->
     <div class="flex items-center justify-between px-5 pt-6 pb-2">
       <div>
-        <p class="text-xs text-gray-400">4월 9일 목요일</p>
+        <p class="text-xs text-gray-400">{{ todayLabel }}</p>
         <h2 class="text-2xl font-bold text-gray-800 mt-0.5">안녕하세요! 👋</h2>
+        <p class="text-base text-gray-500">{{ user?.nickname }}님</p>
       </div>
 
-      <!-- 개인/그룹 토글 (shadcn Tabs) -->
-      <Tabs v-model="activeTab" default-value="개인">
-        <TabsList class="bg-gray-200 rounded-full p-1 h-9 w-[120px]">
-          <TabsTrigger value="개인">개인</TabsTrigger>
-          <TabsTrigger value="그룹">그룹</TabsTrigger>
-        </TabsList>
-      </Tabs>
+      <!-- 모드 선택 버튼 -->
+      <button
+        @click="isModalOpen = true"
+        class="flex items-center gap-1.5 bg-purple-100 text-purple-700 font-semibold text-sm px-4 py-2 rounded-full"
+      >
+        {{ selectedLabel }}
+        <span class="text-xs">▾</span>
+      </button>
     </div>
+
+    <!-- 바텀시트 모달 -->
+    <Teleport to="body">
+      <div v-if="isModalOpen" class="fixed inset-0 z-50 flex items-end">
+        <!-- 딤 배경 -->
+        <div
+          class="absolute inset-0 bg-black/40"
+          @click="isModalOpen = false"
+        ></div>
+
+        <!-- 시트 -->
+        <div
+          class="relative w-full bg-white rounded-t-3xl px-5 pt-4 pb-10 max-h-[70vh] flex flex-col"
+        >
+          <!-- 핸들 -->
+          <div class="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-4"></div>
+          <p class="text-center font-bold text-gray-800 text-base mb-4">
+            모드 설정
+          </p>
+
+          <!-- 검색 -->
+          <div
+            class="flex items-center bg-gray-100 rounded-xl px-3 py-2 mb-4 gap-2"
+          >
+            <span class="text-gray-400 text-sm">🔍</span>
+            <input
+              v-model="searchQuery"
+              placeholder="그룹명으로 검색..."
+              class="bg-transparent text-sm flex-1 outline-none text-gray-700"
+            />
+          </div>
+
+          <div class="overflow-y-auto flex-1">
+            <!-- 개인 -->
+            <p class="text-xs text-gray-400 font-semibold mb-1">개인</p>
+            <button
+              @click="selectMode(null)"
+              class="w-full flex items-center gap-3 px-3 py-3 rounded-xl mb-3"
+              :class="!currentGroup ? 'bg-purple-50' : ''"
+            >
+              <div
+                class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-lg"
+              >
+                👤
+              </div>
+              <div class="flex-1 text-left">
+                <p class="text-sm font-semibold text-gray-800">개인</p>
+                <p class="text-xs text-gray-400">나의 개인 가계부</p>
+              </div>
+              <span v-if="!currentGroup" class="text-purple-500 font-bold"
+                >✓</span
+              >
+            </button>
+
+            <!-- 그룹 -->
+            <p class="text-xs text-gray-400 font-semibold mb-1">그룹</p>
+            <button
+              v-for="group in filteredGroups"
+              :key="group.id"
+              @click="selectMode(group.id)"
+              class="w-full flex items-center gap-3 px-3 py-3 rounded-xl"
+              :class="currentGroup?.id === group.id ? 'bg-purple-50' : ''"
+            >
+              <div
+                class="w-9 h-9 rounded-full bg-purple-100 flex items-center justify-center text-lg"
+              >
+                🏠
+              </div>
+              <div class="flex-1 text-left">
+                <p class="text-sm font-semibold text-gray-800">
+                  {{ group.name }}
+                </p>
+              </div>
+              <span
+                v-if="currentGroup?.id === group.id"
+                class="text-purple-500 font-bold"
+                >✓</span
+              >
+            </button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
 
     <!-- 총 지출 카드 -->
     <div
@@ -85,7 +257,7 @@ const transactions = [
       <div
         class="absolute right-10 bottom-2 w-16 h-16 rounded-full bg-purple-400/20"
       ></div>
-      <p class="text-purple-200 text-sm">4월 총 지출</p>
+      <p class="text-purple-200 text-sm">{{ currentMonthLabel }}</p>
       <h1 class="text-white text-4xl font-bold mt-1">
         {{ totalExpenses.toLocaleString()
         }}<span class="text-2xl font-semibold">원</span>
@@ -93,9 +265,19 @@ const transactions = [
       <div
         class="mt-3 inline-flex items-center gap-1.5 bg-purple-600/50 rounded-full px-3 py-1 text-white text-xs"
       >
-        <span class="text-green-300">↘</span>
-        지난 달 대비
-        <span class="text-green-300 font-semibold">▼ 56% 절약</span>
+        <span
+          v-if="!lastMonthResult.hasData"
+          class="text-green-300 font-semibold"
+          >지난 달 데이터가 없어요!</span
+        >
+        <span
+          v-else-if="lastMonthResult.percent > 0"
+          class="text-green-300 font-semibold"
+          >지난 달 대비 ▼ {{ lastMonthSaving.percent }}% 절약</span
+        >
+        <span v-else class="text-green-300 font-semibold"
+          >지난 달 대비 ▲ {{ Math.abs(lastMonthSaving.percent) }}% 증가</span
+        >
       </div>
     </div>
 
@@ -117,8 +299,46 @@ const transactions = [
       <span class="text-purple-400 text-lg">✦</span>
     </Card>
 
-    <!-- 캐러셀 (shadcn Carousel + embla) -->
+    <!-- 개인 모드: 소비 유형 카드 -->
+    <div v-if="!currentGroup" class="mx-5 mt-3">
+      <div
+        v-if="spendingType"
+        class="bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl p-5 flex flex-col gap-3"
+      >
+        <span
+          class="inline-flex items-center gap-1.5 bg-purple-400/40 text-white text-xs font-semibold px-3 py-1 rounded-full self-start"
+        >
+          ✨ 나의 소비 유형
+        </span>
+        <div class="flex items-center gap-4">
+          <div
+            class="w-16 h-16 rounded-2xl bg-purple-400/30 flex items-center justify-center text-4xl flex-shrink-0"
+          >
+            {{ spendingType.emoji }}
+          </div>
+          <div>
+            <p class="text-white text-xl font-bold">{{ spendingType.label }}</p>
+            <p class="text-purple-200 text-sm mt-1">{{ spendingType.desc }}</p>
+          </div>
+        </div>
+        <div class="bg-purple-400/20 rounded-xl px-4 py-3">
+          <p class="text-purple-100 text-xs">
+            이번 달 가장 많이 쓴 카테고리를 기반으로 분석했어요.
+          </p>
+        </div>
+      </div>
+      <div
+        v-else
+        class="bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl p-5 text-center"
+      >
+        <p class="text-purple-200 text-sm">아직 지출 내역이 없어요</p>
+        <p class="text-white font-semibold mt-1">기록을 시작해보세요! 📝</p>
+      </div>
+    </div>
+
+    <!-- 그룹 모드: 캐러셀 (shadcn Carousel + embla) -->
     <Carousel
+      v-else
       class="mx-5 mt-3"
       :opts="{ align: 'center', containScroll: false }"
     >
@@ -295,7 +515,7 @@ const transactions = [
       </div>
       <div class="flex flex-col gap-2">
         <Card
-          v-for="tx in transactions"
+          v-for="tx in recentTransactions"
           :key="tx.title"
           class="rounded-2xl px-4 py-3.5 border-0 gap-0 flex-row items-center gap-3 shadow-sm"
         >
