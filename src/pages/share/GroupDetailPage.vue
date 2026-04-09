@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 
@@ -190,13 +190,12 @@ const removeMember = async (nickname) => {
   alert(`[개발 중] ${nickname}님을 내보내는 기능은 아직 준비 중입니다.`);
 };
 
-// onMounted(() => {
-//   groupStore.changeCurrentGroup('grp001');
-//   // if (!currentGroup.value) {
-//   //   alert('선택된 그룹이 없습니다. 메인 화면으로 이동합니다.');
-//   //   router.push('/');
-//   // }
-// });
+// currentGroup의 상태 변화를 감지하여 의도적으로 그룹이 해제될 때만 메인으로 이동 (새로고침 시 튕김 방지)
+watch(currentGroup, (newGroup, oldGroup) => {
+  if (oldGroup && !newGroup) {
+    router.push('/');
+  }
+});
 </script>
 
 <template>

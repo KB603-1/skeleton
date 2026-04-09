@@ -22,6 +22,37 @@ export const useGroupStore = defineStore('group', () => {
     currentGroup.value = group || null;
   });
 
+  // ===================================================== 임시 =====================================================
+  // 현재 선택된 그룹이 바뀔 때마다 해당 그룹의 멤버 목록을 서버에서 가져옵니다.
+  watch(currentGroup, async (newGroup) => {
+    if (!newGroup) return;
+    try {
+      // json-server 버전 호환성(v1+) 이슈를 방지하기 위해
+      // 멤버 연결 데이터와 전체 유저 데이터를 각각 가져와서 프론트엔드에서 안전하게 조립합니다.
+      const [membersRes, usersRes] = await Promise.all([
+        api.get(`/groupMembers?groupId=${newGroup.id}`),
+        api.get(`/users`),
+      ]);
+
+      newGroup.members = membersRes.data.map((gm) => {
+        // usersRes에서 해당 멤버의 유저 상세 정보를 찾아 끼워 넣습니다.
+        const memberUser = usersRes.data.find((u) => u.id === gm.userId) || {};
+        return {
+          id: memberUser.id || gm.userId,
+          nickname: memberUser.nickname || '알 수 없음',
+          icon: memberUser.icon || '👤',
+          role:
+            (memberUser.id || gm.userId) === newGroup.ownerId
+              ? 'owner'
+              : 'member',
+        };
+      });
+    } catch (e) {
+      console.error('멤버 정보를 불러오는 중 오류가 발생했습니다.', e);
+    }
+  });
+  // ===================================================== 임시 =====================================================
+
   // 그룹 조회
   async function fetchGroup() {
     const user = getLoggedInUser();
@@ -38,6 +69,8 @@ export const useGroupStore = defineStore('group', () => {
           name: group.name,
           password: group.password,
           isOwner: group.userId === user.id,
+          ownerId: group.userId, // 방장 식별을 위해 추가
+          members: [], // 멤버 목록 초기화 (반응형 상태 보장)
         };
       });
     } catch (e) {}
