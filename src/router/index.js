@@ -18,7 +18,6 @@ const router = createRouter({
       component: LoggedIn,
       children: [
         { path: '', component: MainPage },
-        { path: '/share', name: 'share', component: ShareListPage },
         { path: '/stats', component: ChartPage },
         { path: '/add', component: AddPage },
         { path: '/monthly', component: MonthlyHistory },
