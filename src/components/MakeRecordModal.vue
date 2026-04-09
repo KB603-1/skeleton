@@ -43,7 +43,7 @@ async function makeRecord() {
   try {
     await recordStore.makeRecord({
       type: selectedType.value,
-      category: selectedCategory.value.id,
+      categoryId: selectedCategory.value.id,
       title: title.value,
       amount: Number(amount.value),
       date: format(dateTime.value, "yyyy-MM-dd'T'HH:mm:ss"),
