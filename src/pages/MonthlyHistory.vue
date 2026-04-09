@@ -19,6 +19,7 @@ const transactions = computed(() => {
       date: record.date,
       title: record.title,
       category: record.category.name,
+      icon: record.category.icon,
       amount: (record.type === 'income' ? 1 : -1) * record.amount,
     };
   });
@@ -365,7 +366,7 @@ function deleteTransaction(id) {
             <div
               class="w-10 h-10 bg-[#f3eeff] rounded-xl flex items-center justify-center text-xl mr-3 flex-shrink-0"
             >
-              {{ item.emoji }}
+              {{ item.icon }}
             </div>
             <div class="flex-1 min-w-0">
               <p class="text-sm font-medium text-gray-800 truncate">
