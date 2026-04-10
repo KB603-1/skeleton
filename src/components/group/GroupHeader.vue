@@ -98,7 +98,7 @@ const emit = defineEmits(['close', 'changeMonth', 'update:activeTab']);
           class="flex-1 pb-4 text-center text-sm font-bold transition-colors"
           :class="activeTab === 'expenses' ? 'text-white' : 'text-violet-300'"
         >
-          지출 내역
+          수입 / 지출
         </button>
         <button
           @click="emit('update:activeTab', 'members')"

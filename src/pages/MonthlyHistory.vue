@@ -1,16 +1,15 @@
 <script setup>
-import {useRecordStore} from '@/stores/record';
-import {ref, computed} from 'vue';
-import {Pencil, Trash2} from 'lucide-vue-next';
-import {useModalStore} from "@/stores/modal.js";
-import EditRecordModal from "@/components/EditRecordModal.vue";
-import {useUserStore} from "@/stores/user.js";
-import {Search} from "lucide-vue-next";
-import FloatingActionButton from "@/components/FloatingActionButton.vue";
-
+import { useRecordStore } from '@/stores/record';
+import { ref, computed } from 'vue';
+import { useModalStore } from '@/stores/modal.js';
+import EditRecordModal from '@/components/EditRecordModal.vue';
+import RecordDetailModal from '@/components/RecordDetailModal.vue';
+import { useUserStore } from '@/stores/user.js';
+import { Search } from 'lucide-vue-next';
+import TransactionItem from '@/components/TransactionItem.vue';
 
 const userStore = useUserStore();
-const {user} = userStore;
+const { user } = userStore;
 const recordStore = useRecordStore();
 const currentYear = ref(2026);
 const currentMonth = ref(4);
@@ -27,7 +26,9 @@ const transactions = computed(() => {
       category: record.category.name,
       icon: record.category.icon,
       amount: (record.type === 'income' ? 1 : -1) * record.amount,
-      isOwner: (record.userId === user.id)
+      isOwner: record.userId === user.id,
+      payerName: user?.nickname || '나',
+      memo: record.memo,
     };
   });
 });
@@ -50,14 +51,14 @@ function nextMonth() {
 
 const calendarDays = computed(() => {
   const firstDay = new Date(
-      currentYear.value,
-      currentMonth.value - 1,
-      1,
+    currentYear.value,
+    currentMonth.value - 1,
+    1,
   ).getDay();
   const daysInMonth = new Date(
-      currentYear.value,
-      currentMonth.value,
-      0,
+    currentYear.value,
+    currentMonth.value,
+    0,
   ).getDate();
   const days = [];
   for (let i = 0; i < firstDay; i++) days.push(null);
@@ -85,16 +86,16 @@ function getDayExpense(day) {
   const key = getDateKey(day);
   if (!key || !transactionsByDate.value[key]) return 0;
   return transactionsByDate.value[key]
-      .filter((t) => t.amount < 0)
-      .reduce((s, t) => s + t.amount, 0);
+    .filter((t) => t.amount < 0)
+    .reduce((s, t) => s + t.amount, 0);
 }
 
 function getDayIncome(day) {
   const key = getDateKey(day);
   if (!key || !transactionsByDate.value[key]) return 0;
   return transactionsByDate.value[key]
-      .filter((t) => t.amount > 0)
-      .reduce((s, t) => s + t.amount, 0);
+    .filter((t) => t.amount > 0)
+    .reduce((s, t) => s + t.amount, 0);
 }
 
 function formatShort(amount) {
@@ -104,18 +105,18 @@ function formatShort(amount) {
 }
 
 const monthPrefix = computed(
-    () => `${currentYear.value}-${String(currentMonth.value).padStart(2, '0')}`,
+  () => `${currentYear.value}-${String(currentMonth.value).padStart(2, '0')}`,
 );
 
 const monthlyExpense = computed(() =>
-    transactions.value
-        .filter((t) => t.date.startsWith(monthPrefix.value) && t.amount < 0)
-        .reduce((s, t) => s + t.amount, 0),
+  transactions.value
+    .filter((t) => t.date.startsWith(monthPrefix.value) && t.amount < 0)
+    .reduce((s, t) => s + t.amount, 0),
 );
 const monthlyIncome = computed(() =>
-    transactions.value
-        .filter((t) => t.date.startsWith(monthPrefix.value) && t.amount > 0)
-        .reduce((s, t) => s + t.amount, 0),
+  transactions.value
+    .filter((t) => t.date.startsWith(monthPrefix.value) && t.amount > 0)
+    .reduce((s, t) => s + t.amount, 0),
 );
 
 const groupedTransactions = computed(() => {
@@ -132,13 +133,13 @@ const groupedTransactions = computed(() => {
     groups[t.date].push(t);
   });
   return Object.entries(groups)
-      .sort(([a], [b]) => b.localeCompare(a))
-      .map(([date, items]) => ({
-        date,
-        items,
-        total: items.reduce((s, t) => s + t.amount, 0),
-        label: formatDateLabel(date),
-      }));
+    .sort(([a], [b]) => b.localeCompare(a))
+    .map(([date, items]) => ({
+      date,
+      items,
+      total: items.reduce((s, t) => s + t.amount, 0),
+      label: formatDateLabel(date),
+    }));
 });
 
 function formatDateLabel(dateStr) {
@@ -172,7 +173,11 @@ function isSaturday(idx) {
 const modalStore = useModalStore();
 
 function openEditModal(recordId) {
-  modalStore.openModal(EditRecordModal, {recordId: recordId})
+  modalStore.openModal(EditRecordModal, { recordId: recordId });
+}
+
+function openDetailModal(item) {
+  modalStore.openModal(RecordDetailModal, { record: item });
 }
 
 async function deleteRecord(recordId) {
@@ -192,16 +197,16 @@ async function deleteRecord(recordId) {
     <div class="flex items-center justify-between mb-1">
       <button @click="prevMonth" class="p-1.5 text-gray-500">
         <svg
-            class="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
         >
           <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15 19l-7-7 7-7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
           />
         </svg>
       </button>
@@ -210,26 +215,26 @@ async function deleteRecord(recordId) {
           {{ currentYear }}년 {{ currentMonth }}월
         </p>
         <p class="text-xs mt-0.5">
-            <span class="text-red-500"
+          <span class="text-red-500"
             >지출 {{ Math.abs(monthlyExpense).toLocaleString() }}원</span
-            >
+          >
           <span class="text-blue-500 ml-2"
-          >수입 +{{ monthlyIncome.toLocaleString() }}원</span
+            >수입 +{{ monthlyIncome.toLocaleString() }}원</span
           >
         </p>
       </div>
       <button @click="nextMonth" class="p-1.5 text-gray-500">
         <svg
-            class="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
         >
           <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 5l7 7-7 7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5l7 7-7 7"
           />
         </svg>
       </button>
@@ -238,16 +243,12 @@ async function deleteRecord(recordId) {
     <!-- 요일 헤더 -->
     <div class="grid grid-cols-7 mb-1">
       <div
-          v-for="(d, i) in dayNames"
-          :key="d"
-          class="text-center text-xs py-1 font-medium"
-          :class="
-            i === 0
-              ? 'text-red-400'
-              : i === 6
-                ? 'text-blue-400'
-                : 'text-gray-400'
-          "
+        v-for="(d, i) in dayNames"
+        :key="d"
+        class="text-center text-xs py-1 font-medium"
+        :class="
+          i === 0 ? 'text-red-400' : i === 6 ? 'text-blue-400' : 'text-gray-400'
+        "
       >
         {{ d }}
       </div>
@@ -256,44 +257,40 @@ async function deleteRecord(recordId) {
     <!-- 날짜 그리드 -->
     <div class="grid grid-cols-7">
       <div
-          v-for="(day, idx) in calendarDays"
-          :key="idx"
-          class="flex flex-col items-center py-0.5 cursor-pointer"
-          @click="selectDate(day)"
+        v-for="(day, idx) in calendarDays"
+        :key="idx"
+        class="flex flex-col items-center py-0.5 cursor-pointer"
+        @click="selectDate(day)"
       >
         <template v-if="day">
           <div
-              class="w-7 h-7 flex items-center justify-center rounded-full text-sm font-medium mb-0.5"
-              :class="[
-                isSelected(day) ? 'bg-[#7c4dff] text-white' : '',
-                !isSelected(day) && isSunday(idx) ? 'text-red-400' : '',
-                !isSelected(day) && isSaturday(idx) ? 'text-blue-400' : '',
-                !isSelected(day) && !isSunday(idx) && !isSaturday(idx)
-                  ? 'text-gray-700'
-                  : '',
-              ]"
+            class="w-7 h-7 flex items-center justify-center rounded-full text-sm font-medium mb-0.5"
+            :class="[
+              isSelected(day) ? 'bg-[#7c4dff] text-white' : '',
+              !isSelected(day) && isSunday(idx) ? 'text-red-400' : '',
+              !isSelected(day) && isSaturday(idx) ? 'text-blue-400' : '',
+              !isSelected(day) && !isSunday(idx) && !isSaturday(idx)
+                ? 'text-gray-700'
+                : '',
+            ]"
           >
             {{ day }}
           </div>
           <span class="text-[9px] text-red-400 leading-tight h-3 block">
-              {{
-              getDayExpense(day) < 0 ? formatShort(getDayExpense(day)) : ''
-            }}
-            </span>
+            {{ getDayExpense(day) < 0 ? formatShort(getDayExpense(day)) : '' }}
+          </span>
           <span class="text-[9px] text-blue-400 leading-tight h-3 block">
-              {{
-              getDayIncome(day) > 0
-                  ? '+' + formatShort(getDayIncome(day))
-                  : ''
+            {{
+              getDayIncome(day) > 0 ? '+' + formatShort(getDayIncome(day)) : ''
             }}
-            </span>
+          </span>
         </template>
       </div>
     </div>
 
     <!-- 범례 -->
     <div
-        class="flex items-center justify-center gap-4 mt-2 pt-2 border-t border-gray-100"
+      class="flex items-center justify-center gap-4 mt-2 pt-2 border-t border-gray-100"
     >
       <div class="flex items-center gap-1">
         <span class="w-2 h-2 rounded-full bg-red-400 inline-block"></span>
@@ -313,29 +310,26 @@ async function deleteRecord(recordId) {
   <!-- 검색 -->
   <div class="mx-4 mb-4">
     <div
-        class="bg-white rounded-xl flex items-center px-4 py-3 gap-2 shadow-sm"
+      class="bg-white rounded-xl flex items-center px-4 py-3 gap-2 shadow-sm"
     >
-      <span class="text-gray-400 text-sm"><Search class="w-4 h-4"/></span>
+      <span class="text-gray-400 text-sm"><Search class="w-4 h-4" /></span>
       <input
-          v-model="searchQuery"
-          type="text"
-          placeholder="내역 검색..."
-          class="flex-1 text-sm text-gray-700 focus:outline-none"
+        v-model="searchQuery"
+        type="text"
+        placeholder="내역 검색..."
+        class="flex-1 text-sm text-gray-700 focus:outline-none"
       />
     </div>
   </div>
 
   <!-- 날짜 필터 표시 -->
-  <div
-      v-if="selectedDate"
-      class="mx-4 mb-2 flex items-center justify-between"
-  >
-      <span class="text-sm font-medium text-[#7c4dff]">
-        {{ formatDateLabel(selectedDate) }} 내역
-      </span>
+  <div v-if="selectedDate" class="mx-4 mb-2 flex items-center justify-between">
+    <span class="text-sm font-medium text-[#7c4dff]">
+      {{ formatDateLabel(selectedDate) }} 내역
+    </span>
     <button
-        @click="selectedDate = null"
-        class="text-xs text-gray-400 hover:text-gray-600 underline"
+      @click="selectedDate = null"
+      class="text-xs text-gray-400 hover:text-gray-600 underline"
     >
       전체 보기
     </button>
@@ -346,64 +340,32 @@ async function deleteRecord(recordId) {
     <div v-for="group in groupedTransactions" :key="group.date">
       <!-- 날짜 헤더 -->
       <div class="flex justify-between items-center mb-2 px-1">
-          <span class="text-sm font-medium text-gray-700">{{
-              group.label
-            }}</span>
+        <span class="text-sm font-medium text-gray-700">{{ group.label }}</span>
         <span
-            class="text-sm font-medium"
-            :class="group.total < 0 ? 'text-red-500' : 'text-blue-500'"
+          class="text-sm font-medium"
+          :class="group.total < 0 ? 'text-red-500' : 'text-blue-500'"
         >
-            {{ formatAmount(group.total) }}
-          </span>
+          {{ formatAmount(group.total) }}
+        </span>
       </div>
 
       <!-- 항목들 -->
       <div class="bg-white rounded-2xl overflow-hidden shadow-sm">
-        <div
-            v-for="(item, i) in group.items"
-            :key="item.id"
-            class="flex items-center px-4 py-3"
-            :class="i < group.items.length - 1 ? 'border-b border-gray-50' : ''"
-        >
-          <div
-              class="w-10 h-10 bg-[#f3eeff] rounded-xl flex items-center justify-center text-xl mr-3 shrink-0"
-          >
-            {{ item.icon }}
-          </div>
-          <div class="flex-1 min-w-0">
-            <p class="text-sm font-medium text-gray-800 truncate">
-              {{ item.title }}
-            </p>
-            <p class="text-xs text-[#7c4dff] mt-0.5">{{ item.category }}</p>
-          </div>
-          <span
-              class="text-sm font-semibold mr-3"
-              :class="item.amount < 0 ? 'text-red-400' : 'text-blue-500'"
-          >
-              {{ formatAmount(item.amount) }}
-            </span>
-          <div v-if="item.isOwner">
-            <div class="flex items-center gap-2 shrink-0">
-              <button
-                  @click="openEditModal(item.id)"
-                  class="text-gray-300 hover:text-[#7c4dff]"
-              >
-                <Pencil class="w-4 h-4"/>
-              </button>
-              <button
-                  @click="deleteRecord(item.id)"
-                  class="text-gray-300 hover:text-red-400"
-              >
-                <Trash2 class="w-4 h-4"/>
-              </button>
-            </div>
-          </div>
-        </div>
+        <TransactionItem
+          v-for="(item, i) in group.items"
+          :key="item.id"
+          :item="item"
+          variant="list"
+          :showBorder="i < group.items.length - 1"
+          @edit="openEditModal"
+          @delete="deleteRecord"
+          @detail="openDetailModal"
+        />
       </div>
     </div>
     <p
-        v-if="groupedTransactions.length === 0"
-        class="text-center text-sm text-gray-400 py-8"
+      v-if="groupedTransactions.length === 0"
+      class="text-center text-sm text-gray-400 py-8"
     >
       내역이 없습니다.
     </p>

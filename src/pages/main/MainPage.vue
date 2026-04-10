@@ -118,7 +118,8 @@ const getMonthSum = (month, year) =>
     >
       ✨
     </div>
-    <div class="flex-1">
+    <!-- 그룹일 때 임시로 상세 페이지 이동 -->
+    <div class="flex-1" @click="router.push('/group')">
       <p class="text-sm font-semibold text-gray-800">잘 기록하고 있어요!</p>
       <p class="text-xs text-gray-400 mt-0.5">
         꾸준한 기록이 최고의 절약이에요

@@ -11,6 +11,8 @@ import GroupHeader from '@/components/group/GroupHeader.vue';
 import TabExpenses from '@/components/group/TabExpenses.vue';
 import TabMembers from '@/components/group/TabMembers.vue';
 import TabPlay from '@/components/group/TabPlay.vue';
+import { useModalStore } from '@/stores/modal.js';
+import EditRecordModal from '@/components/EditRecordModal.vue';
 
 const router = useRouter();
 
@@ -18,10 +20,11 @@ const router = useRouter();
 const groupStore = useGroupStore();
 const recordStore = useRecordStore();
 const userStore = useUserStore();
+const modalStore = useModalStore();
 
 // 반응형 유지를 위해 storeToRefs 사용
 const { currentGroup } = storeToRefs(groupStore);
-const { expenses } = storeToRefs(recordStore);
+const { records } = storeToRefs(recordStore);
 const { user } = storeToRefs(userStore);
 
 // --- 상태 관리 ---
@@ -38,8 +41,8 @@ const members = computed(() => {
 
   return baseMembers.map((member) => {
     // 1) 이 멤버가 이번 달에 결제한 내역만 필터링
-    const memberExpenses = currentMonthExpenses.value.filter(
-      (record) => record.userId === member.id,
+    const memberExpenses = currentMonthRecords.value.filter(
+      (record) => record.userId === member.id && record.type === 'expense',
     );
 
     // 2) 그 내역들의 총합(amount) 계산
@@ -56,8 +59,8 @@ const members = computed(() => {
     };
   });
 });
-const currentMonthExpenses = computed(() => {
-  return expenses.value.filter((record) => {
+const currentMonthRecords = computed(() => {
+  return records.value.filter((record) => {
     // record.date는 "2026-04-01" 같은 형태입니다.
     if (!record.date) return false;
 
@@ -72,14 +75,42 @@ const currentMonthExpenses = computed(() => {
   });
 });
 
+// TabExpenses의 공통 TransactionItem에 맞춰 데이터 가공
+const formattedRecords = computed(() => {
+  return currentMonthRecords.value.map((record) => {
+    // 1. 현재 모임에 있는 멤버인지 확인합니다.
+    const isCurrentMember = members.value.some((m) => m.id === record.userId);
+
+    // 2. record 객체에 포함된(_embed) 유저 정보를 사용하여 닉네임을 가져옵니다.
+    let payerName = record.user?.nickname || '알 수 없는 유저';
+
+    return {
+      id: record.id,
+      icon: record.category?.icon || '💸',
+      title: record.title,
+      category: record.category?.name || '기타',
+      payerName: payerName,
+      memo: record.memo,
+      amount: (record.type === 'income' ? 1 : -1) * record.amount,
+      isOwner: user.value && record.userId === user.value.id,
+      date: record.date, // 그룹화를 위해 날짜 원본 추가
+      type: record.type, // 수입/지출 토글을 위해 타입 추가
+      isDeparted: !isCurrentMember, // 탈퇴한 멤버 여부(boolean) 전달
+    };
+  });
+});
+
 // 총 지출액, 1인당 평균액 계산
 const totalInfo = computed(() => {
-  if (currentMonthExpenses.value.length === 0) {
+  const expensesOnly = currentMonthRecords.value.filter(
+    (r) => r.type === 'expense',
+  );
+  if (expensesOnly.length === 0) {
     return { totalAmount: 0, perPersonAmount: 0 };
   }
 
   // 지출 내역 합산 (DB 스키마에 amount가 있다고 가정)
-  const total = currentMonthExpenses.value.reduce(
+  const total = expensesOnly.reduce(
     (sum, record) => sum + (record.amount || 0),
     0,
   );
@@ -95,8 +126,10 @@ const totalInfo = computed(() => {
 const myTotalSpent = computed(() => {
   if (!user.value) return 0;
 
-  return currentMonthExpenses.value
-    .filter((record) => record.userId === user.value.id)
+  return currentMonthRecords.value
+    .filter(
+      (record) => record.userId === user.value.id && record.type === 'expense',
+    )
     .reduce((sum, record) => sum + (record.amount || 0), 0);
 });
 
@@ -134,6 +167,11 @@ const handleDeleteExpense = async (recordId) => {
       alert(e.message);
     }
   }
+};
+
+// 지출 내역 수정 (모달 열기)
+const handleEditExpense = (recordId) => {
+  modalStore.openModal(EditRecordModal, { recordId });
 };
 
 // 초대 링크 복사
@@ -223,8 +261,9 @@ watch(currentGroup, (newGroup, oldGroup) => {
     <main class="flex-1 px-5 py-6">
       <TabExpenses
         v-show="activeTab === 'expenses'"
-        :expenses="currentMonthExpenses"
+        :expenses="formattedRecords"
         @deleteExpense="handleDeleteExpense"
+        @editExpense="handleEditExpense"
       />
       <TabMembers
         v-show="activeTab === 'members'"
