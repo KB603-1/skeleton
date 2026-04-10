@@ -6,6 +6,7 @@ import { storeToRefs } from 'pinia';
 import ShareCreateSheet from '@/components/share/ShareCreateSheet.vue';
 import { useModalStore } from '@/stores/modal.js';
 import MakeRecordModal from '@/components/MakeRecordModal.vue';
+import { toast } from 'vue-sonner';
 
 const router = useRouter();
 const route = useRoute();
@@ -19,6 +20,7 @@ const fabContainer = ref(null);
 
 const toggleFab = () => {
   isFabOpen.value = !isFabOpen.value;
+  toast.success('성공');
 };
 
 const closeFab = () => {
@@ -67,31 +69,34 @@ const handleCreateGroup = async (groupData) => {
       icon: groupData.icon,
       password: Math.random().toString(36).slice(-8),
     });
-    alert('새로운 모임이 성공적으로 생성되었습니다! 🎉');
+    toast.success('새로운 모임이 성공적으로 생성되었습니다! 🎉');
   } catch (e) {
-    alert(e.message);
+    toast.error(e.message || '오류가 발생했습니다.');
   }
 };
 
-const handleLeaveGroup = async () => {
+const handleLeaveGroup = () => {
   if (!currentGroup.value) return;
 
-  if (
-    confirm(
-      `정말로 '${currentGroup.value.name}' 모임을 떠나시겠습니까?\n방장은 모임을 떠날 수 없습니다.`,
-    )
-  ) {
-    try {
-      await groupStore.leaveGroup(currentGroup.value.id);
-      alert('모임에서 성공적으로 탈퇴했습니다.');
-
-      // 탈퇴 성공 시, 개인 가계부 모드로 변경하고 홈으로 이동합니다.
-      groupStore.changeCurrentGroup(null);
-      router.push('/');
-    } catch (e) {
-      alert(e.message);
-    }
-  }
+  toast('모임 떠나기', {
+    description: `정말로 '${currentGroup.value.name}' 모임을 떠나시겠습니까? 방장은 모임을 떠날 수 없습니다.`,
+    action: {
+      label: '떠나기',
+      onClick: async () => {
+        try {
+          await groupStore.leaveGroup(currentGroup.value.id);
+          toast.success('모임에서 성공적으로 탈퇴했습니다.');
+          groupStore.changeCurrentGroup(null);
+          router.push('/');
+        } catch (e) {
+          toast.error(e.message || '오류가 발생했습니다.');
+        }
+      },
+    },
+    cancel: {
+      label: '취소',
+    },
+  });
   closeFab();
 };
 </script>

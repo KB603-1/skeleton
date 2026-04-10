@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import BottomNav from '@/components/BottomNav.vue';
 import TopBar from '@/components/TopBar.vue';
 import FloatingActionButton from '@/components/FloatingActionButton.vue';
+import { Toaster } from '@/components/ui/sonner';
 
 const router = useRouter();
 const scrollContainer = ref(null);
@@ -41,6 +42,7 @@ router.afterEach(async (to) => {
         </RouterView>
       </div>
     </main>
+    <Toaster position="top-center" rich-colors />
     <div>
       <FloatingActionButton />
     </div>
