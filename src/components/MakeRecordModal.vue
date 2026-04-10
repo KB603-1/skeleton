@@ -27,6 +27,12 @@ const selectedType = ref('income');
 const selectedCategory = ref(null);
 const title = ref('');
 const amount = ref('');
+
+function onAmountInput(e) {
+  const digits = e.target.value.replace(/[^0-9]/g, '');
+  amount.value = digits;
+  e.target.value = digits ? Number(digits).toLocaleString() : '';
+}
 const memo = ref('');
 
 const categories = computed(() => {
@@ -41,7 +47,7 @@ const categories = computed(() => {
   }
 });
 
-watch(selectedType, (newValue) => {
+watch(selectedType, () => {
   selectedCategory.value = null;
 });
 
@@ -105,12 +111,13 @@ async function makeRecord() {
     <div class="space-y-1.5">
       <Label for="amount" class="text-sm font-medium">금액</Label>
       <div class="relative">
-        <Input
+        <input
           id="amount"
-          v-model="amount"
-          type="number"
+          type="text"
+          inputmode="numeric"
           placeholder="0"
-          class="pr-8"
+          @input="onAmountInput"
+          class="pr-8 h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 border-input"
         />
         <span
           class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground"

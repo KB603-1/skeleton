@@ -1,6 +1,6 @@
 <script setup>
 import { useRecordStore } from '@/stores/record';
-import { ref, computed } from 'vue';
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
 import { useModalStore } from '@/stores/modal.js';
 import EditRecordModal from '@/components/EditRecordModal.vue';
 import RecordDetailModal from '@/components/RecordDetailModal.vue';
@@ -183,6 +183,63 @@ function openDetailModal(item) {
 async function deleteRecord(recordId) {
   await recordStore.deleteRecord(recordId);
 }
+
+// ── 15개 제한 + 더보기 ──
+const PAGE_SIZE = 15;
+const visibleCount = ref(PAGE_SIZE);
+
+// 필터/월 변경 시 리셋
+watch([searchQuery, selectedDate, currentYear, currentMonth], () => {
+  visibleCount.value = PAGE_SIZE;
+});
+
+const allFlatItems = computed(() =>
+  groupedTransactions.value.flatMap((g) => g.items),
+);
+const totalItemCount = computed(() => allFlatItems.value.length);
+const hasMore = computed(() => totalItemCount.value > visibleCount.value);
+
+const visibleGroupedTransactions = computed(() => {
+  const limited = allFlatItems.value.slice(0, visibleCount.value);
+  const groups = {};
+  limited.forEach((t) => {
+    if (!groups[t.date]) groups[t.date] = [];
+    groups[t.date].push(t);
+  });
+  return Object.entries(groups)
+    .sort(([a], [b]) => b.localeCompare(a))
+    .map(([date, items]) => ({
+      date,
+      items,
+      total: items.reduce((s, t) => s + t.amount, 0),
+      label: formatDateLabel(date),
+    }));
+});
+
+function loadMore() {
+  visibleCount.value += PAGE_SIZE;
+}
+
+// ── 상단 이동 버튼 ──
+const showScrollTop = ref(false);
+let scrollEl = null;
+
+function onScroll() {
+  showScrollTop.value = scrollEl.scrollTop > 300;
+}
+
+function scrollToTop() {
+  scrollEl?.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+onMounted(() => {
+  scrollEl = document.querySelector('main');
+  scrollEl?.addEventListener('scroll', onScroll);
+});
+
+onBeforeUnmount(() => {
+  scrollEl?.removeEventListener('scroll', onScroll);
+});
 </script>
 
 <template>
@@ -337,7 +394,7 @@ async function deleteRecord(recordId) {
 
   <!-- 내역 목록 -->
   <div class="mx-4 flex flex-col gap-4">
-    <div v-for="group in groupedTransactions" :key="group.date">
+    <div v-for="group in visibleGroupedTransactions" :key="group.date">
       <!-- 날짜 헤더 -->
       <div class="flex justify-between items-center mb-2 px-1">
         <span class="text-sm font-medium text-gray-700">{{ group.label }}</span>
@@ -363,6 +420,16 @@ async function deleteRecord(recordId) {
         />
       </div>
     </div>
+
+    <!-- 더보기 버튼 -->
+    <button
+      v-if="hasMore"
+      @click="loadMore"
+      class="w-full py-3 rounded-2xl bg-white text-[#7c4dff] text-sm font-semibold shadow-sm border border-[#ede9ff] hover:bg-[#f3eeff] transition"
+    >
+      + 더보기 ({{ totalItemCount - visibleCount }}개 남음)
+    </button>
+
     <p
       v-if="groupedTransactions.length === 0"
       class="text-center text-sm text-gray-400 py-8"
@@ -371,5 +438,23 @@ async function deleteRecord(recordId) {
     </p>
   </div>
 
-  <FloatingActionButton />
+  <!-- 상단으로 이동 버튼 -->
+  <transition
+    enter-active-class="transition duration-200"
+    enter-from-class="opacity-0 translate-y-2"
+    enter-to-class="opacity-100 translate-y-0"
+    leave-active-class="transition duration-150"
+    leave-from-class="opacity-100 translate-y-0"
+    leave-to-class="opacity-0 translate-y-2"
+  >
+    <button
+      v-if="showScrollTop"
+      @click="scrollToTop"
+      class="fixed bottom-36 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-gray-500 hover:text-[#7c4dff] hover:border-[#7c4dff] transition z-40"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7" />
+      </svg>
+    </button>
+  </transition>
 </template>

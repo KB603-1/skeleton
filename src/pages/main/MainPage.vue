@@ -111,7 +111,7 @@ const getMonthSum = (month, year) =>
 
   <!-- 동기부여 카드 -->
   <Card
-    class="mx-5 mt-3 rounded-2xl border-0 px-4 py-3.5 gap-0 flex-row items-center shadow-sm"
+    class="mx-5 mt-3 rounded-2xl border-0 px-4 py-3.5 gap-3 flex-row items-center shadow-sm"
   >
     <div
       class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-xl shrink-0"
