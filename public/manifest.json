@@ -1,7 +1,7 @@
 {
   "name": "티끌모아-티모",
   "short_name": "티모",
-  "description": "가족 가계부",
+  "description": "모임 가계부",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
