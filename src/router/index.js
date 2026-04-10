@@ -10,6 +10,7 @@ import MonthlyHistory from '@/pages/MonthlyHistory.vue';
 import EditRecord from '@/pages/EditRecord.vue';
 import GroupDetailPage from '@/pages/share/GroupDetailPage.vue';
 import InvitePage from '@/pages/share/InvitePage.vue';
+import MyPage from '@/pages/mypage/MyPage.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,6 +25,7 @@ const router = createRouter({
         { path: '/monthly', component: MonthlyHistory },
         { path: '/edit', component: EditRecord },
         { path: '/invite', component: InvitePage },
+        { path: '/mypage', component: MyPage },
       ],
       meta: { requiresAuth: true },
     },

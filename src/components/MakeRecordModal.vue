@@ -144,15 +144,10 @@ async function makeRecord() {
       </div>
     </div>
 
-    <!-- 지출명 -->
+    <!-- 내역명 -->
     <div class="space-y-1.5">
-      <Label for="title" class="text-sm font-medium">지출명</Label>
-      <Input
-        id="title"
-        v-model="title"
-        type="text"
-        placeholder="예) 스타벅스 아메리카노"
-      />
+      <Label for="title" class="text-sm font-medium">{{ selectedType === 'income' ? '수입명' : '지출명' }}</Label>
+      <Input id="title" v-model="title" type="text" :placeholder="selectedType === 'income' ? '예) 월급, 용돈' : '예) 스타벅스 아메리카노'"/>
     </div>
 
     <div>

@@ -23,6 +23,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
+      '/users': { target: 'http://localhost:3000', changeOrigin: true },
+      '/records': { target: 'http://localhost:3000', changeOrigin: true },
+      '/categories': { target: 'http://localhost:3000', changeOrigin: true },
+      '/groups': { target: 'http://localhost:3000', changeOrigin: true },
+      '/groupMembers': { target: 'http://localhost:3000', changeOrigin: true },
     },
   },
 });
