@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import { useGroupStore } from '@/stores/group';
 import { storeToRefs } from 'pinia';
 import ShareCreateSheet from '@/components/share/ShareCreateSheet.vue';
@@ -8,25 +8,55 @@ import { useModalStore } from '@/stores/modal.js';
 import MakeRecordModal from '@/components/MakeRecordModal.vue';
 
 const router = useRouter();
+const route = useRoute();
 const groupStore = useGroupStore();
 const { currentGroup } = storeToRefs(groupStore);
 const modalStore = useModalStore();
 
 const isFabOpen = ref(false);
 const isCreateSheetOpen = ref(false);
+const fabContainer = ref(null);
 
 const toggleFab = () => {
   isFabOpen.value = !isFabOpen.value;
 };
 
+const closeFab = () => {
+  isFabOpen.value = false;
+};
+
+// 라우터(탭 등) 이동 시 닫기
+watch(route, () => {
+  closeFab();
+});
+
+// 외부 요소 클릭 시 닫기
+const handleClickOutside = (event) => {
+  if (
+    isFabOpen.value &&
+    fabContainer.value &&
+    !fabContainer.value.contains(event.target)
+  ) {
+    closeFab();
+  }
+};
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
+
 const goToAddRecord = () => {
   modalStore.openModal(MakeRecordModal);
-  isFabOpen.value = false;
+  closeFab();
 };
 
 const goToAddGroup = () => {
   isCreateSheetOpen.value = true;
-  isFabOpen.value = false;
+  closeFab();
 };
 
 const handleCreateGroup = async (groupData) => {
@@ -62,7 +92,7 @@ const handleLeaveGroup = async () => {
       alert(e.message);
     }
   }
-  isFabOpen.value = false;
+  closeFab();
 };
 </script>
 
@@ -73,7 +103,10 @@ const handleLeaveGroup = async () => {
     @create-group="handleCreateGroup"
   />
 
-  <div class="fixed bottom-24 right-6 flex flex-col items-end gap-3 z-50">
+  <div
+    ref="fabContainer"
+    class="fixed bottom-24 right-6 flex flex-col items-end gap-3 z-50"
+  >
     <!-- 서브 버튼 메뉴 (애니메이션 적용) -->
     <transition
       enter-active-class="transition ease-out duration-200"
