@@ -1,0 +1,54 @@
+name: Deploy to S3
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 코드 체크아웃
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Node.js 설정 (버전은 프로젝트에 맞게 변경)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      # 3. 의존성 설치
+      - name: Install dependencies
+        run: npm install
+
+      # 4. 빌드 (환경변수는 Secrets에 추가 후 아래처럼 주입)
+      - name: Build
+        run: npm run build
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          NODE_ENV: production
+
+      # 5. AWS 자격증명 설정
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_ACCESS_KEY_PASS }}
+          aws-region: ap-northeast-2 # 서울 리전
+
+      # 6. S3 업로드
+      # - JS/CSS/이미지: 긴 캐시 (1년)
+      # - index.html: 캐시 금지 (항상 최신 버전 제공)
+      # - --delete: S3에만 있는 구버전 파일 자동 삭제
+      - name: Deploy static files to S3
+        run: |
+          aws s3 sync ./dist s3://${{ secrets.AWS_S3_BUCKET }} \
+            --delete \
+            --cache-control "public, max-age=31536000, immutable" \
+            --exclude "index.html"
+
+          aws s3 cp ./dist/index.html s3://${{ secrets.AWS_S3_BUCKET }}/index.html \
+            --cache-control "no-cache, no-store, must-revalidate"
