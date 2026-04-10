@@ -84,9 +84,8 @@ const handleLeaveGroup = async () => {
       leave-to-class="opacity-0 translate-y-4 scale-95"
     >
       <div v-if="isFabOpen" class="flex flex-col items-end gap-3">
-        <!-- 개인 모드일 때: 모임 추가 -->
+        <!-- 공통: 모임 추가 -->
         <button
-          v-if="!currentGroup"
           @click="goToAddGroup"
           class="flex items-center gap-3 px-4 py-2 bg-white rounded-full shadow-lg border border-gray-100 text-sm font-bold text-gray-700 hover:bg-gray-50 transition"
         >
@@ -95,6 +94,19 @@ const handleLeaveGroup = async () => {
             class="w-8 h-8 rounded-full bg-violet-100 text-violet-600 flex items-center justify-center text-lg"
           >
             🤝
+          </div>
+        </button>
+
+        <!-- 공통: 수입/지출 추가 -->
+        <button
+          @click="goToAddRecord"
+          class="flex items-center gap-3 px-4 py-2 bg-white rounded-full shadow-lg border border-gray-100 text-sm font-bold text-gray-700 hover:bg-gray-50 transition"
+        >
+          <span>수입/지출 추가</span>
+          <div
+            class="w-8 h-8 rounded-full bg-violet-100 text-violet-600 flex items-center justify-center text-lg"
+          >
+            📝
           </div>
         </button>
 
@@ -109,19 +121,6 @@ const handleLeaveGroup = async () => {
             class="w-8 h-8 rounded-full bg-red-100 text-red-500 flex items-center justify-center text-lg"
           >
             👋
-          </div>
-        </button>
-
-        <!-- 공통: 수입/지출 추가 -->
-        <button
-          @click="goToAddRecord"
-          class="flex items-center gap-3 px-4 py-2 bg-white rounded-full shadow-lg border border-gray-100 text-sm font-bold text-gray-700 hover:bg-gray-50 transition"
-        >
-          <span>수입/지출 추가</span>
-          <div
-            class="w-8 h-8 rounded-full bg-violet-100 text-violet-600 flex items-center justify-center text-lg"
-          >
-            📝
           </div>
         </button>
       </div>
