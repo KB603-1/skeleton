@@ -42,7 +42,7 @@ router.afterEach(async (to) => {
         </RouterView>
       </div>
     </main>
-    <Toaster position="top-center" rich-colors />
+    <Toaster position="top-center" rich-colors :duration="2500" />
     <div>
       <FloatingActionButton />
     </div>

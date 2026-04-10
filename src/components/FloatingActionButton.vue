@@ -7,6 +7,7 @@ import ShareCreateSheet from '@/components/share/ShareCreateSheet.vue';
 import { useModalStore } from '@/stores/modal.js';
 import MakeRecordModal from '@/components/MakeRecordModal.vue';
 import { toast } from 'vue-sonner';
+import { copyToClipboard } from '@/utils/clipboard.js';
 
 const router = useRouter();
 const route = useRoute();
@@ -20,7 +21,6 @@ const fabContainer = ref(null);
 
 const toggleFab = () => {
   isFabOpen.value = !isFabOpen.value;
-  toast.success('성공');
 };
 
 const closeFab = () => {
@@ -41,6 +41,19 @@ const handleClickOutside = (event) => {
   ) {
     closeFab();
   }
+};
+
+const handleInviteFriend = () => {
+  if (!currentGroup.value) return;
+  try {
+    const link = groupStore.generateInviteLink({
+      groupId: currentGroup.value.id,
+    });
+    copyToClipboard(link, '초대 링크가 복사되었습니다!');
+  } catch (e) {
+    toast.error(e.message || '링크 생성 중 오류가 발생했습니다.');
+  }
+  closeFab();
 };
 
 onMounted(() => {
@@ -121,7 +134,25 @@ const handleLeaveGroup = () => {
       leave-from-class="opacity-100 translate-y-0 scale-100"
       leave-to-class="opacity-0 translate-y-4 scale-95"
     >
-      <div v-if="isFabOpen" class="flex flex-col items-end gap-3">
+      <div v-if="isFabOpen" class="relative flex flex-col items-end gap-3">
+        <!-- 서브 버튼 뒷부분에만 적용되는 블러(Glass) 배경 -->
+        <div
+          class="absolute -inset-x-4 -top-4 -bottom-2 rounded-[2rem] bg-black/10 backdrop-opacity-sm border border-white/50 shadow-sm pointer-events-none -z-10 border-none"
+        ></div>
+
+        <!-- 공통: 수입/지출 추가 -->
+        <button
+          @click="goToAddRecord"
+          class="flex items-center gap-3 px-4 py-2 bg-white rounded-full shadow-lg border border-gray-100 text-sm font-bold text-gray-700 hover:bg-gray-50 transition"
+        >
+          <span>수입/지출 추가</span>
+          <div
+            class="w-8 h-8 rounded-full bg-violet-100 text-violet-600 flex items-center justify-center text-lg"
+          >
+            📝
+          </div>
+        </button>
+
         <!-- 공통: 모임 추가 -->
         <button
           @click="goToAddGroup"
@@ -135,16 +166,17 @@ const handleLeaveGroup = () => {
           </div>
         </button>
 
-        <!-- 공통: 수입/지출 추가 -->
+        <!-- 모임 모드일 때: 친구 추가 -->
         <button
-          @click="goToAddRecord"
+          v-if="currentGroup"
+          @click="handleInviteFriend"
           class="flex items-center gap-3 px-4 py-2 bg-white rounded-full shadow-lg border border-gray-100 text-sm font-bold text-gray-700 hover:bg-gray-50 transition"
         >
-          <span>수입/지출 추가</span>
+          <span>친구 초대</span>
           <div
-            class="w-8 h-8 rounded-full bg-violet-100 text-violet-600 flex items-center justify-center text-lg"
+            class="w-8 h-8 rounded-full bg-violet-100 text-red-500 flex items-center justify-center text-lg"
           >
-            📝
+            👋
           </div>
         </button>
 
