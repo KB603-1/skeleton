@@ -2,6 +2,7 @@
 import {useGroupStore} from "@/stores/group.js";
 import {computed, ref} from "vue";
 import {storeToRefs} from "pinia";
+import {Search} from "lucide-vue-next"
 
 const groupStore = useGroupStore();
 const {myGroups, currentGroup} = storeToRefs(groupStore);
@@ -54,7 +55,7 @@ const selectedLabel = computed(() =>
         <div
             class="flex items-center bg-gray-100 rounded-xl px-3 py-2 mb-4 gap-2"
         >
-          <span class="text-gray-400 text-sm">🔍</span>
+          <span class="text-gray-400 text-sm"><Search class="w-4 h-4"/></span>
           <input
               v-model="searchQuery"
               placeholder="모임명으로 검색..."
