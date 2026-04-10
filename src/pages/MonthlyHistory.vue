@@ -6,6 +6,7 @@ import {useModalStore} from "@/stores/modal.js";
 import EditRecordModal from "@/components/EditRecordModal.vue";
 import {useUserStore} from "@/stores/user.js";
 import {Search} from "lucide-vue-next";
+import FloatingActionButton from "@/components/FloatingActionButton.vue";
 
 
 const userStore = useUserStore();
@@ -21,7 +22,7 @@ const transactions = computed(() => {
   return recordStore.records.map((record) => {
     return {
       id: record.id,
-      date: record.date,
+      date: record.date?.slice(0, 10),
       title: record.title,
       category: record.category.name,
       icon: record.category.icon,
@@ -407,4 +408,6 @@ async function deleteRecord(recordId) {
       내역이 없습니다.
     </p>
   </div>
+
+  <FloatingActionButton />
 </template>
