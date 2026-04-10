@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useGroupStore } from '@/stores/group.js';
+import { toast } from 'vue-sonner';
 
 const route = useRoute();
 const router = useRouter();
@@ -13,7 +14,7 @@ onMounted(async () => {
   const { groupId, password } = route.query;
 
   if (!groupId || !password) {
-    alert('유효하지 않은 초대 링크입니다.');
+    toast.error('유효하지 않은 초대 링크입니다.');
     router.push('/');
     return;
   }
@@ -22,13 +23,13 @@ onMounted(async () => {
     message.value = '그룹에 참여하는 중입니다...';
     await groupStore.joinGroup({ groupId, password });
 
-    alert('그룹 참여가 완료되었습니다! 🎉');
+    toast.success('그룹 참여가 완료되었습니다! 🎉');
 
     // 가입 완료 후 해당 그룹으로 바로 이동시켜줍니다.
     groupStore.changeCurrentGroup(groupId);
     router.push('/group');
   } catch (e) {
-    alert(e.message);
+    toast.error(e.message || '그룹 참여 중 오류가 발생했습니다.');
     // 이미 가입된 경우에도 해당 모임으로 바로 이동시켜줍니다.
     if (e.message === '이미 가입한 그룹입니다.') {
       groupStore.changeCurrentGroup(groupId);

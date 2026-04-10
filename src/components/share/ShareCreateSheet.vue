@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch } from 'vue';
 import { useUserStore } from '@/stores/user';
+import { toast } from 'vue-sonner';
 
 const userStore = useUserStore();
 
@@ -33,7 +34,7 @@ const submit = () => {
 
   //   // 로그인 상태 확인
   if (!userStore.isLoggedIn || !userStore.user) {
-    alert('로그인이 필요합니다.');
+    toast.error('로그인이 필요합니다.');
     return;
   }
 

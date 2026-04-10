@@ -13,6 +13,7 @@ import TabMembers from '@/components/group/TabMembers.vue';
 import TabPlay from '@/components/group/TabPlay.vue';
 import { useModalStore } from '@/stores/modal.js';
 import EditRecordModal from '@/components/EditRecordModal.vue';
+import { toast } from 'vue-sonner';
 
 const router = useRouter();
 
@@ -158,15 +159,24 @@ const handleClose = () => {
 };
 
 // 지출 내역 삭제
-const handleDeleteExpense = async (recordId) => {
-  if (confirm('정말로 이 지출 내역을 삭제하시겠습니까?')) {
-    try {
-      await recordStore.deleteRecord(recordId);
-      alert('삭제되었습니다.');
-    } catch (e) {
-      alert(e.message);
-    }
-  }
+const handleDeleteExpense = (recordId) => {
+  toast('내역 삭제', {
+    description: '정말로 이 지출 내역을 삭제하시겠습니까?',
+    action: {
+      label: '삭제',
+      onClick: async () => {
+        try {
+          await recordStore.deleteRecord(recordId);
+          toast.success('삭제되었습니다.');
+        } catch (e) {
+          toast.error(e.message || '삭제 중 오류가 발생했습니다.');
+        }
+      },
+    },
+    cancel: {
+      label: '취소',
+    },
+  });
 };
 
 // 지출 내역 수정 (모달 열기)
@@ -187,7 +197,7 @@ const copyInviteLink = () => {
     // 1. 안전한 환경 (https 또는 localhost)일 때는 최신 API 사용
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard.writeText(link).then(() => {
-        alert('초대 링크가 복사되었습니다!\n\n' + link);
+        toast.success('초대 링크가 복사되었습니다!', { description: link });
       });
     }
     // 2. HTTP IP 접속 (휴대폰 테스트)일 때는 우회 방식 사용
@@ -207,34 +217,42 @@ const copyInviteLink = () => {
       try {
         // 구형 브라우저에서도 작동하는 복사 명령어
         document.execCommand('copy');
-        alert('초대 링크가 복사되었습니다!\n\n' + link);
+        toast.success('초대 링크가 복사되었습니다!', { description: link });
       } catch (err) {
-        alert(
-          '복사가 차단되었습니다. 아래 링크를 직접 선택해서 복사해주세요:\n\n' +
-            link,
-        );
+        toast.error('복사가 차단되었습니다. 아래 링크를 직접 복사해주세요.', {
+          description: link,
+        });
       } finally {
         // 복사 끝나면 몰래 만든 입력창 지우기
         textArea.remove();
       }
     }
   } catch (e) {
-    alert(e.message);
+    toast.error(e.message || '링크 생성 중 오류가 발생했습니다.');
   }
 };
 
 // 멤버 강퇴
-const removeMember = async (member) => {
+const removeMember = (member) => {
   if (!currentGroup.value) return;
-  if (!confirm(`${member.nickname}님을 그룹에서 내보내시겠습니까?`)) return;
 
-  try {
-    // API 통신 시에는 member 객체의 id를 사용합니다.
-    await groupStore.removeMember(currentGroup.value.id, member.id);
-    alert(`${member.nickname}님을 성공적으로 내보냈습니다.`);
-  } catch (e) {
-    alert(e.message);
-  }
+  toast('멤버 내보내기', {
+    description: `${member.nickname}님을 그룹에서 내보내시겠습니까?`,
+    action: {
+      label: '내보내기',
+      onClick: async () => {
+        try {
+          await groupStore.removeMember(currentGroup.value.id, member.id);
+          toast.success(`${member.nickname}님을 성공적으로 내보냈습니다.`);
+        } catch (e) {
+          toast.error(e.message || '멤버를 내보내는 중 오류가 발생했습니다.');
+        }
+      },
+    },
+    cancel: {
+      label: '취소',
+    },
+  });
 };
 
 // currentGroup의 상태 변화를 감지하여 의도적으로 그룹이 해제될 때만 메인으로 이동 (새로고침 시 튕김 방지)
