@@ -47,7 +47,7 @@ const emit = defineEmits(['copyLink', 'removeMember']);
         </div>
         <button
           v-if="member.role !== 'owner'"
-          @click="emit('removeMember', member.nickname)"
+          @click="emit('removeMember', member)"
           class="text-xs font-medium text-slate-400 hover:text-red-500 bg-slate-50 hover:bg-red-50 px-3 py-2 rounded-lg transition"
         >
           내보내기

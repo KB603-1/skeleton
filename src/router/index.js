@@ -8,6 +8,8 @@ import SignUpPage from '@/pages/SignUpPage.vue';
 import LoggedIn from '@/layouts/LoggedIn.vue';
 import MonthlyHistory from '@/pages/MonthlyHistory.vue';
 import EditRecord from '@/pages/EditRecord.vue';
+import GroupDetailPage from '@/pages/share/GroupDetailPage.vue';
+import InvitePage from '@/pages/share/InvitePage.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,9 +19,11 @@ const router = createRouter({
       component: LoggedIn,
       children: [
         { path: '', component: MainPage },
+        { path: '/group', name: 'group', component: GroupDetailPage },
         { path: '/stats', component: ChartPage },
         { path: '/monthly', component: MonthlyHistory },
         { path: '/edit', component: EditRecord },
+        { path: '/invite', component: InvitePage },
       ],
       meta: { requiresAuth: true },
     },
