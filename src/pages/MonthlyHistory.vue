@@ -21,7 +21,7 @@ const transactions = computed(() => {
   return recordStore.records.map((record) => {
     return {
       id: record.id,
-      date: record.date,
+      date: record.date?.slice(0, 10),
       title: record.title,
       category: record.category.name,
       icon: record.category.icon,
@@ -370,4 +370,6 @@ async function deleteRecord(recordId) {
       내역이 없습니다.
     </p>
   </div>
+
+  <FloatingActionButton />
 </template>
