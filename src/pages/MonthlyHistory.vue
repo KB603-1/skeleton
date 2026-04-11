@@ -455,6 +455,7 @@ onBeforeUnmount(() => {
       </div>
 
       <!-- 항목들 -->
+      <!-- TODO: 그림자 제거할지 고민 -->
       <div class="bg-white rounded-2xl overflow-hidden shadow-sm">
         <TransactionItem
           v-for="(item, i) in group.items"

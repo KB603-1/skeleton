@@ -78,7 +78,7 @@ const selectedLabel = computed(() =>
           <p class="text-xs text-gray-400 font-semibold mb-1">개인</p>
           <button
             @click="selectMode(null)"
-            class="w-full flex items-center gap-3 px-3 py-3 rounded-xl mb-3"
+            class="w-full flex items-center gap-3 px-3 py-3 rounded-xl mb-3 cursor-pointer hover:bg-gray-50"
             :class="!currentGroup ? 'bg-purple-50' : ''"
           >
             <div
@@ -101,7 +101,7 @@ const selectedLabel = computed(() =>
             v-for="group in filteredGroups"
             :key="group.id"
             @click="selectMode(group.id)"
-            class="w-full flex items-center gap-3 px-3 py-3 rounded-xl"
+            class="w-full flex items-center gap-3 px-3 py-3 rounded-xl cursor-pointer hover:bg-gray-50"
             :class="currentGroup?.id === group.id ? 'bg-purple-50' : ''"
           >
             <div
