@@ -46,6 +46,33 @@ export const useUserStore = defineStore("user", () => {
         user.value = null;
     }
 
+    async function changeNickname(newNickname) {
+        try {
+            await api.patch(`/users/${user.value.id}`, {nickname: newNickname});
+            user.value.nickname = newNickname;
+        } catch (e) {
+            throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+        }
+    }
+
+    async function changePassword(currentPassword, newPassword) {
+        let response;
+        try {
+            response = await api.get(`/users/${user.value.id}`);
+        } catch (e) {
+            throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+        }
+        const data = response.data;
+        if (data.password !== currentPassword) {
+            throw new Error('현재 비밀번호가 올바르지 않습니다.');
+        }
+        try {
+            await api.patch(`/users/${user.value.id}`, {password: newPassword})
+        } catch (e) {
+            throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+        }
+    }
+
     async function fetchUser() {
         const userId = localStorage.getItem("userId");
         if (!userId) {
@@ -68,5 +95,5 @@ export const useUserStore = defineStore("user", () => {
         };
     }
 
-    return {user, isLoggedIn, login, register, fetchUser, logout};
+    return {user, isLoggedIn, login, register, changeNickname, changePassword, fetchUser, logout};
 });

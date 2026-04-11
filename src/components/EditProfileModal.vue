@@ -20,20 +20,20 @@ const error = ref('');
 const loading = ref(false);
 
 async function submit() {
-  if (!nickname.value.trim()) {
+  const newNickname = nickname.value.trim();
+  if (!newNickname) {
     error.value = '닉네임을 입력해주세요.';
     return;
   }
   loading.value = true;
   error.value = '';
   try {
-    await api.patch(`/users/${props.userId}`, { nickname: nickname.value.trim() });
-    userStore.user.nickname = nickname.value.trim();
-    emit('close');
+    await userStore.changeNickname(newNickname);
   } catch (e) {
-    error.value = '닉네임 변경 중 오류가 발생했습니다.';
+    error.value = e.message;
   } finally {
     loading.value = false;
+    emit('close');
   }
 }
 </script>
