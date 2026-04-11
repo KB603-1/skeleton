@@ -130,7 +130,7 @@ const top3CategoryExpense = computed(() => {
           <!-- 카테고리 -->
           <div class="mt-3">
             <p class="text-purple-200 text-sm mb-1">지출 Top 3</p>
-            <div class="flex gap-2 flex-1 items-end">
+            <div v-if="top3CategoryExpense.length > 0" class="flex gap-2 flex-1 items-end">
               <div v-for="(item, index) in top3CategoryExpense" :key="item.category?.id"
                    class="flex-1 bg-purple-400/30 rounded-xl py-2.5 flex flex-col items-center"><span
                   class="text-lg mb-1.5">{{ item.category.icon }}</span> <span
@@ -138,6 +138,9 @@ const top3CategoryExpense = computed(() => {
                   class="text-white text-sm font-bold mt-0.5"> {{
                   summary?.totalExpense ? ((item.totalExpense / summary.totalExpense) * 100).toFixed(1) : 0
                 }}%</span></div>
+            </div>
+            <div v-else class="flex items-center justify-center py-4 text-white/70 text-sm">
+              데이터가 없습니다
             </div>
           </div>
 
