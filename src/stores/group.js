@@ -7,7 +7,7 @@ export const useGroupStore = defineStore('group', () => {
   const userStore = useUserStore();
   const { user, isLoggedIn } = storeToRefs(userStore);
 
-  watch(isLoggedIn, (newValue, oldValue) => {
+  watch(isLoggedIn, () => {
     fetchGroup();
   });
 
@@ -72,8 +72,9 @@ export const useGroupStore = defineStore('group', () => {
           name: group.name,
           password: group.password,
           isOwner: group.userId === user.id,
-          ownerId: group.userId, // 방장 식별을 위해 추가
-          members: [], // 멤버 목록 초기화 (반응형 상태 보장)
+          ownerId: group.userId,
+          notice: group.notice || '',
+          members: [],
         };
       });
     } catch (e) {}
@@ -292,6 +293,18 @@ export const useGroupStore = defineStore('group', () => {
     }
   }
 
+  // 공지사항 저장 (방장 전용)
+  async function updateNotice(groupId, notice) {
+    const user = getLoggedInUser();
+    if (!user) throw new Error('로그인이 필요합니다.');
+    const group = myGroups.value.find((g) => g.id === groupId);
+    if (!group) throw new Error('그룹을 찾을 수 없습니다.');
+    if (!group.isOwner) throw new Error('방장만 공지사항을 수정할 수 있습니다.');
+    await api.patch(`/groups/${groupId}`, { notice });
+    group.notice = notice;
+    if (currentGroup.value?.id === groupId) currentGroup.value.notice = notice;
+  }
+
   // ====== 헬퍼 함수 ======
   function getLoggedInUser() {
     if (!isLoggedIn.value) return null;
@@ -309,5 +322,6 @@ export const useGroupStore = defineStore('group', () => {
     joinGroup,
     leaveGroup,
     removeMember,
+    updateNotice,
   };
 });

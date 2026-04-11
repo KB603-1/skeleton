@@ -11,9 +11,13 @@ import { useModalStore } from '@/stores/modal.js';
 import EditProfileModal from '@/components/EditProfileModal.vue';
 import EditPasswordModal from '@/components/EditPasswordModal.vue';
 import DeleteAccountModal from '@/components/DeleteAccountModal.vue';
+import { ref, computed, watch } from 'vue';
+import { useGroupStore } from '@/stores/group.js';
 
 const router = useRouter();
 const userStore = useUserStore();
+const groupStore = useGroupStore();
+const { currentGroup } = storeToRefs(groupStore);
 const { user } = storeToRefs(userStore);
 const modalStore = useModalStore();
 
@@ -31,6 +35,53 @@ function openEditModal() {
 function handleLogout() {
   userStore.logout();
   router.push('/login');
+}
+
+// ── 월 예산 설정 ──────────────────────────────────
+const now = new Date();
+const year = now.getFullYear();
+const month = now.getMonth() + 1;
+
+function budgetKey() {
+  return `personal_budget_${user.value?.id}_${year}_${String(month).padStart(2, '0')}`;
+}
+
+const savedBudget = ref(0);
+const budgetInput = ref('');
+const isEditingBudget = ref(false);
+
+watch(user, (u) => {
+  if (u) {
+    const val = Number(localStorage.getItem(budgetKey())) || 0;
+    savedBudget.value = val;
+    budgetInput.value = val ? val.toLocaleString() : '';
+    isEditingBudget.value = val === 0;
+  }
+}, { immediate: true });
+
+const displayBudgetInput = computed(() =>
+  budgetInput.value ? Number(budgetInput.value.replace(/[^0-9]/g, '')).toLocaleString() : '',
+);
+
+function onBudgetInput(e) {
+  const digits = e.target.value.replace(/[^0-9]/g, '');
+  budgetInput.value = digits;
+  e.target.value = digits ? Number(digits).toLocaleString() : '';
+}
+
+function saveBudget() {
+  const val = Number(budgetInput.value.replace(/[^0-9]/g, ''));
+  if (!val || val <= 0) return;
+  savedBudget.value = val;
+  localStorage.setItem(budgetKey(), String(val));
+  isEditingBudget.value = false;
+}
+
+function clearBudget() {
+  savedBudget.value = 0;
+  budgetInput.value = '';
+  localStorage.removeItem(budgetKey());
+  isEditingBudget.value = true;
 }
 
 const menuItems = [
@@ -94,6 +145,50 @@ const menuItems = [
 
     <!-- Body -->
     <div class="flex-1 px-4 pt-6 pb-4 space-y-4">
+      <!-- 이번 달 예산 목표 (개인 모드에서만) -->
+      <div v-if="!currentGroup">
+        <p class="text-muted-foreground text-sm mb-2 px-1">이번 달 예산 목표</p>
+        <Card class="py-0 overflow-hidden">
+          <CardContent class="p-4">
+            <!-- 설정 모드 -->
+            <div v-if="isEditingBudget" class="space-y-3">
+              <p class="text-sm text-gray-500">
+                {{ savedBudget === 0 ? '예산을 설정하면 홈에서 오늘 쓸 수 있는 금액을 알려드려요!' : '예산 목표를 수정해요' }}
+              </p>
+              <div class="flex gap-2">
+                <div class="relative flex-1">
+                  <input
+                    type="text"
+                    inputmode="numeric"
+                    placeholder="예: 500,000"
+                    :value="displayBudgetInput"
+                    @input="onBudgetInput"
+                    class="w-full h-9 rounded-md border border-input bg-transparent px-3 py-1 pr-8 text-base shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                  />
+                  <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">원</span>
+                </div>
+                <Button size="sm" @click="saveBudget" class="bg-violet-600 hover:bg-violet-700 text-white">저장</Button>
+                <Button v-if="savedBudget > 0" size="sm" variant="ghost" @click="isEditingBudget = false">취소</Button>
+              </div>
+            </div>
+
+            <!-- 설정됨 -->
+            <div v-else class="flex items-center justify-between">
+              <div>
+                <p class="text-xs text-gray-400 mb-0.5">{{ year }}년 {{ month }}월 예산</p>
+                <p class="text-lg font-bold text-gray-800">
+                  {{ savedBudget.toLocaleString() }}<span class="text-sm font-medium text-gray-500 ml-1">원</span>
+                </p>
+              </div>
+              <div class="flex gap-2">
+                <Button size="sm" variant="outline" @click="isEditingBudget = true">수정</Button>
+                <Button size="sm" variant="ghost" class="text-rose-400 hover:text-rose-500 hover:bg-rose-50" @click="clearBudget">삭제</Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
       <!-- 계정 관리 -->
       <div>
         <p class="text-muted-foreground text-sm mb-2 px-1">계정 관리</p>

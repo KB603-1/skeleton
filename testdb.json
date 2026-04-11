@@ -122,6 +122,21 @@
       "name": "모임10",
       "userId": "user10",
       "password": "g10"
+    },
+    {
+      "name": "22",
+      "icon": "👥",
+      "password": "ryo6o16b",
+      "userId": "user05",
+      "id": "VrM3tMohRUI"
+    },
+    {
+      "name": "2222",
+      "icon": "🏠",
+      "password": "heqhunfz",
+      "userId": "user05",
+      "id": "KJq5EXXNQe0",
+      "notice": "하"
     }
   ],
   "groupMembers": [
@@ -364,6 +379,11 @@
       "id": "gm50",
       "groupId": "grp10",
       "userId": "user04"
+    },
+    {
+      "userId": "user05",
+      "groupId": "KJq5EXXNQe0",
+      "id": "O9eJIvnrMSs"
     }
   ],
   "categories": [
@@ -2664,6 +2684,39 @@
       "categoryId": "cat016",
       "amount": 16724,
       "date": "2026-03-01"
+    },
+    {
+      "type": "expense",
+      "categoryId": "cat010",
+      "title": "222",
+      "amount": 12312,
+      "date": "2026-04-12T01:43:29",
+      "memo": "",
+      "userId": "user05",
+      "groupId": "KJq5EXXNQe0",
+      "id": "sktdD4_EikM"
+    },
+    {
+      "type": "income",
+      "categoryId": "cat002",
+      "title": "ww",
+      "amount": 500000,
+      "date": "2026-04-12T01:46:55",
+      "memo": "",
+      "userId": "user05",
+      "groupId": null,
+      "id": "ZBA_hB2H1Uo"
+    },
+    {
+      "type": "expense",
+      "categoryId": "cat015",
+      "title": "bb",
+      "amount": 1000000,
+      "date": "2026-04-12T01:47:31",
+      "memo": "",
+      "userId": "user05",
+      "groupId": null,
+      "id": "MX5wo1X3Hpg"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
