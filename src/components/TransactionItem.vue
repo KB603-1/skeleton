@@ -1,5 +1,4 @@
 <script setup>
-import { Pencil, Trash2 } from 'lucide-vue-next';
 
 const props = defineProps({
   item: {
@@ -43,9 +42,15 @@ function formatAmount(amount) {
       {{ item.icon }}
     </div>
     <div class="flex-1 min-w-0">
-      <p class="text-sm font-medium truncate" :class="'text-gray-800'">
-        {{ item.title }}
-      </p>
+      <div class="flex items-center gap-1.5">
+        <span
+          v-if="item.isOwner"
+          class="text-xs bg-pink-100 text-pink-500 px-1.5 py-0.5 rounded-full font-medium leading-none shrink-0"
+        >나</span>
+        <p class="text-sm font-medium truncate" :class="'text-gray-800'">
+          {{ item.title }}
+        </p>
+      </div>
       <div class="flex items-center gap-1.5 mt-0.5">
         <p
           class="text-xs"
@@ -67,24 +72,5 @@ function formatAmount(amount) {
     >
       {{ formatAmount(item.amount) }}
     </span>
-    <div
-      v-if="item.isOwner"
-      class="flex items-center gap-2 shrink-0"
-      T
-      :class="{ invisible: !item.isOwner }"
-    >
-      <button
-        @click.stop="emit('edit', item.id)"
-        class="text-gray-300 hover:text-[#7c4dff]"
-      >
-        <Pencil class="w-4 h-4" />
-      </button>
-      <button
-        @click.stop="emit('delete', item.id)"
-        class="text-gray-300 hover:text-red-400"
-      >
-        <Trash2 class="w-4 h-4" />
-      </button>
-    </div>
   </div>
 </template>

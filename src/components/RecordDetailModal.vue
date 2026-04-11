@@ -1,6 +1,8 @@
 <script setup>
 import { useModalStore } from '@/stores/modal.js';
-import { X } from 'lucide-vue-next';
+import { Pencil, Trash2 } from 'lucide-vue-next';
+import EditRecordModal from '@/components/EditRecordModal.vue';
+import { useRecordStore } from '@/stores/record.js';
 
 const props = defineProps({
   record: {
@@ -10,10 +12,21 @@ const props = defineProps({
 });
 
 const modalStore = useModalStore();
+const recordStore = useRecordStore();
 
 function formatAmount(amount) {
   if (amount > 0) return `+${amount.toLocaleString()}원`;
   return `${amount.toLocaleString()}원`;
+}
+
+function openEdit() {
+  modalStore.closeModal();
+  modalStore.openModal(EditRecordModal, { recordId: props.record.id });
+}
+
+async function deleteRecord() {
+  await recordStore.deleteRecord(props.record.id);
+  modalStore.closeModal();
 }
 </script>
 
@@ -66,6 +79,24 @@ function formatAmount(amount) {
             {{ record.memo || '메모가 없습니다.' }}
           </p>
         </div>
+      </div>
+
+      <!-- 수정/삭제 버튼 -->
+      <div v-if="record.isOwner" class="flex gap-2 pt-2">
+        <button
+          @click="openEdit"
+          class="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-blue-500 text-blue-500 font-medium text-sm hover:bg-blue-50 transition"
+        >
+          <Pencil class="w-4 h-4" />
+          수정
+        </button>
+        <button
+          @click="deleteRecord"
+          class="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-red-100 text-red-500 font-medium text-sm hover:bg-red-50 transition"
+        >
+          <Trash2 class="w-4 h-4" />
+          삭제
+        </button>
       </div>
     </div>
   </div>

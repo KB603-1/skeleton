@@ -23,6 +23,12 @@ const title = ref("");
 const amount = ref("");
 const memo = ref("");
 
+function onAmountInput(e) {
+  const digits = e.target.value.replace(/[^0-9]/g, '');
+  amount.value = digits;
+  e.target.value = digits ? Number(digits).toLocaleString() : '';
+}
+
 const categories = computed(() => {
   if (!selectedType.value) {
     return [];
@@ -39,7 +45,7 @@ function fillForm(recordId) {
   const record = recordStore.records.find((r) => r.id === recordId);
   if (!record) close();
   title.value = record.title;
-  amount.value = record.amount;
+  amount.value = String(record.amount);
   memo.value = record.memo;
   selectedType.value = record.type;       // record.title → record.type
   selectedCategory.value = record.category;
@@ -121,7 +127,15 @@ function close() {
     <div class="space-y-1.5">
       <Label for="amount" class="text-sm font-medium">금액</Label>
       <div class="relative">
-        <Input id="amount" v-model="amount" type="number" placeholder="0" class="pr-8"/>
+        <input
+          id="amount"
+          type="text"
+          inputmode="numeric"
+          :value="amount ? Number(amount).toLocaleString() : ''"
+          placeholder="0"
+          @input="onAmountInput"
+          class="pr-8 h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 border-input"
+        />
         <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
           원
         </span>
