@@ -4,7 +4,8 @@ import { useRouter } from 'vue-router';
 import { useRecordStore } from '@/stores/record';
 import { useGroupStore } from '@/stores/group';
 import { storeToRefs } from 'pinia';
-import { ChevronRight } from 'lucide-vue-next';
+import { ChevronRight } from 'lucide-vue-next'
+import PigIcon from '@/components/PigIcon.vue';
 
 const router = useRouter();
 const recordStore = useRecordStore();
@@ -120,38 +121,7 @@ const lastMonthResult = computed(() => {
 
         <!-- 돼지 이미지 -->
         <div class="w-full h-full animate-pig-bounce">
-          <svg
-            viewBox="0 0 100 112"
-            width="100%"
-            height="100%"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle cx="24" cy="26" r="18" fill="rgba(255,255,255)" />
-            <circle cx="76" cy="26" r="18" fill="rgba(255,255,255)" />
-            <!-- <rect x="68" y="11" width="16" height="6" rx="3" fill="#5b21b6" /> -->
-            <circle cx="50" cy="68" r="44" fill="rgba(255,255,255)" />
-            <circle cx="37" cy="58" r="5.5" fill="#5b21b6" />
-            <circle cx="63" cy="58" r="5.5" fill="#5b21b6" />
-            <ellipse cx="50" cy="76" rx="14" ry="11" fill="#e0ccf5" />
-            <circle cx="44" cy="77" r="3.5" fill="#9333ea" />
-            <circle cx="56" cy="77" r="3.5" fill="#9333ea" />
-            <rect
-              x="32"
-              y="106"
-              width="16"
-              height="10"
-              rx="5"
-              fill="rgba(255,255,255,0.95)"
-            />
-            <rect
-              x="52"
-              y="106"
-              width="16"
-              height="10"
-              rx="5"
-              fill="rgba(255,255,255,0.95)"
-            />
-          </svg>
+          <PigIcon eye-color="#5b21b6" nose-spot-color="#9333ea" :show-ear-tag="false" />
         </div>
       </div>
 

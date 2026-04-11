@@ -9,19 +9,7 @@
         :class="{ catchable: canCatch && !isCaught, caught: isCaught }"
         @pointerdown="onPigPointerDown"
       >
-        <svg viewBox="0 0 100 112" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="display:block;">
-          <circle cx="24" cy="26" r="18" fill="white" />
-          <circle cx="76" cy="26" r="18" fill="white" />
-          <rect x="68" y="11" width="16" height="6" rx="3" fill="#7c5cbf" />
-          <circle cx="50" cy="68" r="44" fill="white" />
-          <circle cx="37" cy="58" r="5.5" fill="#7c5cbf" />
-          <circle cx="63" cy="58" r="5.5" fill="#7c5cbf" />
-          <ellipse cx="50" cy="76" rx="14" ry="11" fill="#e0ccf5" />
-          <circle cx="44" cy="77" r="3.5" fill="#b09ddb" />
-          <circle cx="56" cy="77" r="3.5" fill="#b09ddb" />
-          <rect x="32" y="106" width="16" height="10" rx="5" fill="white" />
-          <rect x="52" y="106" width="16" height="10" rx="5" fill="white" />
-        </svg>
+        <PigIcon />
       </div>
     </div>
 
@@ -36,6 +24,7 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
+import PigIcon from '@/components/PigIcon.vue'
 
 const emit = defineEmits(['finish'])
 
