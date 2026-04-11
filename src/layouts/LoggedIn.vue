@@ -33,7 +33,7 @@ router.afterEach(async (to) => {
       ref="scrollContainer"
       class="flex-1 bg-[#f2f0fb] min-h-0 overflow-y-auto"
     >
-      <div class="py-2">
+      <div class="py-2 pb-[calc(5rem+env(safe-area-inset-bottom))]">
         <!-- KeepAlive를 적용하여 탭 간 이동 시 컴포넌트 상태와 DOM을 유지합니다 -->
         <RouterView v-slot="{ Component }">
           <KeepAlive>
@@ -43,10 +43,8 @@ router.afterEach(async (to) => {
       </div>
     </main>
     <Toaster position="top-center" rich-colors :duration="2500" />
-    <div>
-      <FloatingActionButton />
-    </div>
-    <BottomNav />
+    <FloatingActionButton />
+    <BottomNav class="fixed bottom-0 left-0 right-0 z-50" />
   </div>
 </template>
 

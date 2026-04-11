@@ -14,7 +14,7 @@ function isActive(path) {
 
 <template>
   <nav
-    class="flex bg-white border-t border-gray-100 w-full z-50 pb-[env(safe-area-inset-bottom)]"
+    class="flex bg-white border-t border-gray-100 w-full pb-[env(safe-area-inset-bottom)]"
   >
     <!-- 홈 -->
     <button

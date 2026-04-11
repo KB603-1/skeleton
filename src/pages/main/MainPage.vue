@@ -6,11 +6,15 @@ import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 import GroupInfo from '@/components/GroupInfo.vue';
 import MyInfo from '@/components/MyInfo.vue';
-import FloatingActionButton from '@/components/FloatingActionButton.vue';
 import GroupDrawer from '@/components/GroupDrawer.vue';
 import TotalExpenseCard from '@/components/main/TotalExpenseCard.vue';
+
 import BudgetGoalCard from '@/components/main/BudgetGoalCard.vue';
 import GroupNoticeCard from '@/components/main/GroupNoticeCard.vue';
+
+
+const router = useRouter();
+
 
 const groupStore = useGroupStore();
 const { currentGroup } = storeToRefs(groupStore);
@@ -18,6 +22,10 @@ const { currentGroup } = storeToRefs(groupStore);
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 const userName = computed(() => user.value?.nickname || '사용자');
+
+
+
+
 </script>
 
 <template>
@@ -50,6 +58,9 @@ const userName = computed(() => user.value?.nickname || '사용자');
   <!-- 최근 내역 -->
   <RecentTransactions />
 
+
   <!-- 플로팅 액션 버튼 -->
   <FloatingActionButton />
+
+
 </template>

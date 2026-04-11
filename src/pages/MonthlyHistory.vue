@@ -284,7 +284,7 @@ onBeforeUnmount(() => {
   <!-- 캘린더 카드 -->
   <div class="mx-4 bg-white rounded-2xl p-4 shadow-sm mb-4">
     <!-- 월 네비게이션 -->
-    <div class="flex items-center justify-between mb-1">
+    <div class="flex items-center justify-between mb-2">
       <button @click="prevMonth" class="p-1.5 text-gray-500">
         <svg
           class="w-5 h-5"
@@ -304,14 +304,6 @@ onBeforeUnmount(() => {
         <p class="font-semibold text-gray-800">
           {{ currentYear }}년 {{ currentMonth }}월
         </p>
-        <p class="text-xs mt-0.5">
-          <span class="text-red-500"
-            >지출 -{{ Math.abs(monthlyExpense).toLocaleString() }}원</span
-          >
-          <span class="text-blue-500 ml-2"
-            >수입 +{{ monthlyIncome.toLocaleString() }}원</span
-          >
-        </p>
       </div>
       <button @click="nextMonth" class="p-1.5 text-gray-500">
         <svg
@@ -328,6 +320,25 @@ onBeforeUnmount(() => {
           />
         </svg>
       </button>
+    </div>
+
+    <!-- 월 요약 -->
+    <div
+      class="flex items-center justify-between bg-gray-50 rounded-xl px-4 py-2.5 mb-3"
+    >
+      <div class="flex flex-col items-center flex-1">
+        <span class="text-[10px] text-gray-400 font-medium mb-0.5">수입</span>
+        <span class="text-xs font-bold text-blue-500"
+          >+{{ monthlyIncome.toLocaleString() }}원</span
+        >
+      </div>
+      <div class="w-px h-6 bg-gray-200"></div>
+      <div class="flex flex-col items-center flex-1">
+        <span class="text-[10px] text-gray-400 font-medium mb-0.5">지출</span>
+        <span class="text-xs font-bold text-red-500"
+          >-{{ Math.abs(monthlyExpense).toLocaleString() }}원</span
+        >
+      </div>
     </div>
 
     <!-- 요일 헤더 -->
@@ -377,14 +388,17 @@ onBeforeUnmount(() => {
           >
             {{ day }}
           </div>
-          <span class="text-[9px] text-red-400 leading-tight h-3 block">
-            {{ getDayExpense(day) < 0 ? formatShort(getDayExpense(day)) : '' }}
-          </span>
-          <span class="text-[9px] text-blue-400 leading-tight h-3 block">
-            {{
-              getDayIncome(day) > 0 ? '+' + formatShort(getDayIncome(day)) : ''
-            }}
-          </span>
+          <!-- 애플 캘린더 스타일 수입/지출 인디케이터 (막대기) -->
+          <div class="flex flex-col items-center gap-[3px] h-3 mt-0.5">
+            <div
+              v-if="getDayIncome(day) > 0"
+              class="w-4 h-[3px] rounded-full bg-blue-400"
+            ></div>
+            <div
+              v-if="getDayExpense(day) < 0"
+              class="w-4 h-[3px] rounded-full bg-red-400"
+            ></div>
+          </div>
         </template>
       </div>
     </div>
