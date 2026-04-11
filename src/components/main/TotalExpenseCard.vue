@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import { useRecordStore } from '@/stores/record';
 import { useGroupStore } from '@/stores/group';
 import { storeToRefs } from 'pinia';
+import { ChevronRight } from 'lucide-vue-next';
 
 const router = useRouter();
 const recordStore = useRecordStore();
@@ -69,7 +70,7 @@ const lastMonthResult = computed(() => {
 
       <!-- 돼지 저금통 & 떨어지는 동전 애니메이션 영역 -->
       <div
-        class="absolute right-10 bottom-0 w-28 h-28 opacity-95 pointer-events-none translate-y-3 translate-x-3"
+        class="absolute bottom-0 right-5 w-28 h-28 opacity-95 pointer-events-none translate-y-3 translate-x-3 scale-[0.85] origin-bottom-right sm:scale-100 transition-transform"
       >
         <!-- 은색 동전 -->
         <div class="absolute right-[2.8rem] -top-1 animate-coin-drop">
@@ -191,49 +192,29 @@ const lastMonthResult = computed(() => {
     <div
       v-if="currentGroup"
       @click="router.push('/group')"
-      class="w-32 rounded-2xl bg-white p-3.5 shadow-lg flex flex-col justify-between cursor-pointer border border-purple-50 transition hover:shadow-xl relative z-10"
+      class="rounded-2xl bg-white shadow-sm flex cursor-pointer border border-purple-50 transition hover:shadow-md relative z-10 shrink-0 w-16 flex-col items-center justify-center py-3 gap-2 sm:w-auto sm:min-w-[8rem] sm:flex-row sm:justify-between sm:p-4 sm:gap-4"
     >
-      <div>
-        <div class="flex justify-between items-start">
-          <div
-            class="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center text-base"
-          >
-            {{ currentGroup.icon || '🏠' }}
-          </div>
-          <span
-            class="bg-gray-100 text-gray-600 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-0.5"
-          >
-            👥 {{ currentGroup.members?.length || 1 }}
-          </span>
+      <!-- 좌측 정보 영역 (모바일: 아이콘만 / 넓은 화면: 아이콘 + 예상 금액) -->
+      <div class="flex flex-col items-center sm:items-start">
+        <div
+          class="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center text-base shrink-0"
+        >
+          {{ currentGroup.icon || '🏠' }}
         </div>
-        <div class="mt-3">
-          <p class="text-[10px] font-medium text-gray-400">1인당 예상</p>
-          <p class="text-sm font-extrabold text-gray-800 tracking-tight mt-0.5">
+
+        <div class="hidden sm:block mt-2">
+          <p class="text-xs font-medium text-gray-400">1인당 예상</p>
+          <p
+            class="text-sm font-extrabold text-gray-800 tracking-tight mt-0.5 truncate"
+          >
             {{ perPersonAmount.toLocaleString()
-            }}<span class="text-[10px] font-medium ml-0.5 text-gray-500"
-              >원</span
-            >
+            }}<span class="text-xs font-medium ml-0.5 text-gray-500">원</span>
           </p>
         </div>
       </div>
-      <div
-        class="mt-2 flex items-center justify-between text-purple-600 bg-purple-50/50 rounded-lg px-2 py-1.5"
-      >
-        <span class="text-[10px] font-bold">모임 상세</span>
-        <svg
-          class="w-3 h-3"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2.5"
-            d="M9 5l7 7-7 7"
-          />
-        </svg>
-      </div>
+
+      <!-- 우측(하단) 화살표 아이콘 -->
+      <ChevronRight class="w-6 h-6 text-gray-400" />
     </div>
   </div>
 </template>
