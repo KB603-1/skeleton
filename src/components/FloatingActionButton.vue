@@ -8,7 +8,7 @@ import { useModalStore } from '@/stores/modal.js';
 import MakeRecordModal from '@/components/MakeRecordModal.vue';
 import { toast } from 'vue-sonner';
 import { copyToClipboard } from '@/utils/clipboard.js';
-
+import { Plus } from 'lucide-vue-next'
 const router = useRouter();
 const route = useRoute();
 const groupStore = useGroupStore();
@@ -113,6 +113,31 @@ const handleLeaveGroup = () => {
   });
   closeFab();
 };
+
+const handleDeleteGroup = () => {
+  if (!currentGroup.value || !currentGroup.value.isOwner) return;
+
+  toast('모임 삭제하기', {
+    description: `정말로 '${currentGroup.value.name}' 모임을 삭제하시겠습니까? 삭제한 모임은 복구할 수 없습니다.`,
+    action: {
+      label: '삭제하기',
+      onClick: async () => {
+        try {
+          await groupStore.deleteGroup(currentGroup.value.id);
+          toast.success('모임을 성공적으로 삭제했습니다.');
+          groupStore.changeCurrentGroup(null);
+          router.push('/');
+        } catch (e) {
+          toast.error(e.message || '오류가 발생했습니다.');
+        }
+      },
+    },
+    cancel: {
+      label: '취소',
+    },
+  });
+  closeFab();
+};
 </script>
 
 <template>
@@ -182,9 +207,23 @@ const handleLeaveGroup = () => {
           </div>
         </button>
 
+        <!-- 모임 장일 때: 모임 삭제하기 -->
+        <button
+            v-if="currentGroup?.isOwner"
+            @click="handleDeleteGroup"
+            class="w-44 flex items-center justify-between gap-3 px-4 py-2 bg-white rounded-full shadow-lg border border-gray-100 text-sm font-bold text-red-500 hover:bg-red-50 transition"
+        >
+          <span class="flex-1 text-center">모임 삭제하기</span>
+          <div
+              class="w-8 h-8 rounded-full bg-red-100 text-red-500 flex items-center justify-center text-lg shrink-0"
+          >
+            👋
+          </div>
+        </button>
+
         <!-- 모임 모드일 때: 모임 떠나기 -->
         <button
-          v-if="currentGroup"
+          v-else-if="currentGroup"
           @click="handleLeaveGroup"
           class="w-44 flex items-center justify-between gap-3 px-4 py-2 bg-white rounded-full shadow-lg border border-gray-100 text-sm font-bold text-red-500 hover:bg-red-50 transition"
         >
@@ -204,20 +243,7 @@ const handleLeaveGroup = () => {
       class="w-14 h-14 rounded-full bg-purple-600 text-white shadow-lg flex items-center justify-center transition-all duration-300 ease-in-out"
       :class="{ 'rotate-45 bg-slate-700': isFabOpen }"
     >
-      <svg
-        xmlns="http://www.apache.org/2000/svg"
-        class="h-8 w-8"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M12 4v16m8-8H4"
-        />
-      </svg>
+      <Plus class="w-8 h-8"/>
     </button>
   </div>
 </template>
