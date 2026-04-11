@@ -35,6 +35,15 @@ function onAmountInput(e) {
 }
 const memo = ref('');
 
+const dumbScore = ref(0);
+const dumbLevels = [
+  { score: -2, emoji: '💸', label: '완전 낭비' },
+  { score: -1, emoji: '😭', label: '약간 낭비' },
+  { score: 0, emoji: '😐', label: '보통' },
+  { score: 1, emoji: '🥰', label: '잘 씀' },
+  { score: 2, emoji: '✨', label: '알뜰 살뜰' },
+];
+
 const isFormValid = computed(() => {
   return (
     amount.value && selectedCategory.value && title.value && dateTime.value
@@ -66,6 +75,7 @@ async function makeRecord() {
       amount: Number(amount.value),
       date: format(dateTime.value, "yyyy-MM-dd'T'HH:mm:ss"),
       memo: memo.value,
+      dumbScore: selectedType.value === 'expense' ? dumbScore.value : null,
     });
     emit('close');
   } catch (error) {
@@ -158,6 +168,42 @@ async function makeRecord() {
           <span class="text-xl">{{ category.icon }}</span>
           <span class="text-xs font-medium">{{ category.name }}</span>
         </button>
+      </div>
+    </div>
+
+    <!-- 멍청 비용 판단 (지출일 때만) -->
+    <div v-if="selectedType === 'expense'" class="space-y-3">
+      <Label class="text-sm font-medium"
+        >멍청 비용 판단<span class="text-red-500">*</span></Label
+      >
+      <div class="bg-gray-50 rounded-xl p-4 space-y-3">
+        <input
+          type="range"
+          min="-2"
+          max="2"
+          step="1"
+          v-model.number="dumbScore"
+          class="w-full accent-violet-600"
+        />
+        <div class="flex justify-between">
+          <div
+            v-for="level in dumbLevels"
+            :key="level.score"
+            class="flex flex-col items-center gap-1 w-10 cursor-pointer"
+            @click="dumbScore = level.score"
+          >
+            <span class="text-xl">{{ level.emoji }}</span>
+            <span
+              class="text-xs text-center"
+              :class="
+                dumbScore === level.score
+                  ? 'text-violet-600 font-semibold'
+                  : 'text-gray-400'
+              "
+              >{{ level.label }}</span
+            >
+          </div>
+        </div>
       </div>
     </div>
 

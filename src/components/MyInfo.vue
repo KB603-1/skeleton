@@ -1,5 +1,40 @@
 <script setup>
+import { computed } from 'vue';
+import { useRecordStore } from '@/stores/record';
+import { storeToRefs } from 'pinia';
 
+const recordStore = useRecordStore();
+const { expenses } = storeToRefs(recordStore);
+
+const SPENDING_TYPES = {
+  '식비':      { label: '식도락가형',   emoji: '🍽️', desc: '맛있는 걸 아는 당신!' },
+  '생활비':    { label: '생활충실형',   emoji: '🏠', desc: '알차게 사는 당신!' },
+  '주거/통신': { label: '홈마스터형',   emoji: '📡', desc: '편안한 집을 사랑하는 당신!' },
+  '교통/차량': { label: '이동왕형',     emoji: '🚗', desc: '어디든 달려가는 당신!' },
+  '쇼핑/뷰티': { label: '쇼핑킹형',    emoji: '🛍️', desc: '아름다움을 아는 당신!' },
+  '문화/여가': { label: '문화인형',     emoji: '🎭', desc: '삶의 여유를 아는 당신!' },
+  '건강/의료': { label: '건강지킴이형', emoji: '💊', desc: '건강을 챙기는 당신!' },
+  '기타':      { label: '자유영혼형',   emoji: '✨', desc: '나만의 길을 가는 당신!' },
+};
+
+const currentMonthExpenses = computed(() => {
+  const now = new Date();
+  return expenses.value.filter((e) => {
+    const d = new Date(e.date);
+    return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+  });
+});
+
+const spendingType = computed(() => {
+  if (currentMonthExpenses.value.length === 0) return null;
+  const totals = {};
+  for (const e of currentMonthExpenses.value) {
+    const name = e.category?.name ?? '기타';
+    totals[name] = (totals[name] ?? 0) + e.amount;
+  }
+  const top = Object.entries(totals).sort((a, b) => b[1] - a[1])[0][0];
+  return SPENDING_TYPES[top] ?? { label: '절약가형', emoji: '💰', desc: '알뜰살뜰 당신!' };
+});
 </script>
 
 <template>

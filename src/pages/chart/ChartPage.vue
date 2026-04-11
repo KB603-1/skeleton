@@ -83,22 +83,12 @@ const categoryData = computed(() => {
       category: name,
       emoji: cat?.icon ?? '💸',
       amount,
-      percent: Math.floor(exact),
-      remainder: exact - Math.floor(exact),
+      percent: exact,
       color: DEFAULT_COLORS[i % DEFAULT_COLORS.length],
     };
   });
 
-  // 100%가 되도록 나머지를 큰 순서대로 1씩 분배 (largest remainder method)
-  const floorSum = items.reduce((s, item) => s + item.percent, 0);
-  const diff = 100 - floorSum;
-  items
-    .slice()
-    .sort((a, b) => b.remainder - a.remainder)
-    .slice(0, diff)
-    .forEach((item) => { item.percent += 1; });
-
-  return items.map(({ remainder: _r, ...rest }) => rest);
+  return items;
 });
 
 const topCategory = computed(() => categoryData.value[0] ?? null);
@@ -183,24 +173,15 @@ const memberExpenseData = computed(() => {
       id: member.id,
       nickname: member.nickname,
       total,
-      groupPercent: Math.floor(exact),
-      remainder: exact - Math.floor(exact),
+      groupPercent: exact,
       color,
       isMe,
+      barPercent: 0,
     };
   });
 
-  // largest remainder method로 합계 100% 보정
-  const floorSum = mapped.reduce((s, m) => s + m.groupPercent, 0);
-  const diff = 100 - floorSum;
-  mapped
-    .slice()
-    .sort((a, b) => b.remainder - a.remainder)
-    .slice(0, diff)
-    .forEach((m) => { m.groupPercent += 1; });
-
   const maxTotal = Math.max(...mapped.map((m) => m.total), 1);
-  return mapped.map(({ remainder: _r, ...m }) => ({
+  return mapped.map((m) => ({
     ...m,
     barPercent: Math.round((m.total / maxTotal) * 100),
   }));
@@ -231,7 +212,7 @@ const memberExpenseData = computed(() => {
     <p class="text-purple-200 text-xs mt-2">
       <template v-if="topCategory">
         {{ topCategory.emoji }} {{ topCategory.category }}에 가장 많이 썼어요
-        ({{ topCategory.percent }}%)
+        ({{ topCategory.percent.toFixed(1) }}%)
       </template>
       <template v-else>이번 달 지출 내역이 없어요</template>
     </p>
@@ -271,7 +252,7 @@ const memberExpenseData = computed(() => {
             >
           </div>
           <span class="text-xs font-semibold" :style="{ color: item.color }"
-            >{{ item.percent }}%</span
+            >{{ item.percent.toFixed(1) }}%</span
           >
         </div>
       </div>
@@ -327,7 +308,7 @@ const memberExpenseData = computed(() => {
           <span
             class="text-xs font-bold w-8 text-right"
             :style="{ color: item.color }"
-            >{{ item.percent }}%</span
+            >{{ item.percent.toFixed(1) }}%</span
           >
         </div>
         <div class="ml-10 mt-1 h-1 bg-gray-100 rounded-full overflow-hidden">
@@ -397,7 +378,7 @@ const memberExpenseData = computed(() => {
             </div>
             <div class="flex items-baseline gap-1.5">
               <span class="text-xs text-gray-400"
-                >{{ member.groupPercent }}%</span
+                >{{ member.groupPercent.toFixed(1) }}%</span
               >
               <span class="text-sm font-bold text-gray-800"
                 >{{ member.total.toLocaleString() }}원</span
