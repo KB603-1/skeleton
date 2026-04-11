@@ -17,7 +17,7 @@ import { useRecordStore } from '@/stores/record';
 import { useGroupStore } from '@/stores/group';
 import { useUserStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, onActivated } from 'vue';
 
 const DEFAULT_COLORS = [
   '#a78bfa',
@@ -40,6 +40,11 @@ const userStore = useUserStore();
 const { user: currentUser } = storeToRefs(userStore);
 
 onMounted(() => {
+  recordStore.fetchRecord();
+  recordStore.fetchCategories();
+});
+
+onActivated(() => {
   recordStore.fetchRecord();
   recordStore.fetchCategories();
 });
