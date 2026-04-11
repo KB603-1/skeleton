@@ -4,7 +4,8 @@
       "id": "user01",
       "nickname": "유저1",
       "username": "user1",
-      "password": "pass1"
+      "password": "pass1",
+      "budgetGoal": 1400000
     },
     {
       "id": "user02",
@@ -2717,6 +2718,18 @@
       "userId": "user05",
       "groupId": null,
       "id": "MX5wo1X3Hpg"
+    },
+    {
+      "type": "expense",
+      "categoryId": "cat009",
+      "title": "햄버거 6개",
+      "amount": 50000,
+      "date": "2026-04-12T02:21:09",
+      "memo": "",
+      "dumbScore": -1,
+      "userId": "user01",
+      "groupId": null,
+      "id": "cbGguJjO6tE"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
