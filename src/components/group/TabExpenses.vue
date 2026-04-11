@@ -66,7 +66,7 @@ function formatAmount(amount) {
     <div class="flex p-1 bg-slate-100 rounded-xl mb-4">
       <button
         @click="activeType = 'all'"
-        class="flex-1 py-2 text-sm font-medium rounded-lg transition"
+        class="flex-1 py-2.5 text-sm font-medium rounded-lg transition"
         :class="
           activeType === 'all'
             ? 'bg-white text-slate-900 shadow-sm'
@@ -77,7 +77,7 @@ function formatAmount(amount) {
       </button>
       <button
         @click="activeType = 'expense'"
-        class="flex-1 py-2 text-sm font-medium rounded-lg transition"
+        class="flex-1 py-2.5 text-sm font-medium rounded-lg transition"
         :class="
           activeType === 'expense'
             ? 'bg-white text-slate-900 shadow-sm'
@@ -88,7 +88,7 @@ function formatAmount(amount) {
       </button>
       <button
         @click="activeType = 'income'"
-        class="flex-1 py-2 text-sm font-medium rounded-lg transition"
+        class="flex-1 py-2.5 text-sm font-medium rounded-lg transition"
         :class="
           activeType === 'income'
             ? 'bg-white text-slate-900 shadow-sm'
