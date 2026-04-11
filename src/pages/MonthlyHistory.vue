@@ -16,6 +16,16 @@ const currentMonth = ref(4);
 const selectedDate = ref(null);
 const searchQuery = ref('');
 
+function isTodayDate(day) {
+  if (!day) return false;
+  const today = new Date();
+  return (
+    currentYear.value === today.getFullYear() &&
+    currentMonth.value === today.getMonth() + 1 &&
+    day === today.getDate()
+  );
+}
+
 // 목업 데이터
 const transactions = computed(() => {
   return recordStore.records.map((record) => {
@@ -346,10 +356,21 @@ onBeforeUnmount(() => {
           <div
             class="w-7 h-7 flex items-center justify-center rounded-full text-sm font-medium mb-0.5"
             :class="[
-              isSelected(day) ? 'bg-[#7c4dff] text-white' : '',
-              !isSelected(day) && isSunday(idx) ? 'text-red-400' : '',
-              !isSelected(day) && isSaturday(idx) ? 'text-blue-400' : '',
-              !isSelected(day) && !isSunday(idx) && !isSaturday(idx)
+              isSelected(day)
+                ? 'bg-[#7c4dff] text-white'
+                : isTodayDate(day)
+                  ? 'bg-purple-100 text-[#7c4dff] font-bold'
+                  : '',
+              !isSelected(day) && !isTodayDate(day) && isSunday(idx)
+                ? 'text-red-400'
+                : '',
+              !isSelected(day) && !isTodayDate(day) && isSaturday(idx)
+                ? 'text-blue-400'
+                : '',
+              !isSelected(day) &&
+              !isTodayDate(day) &&
+              !isSunday(idx) &&
+              !isSaturday(idx)
                 ? 'text-gray-700'
                 : '',
             ]"
@@ -379,6 +400,10 @@ onBeforeUnmount(() => {
       <div class="flex items-center gap-1">
         <span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span>
         <span class="text-xs text-gray-500">수입</span>
+      </div>
+      <div class="flex items-center gap-1">
+        <span class="w-2 h-2 rounded-full bg-purple-100 inline-block"></span>
+        <span class="text-xs text-gray-500">오늘</span>
       </div>
       <div class="flex items-center gap-1">
         <span class="w-2 h-2 rounded-full bg-[#7c4dff] inline-block"></span>

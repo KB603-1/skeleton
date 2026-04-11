@@ -35,6 +35,12 @@ function onAmountInput(e) {
 }
 const memo = ref('');
 
+const isFormValid = computed(() => {
+  return (
+    amount.value && selectedCategory.value && title.value && dateTime.value
+  );
+});
+
 const categories = computed(() => {
   if (!selectedType.value) {
     return [];
@@ -109,7 +115,9 @@ async function makeRecord() {
 
     <!-- 금액 -->
     <div class="space-y-1.5">
-      <Label for="amount" class="text-sm font-medium">금액</Label>
+      <Label for="amount" class="text-sm font-medium"
+        >금액 <span class="text-red-500">*</span></Label
+      >
       <div class="relative">
         <input
           id="amount"
@@ -129,7 +137,9 @@ async function makeRecord() {
 
     <!-- 카테고리 -->
     <div class="space-y-1.5">
-      <Label class="text-sm font-medium">카테고리</Label>
+      <Label class="text-sm font-medium"
+        >카테고리 <span class="text-red-500">*</span></Label
+      >
       <div class="grid grid-cols-4 gap-2">
         <button
           v-for="category in categories"
@@ -153,21 +163,27 @@ async function makeRecord() {
 
     <!-- 내역명 -->
     <div class="space-y-1.5">
-      <Label for="title" class="text-sm font-medium">{{ selectedType === 'income' ? '수입명' : '지출명' }}</Label>
-      <Input id="title" v-model="title" type="text" :placeholder="selectedType === 'income' ? '예) 월급, 용돈' : '예) 스타벅스 아메리카노'"/>
+      <Label for="title" class="text-sm font-medium"
+        >{{ selectedType === 'income' ? '수입명' : '지출명' }}
+        <span class="text-red-500">*</span></Label
+      >
+      <Input
+        id="title"
+        v-model="title"
+        type="text"
+        :placeholder="
+          selectedType === 'income'
+            ? '예) 월급, 용돈'
+            : '예) 스타벅스 아메리카노'
+        "
+      />
     </div>
 
-    <div>
-      <DateTimePicker v-model="dateTime" />
-    </div>
+    <!-- 날짜 -->
+    <DateTimePicker v-model="dateTime" />
     <!-- 메모 -->
     <div class="space-y-1.5">
-      <Label for="memo" class="text-sm font-medium">
-        메모
-        <span class="ml-1 text-xs text-muted-foreground font-normal"
-          >(선택)</span
-        >
-      </Label>
+      <Label for="memo" class="text-sm font-medium">메모</Label>
       <Textarea
         id="memo"
         v-model="memo"
@@ -184,6 +200,7 @@ async function makeRecord() {
       </Button>
       <Button
         @click.prevent="makeRecord"
+        :disabled="!isFormValid"
         class="flex-1"
         :class="
           selectedType === 'income'
