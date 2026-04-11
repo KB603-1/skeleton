@@ -12,20 +12,12 @@ import TotalExpenseCard from '@/components/main/TotalExpenseCard.vue';
 import BudgetGoalCard from '@/components/main/BudgetGoalCard.vue';
 import GroupNoticeCard from '@/components/main/GroupNoticeCard.vue';
 
-
-const router = useRouter();
-
-
 const groupStore = useGroupStore();
 const { currentGroup } = storeToRefs(groupStore);
 
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 const userName = computed(() => user.value?.nickname || '사용자');
-
-
-
-
 </script>
 
 <template>
@@ -36,7 +28,8 @@ const userName = computed(() => user.value?.nickname || '사용자');
         오늘도 현명한 하루 💸
       </p>
       <h2 class="text-2xl font-bold text-gray-900 tracking-tight">
-        <span class="text-purple-600">{{ userName }}</span>님, 안녕하세요!
+        <span class="text-purple-600">{{ userName }}</span
+        >님, 안녕하세요!
       </h2>
     </div>
     <GroupDrawer />
@@ -58,9 +51,6 @@ const userName = computed(() => user.value?.nickname || '사용자');
   <!-- 최근 내역 -->
   <RecentTransactions />
 
-
   <!-- 플로팅 액션 버튼 -->
   <FloatingActionButton />
-
-
 </template>
