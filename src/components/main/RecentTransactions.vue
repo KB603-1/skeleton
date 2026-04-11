@@ -43,6 +43,9 @@ const recentTransactions = computed(() => {
       <RouterLink to="/monthly" class="text-xs text-purple-500 font-medium">전체보기 ›</RouterLink>
     </div>
     <div class="flex flex-col gap-2">
+      <p v-if="recentTransactions.length === 0" class="text-center text-sm text-gray-400 py-6">
+        데이터가 없습니다
+      </p>
       <Card
         v-for="tx in recentTransactions"
         :key="tx.id"

@@ -68,18 +68,32 @@ const categoryData = computed(() => {
     totals[name] = (totals[name] ?? 0) + e.amount;
   }
   const total = totalMonthExpenses.value;
-  return Object.entries(totals)
-    .sort((a, b) => b[1] - a[1])
-    .map(([name, amount], i) => {
-      const cat = expenseCategories.value.find((c) => c.name === name);
-      return {
-        category: name,
-        emoji: cat?.icon ?? '💸',
-        amount,
-        percent: total > 0 ? Math.round((amount / total) * 100) : 0,
-        color: DEFAULT_COLORS[i % DEFAULT_COLORS.length],
-      };
-    });
+  const sorted = Object.entries(totals).sort((a, b) => b[1] - a[1]);
+
+  // 각 항목의 정확한 비율과 내림값 계산
+  const items = sorted.map(([name, amount], i) => {
+    const cat = expenseCategories.value.find((c) => c.name === name);
+    const exact = total > 0 ? (amount / total) * 100 : 0;
+    return {
+      category: name,
+      emoji: cat?.icon ?? '💸',
+      amount,
+      percent: Math.floor(exact),
+      remainder: exact - Math.floor(exact),
+      color: DEFAULT_COLORS[i % DEFAULT_COLORS.length],
+    };
+  });
+
+  // 100%가 되도록 나머지를 큰 순서대로 1씩 분배 (largest remainder method)
+  const floorSum = items.reduce((s, item) => s + item.percent, 0);
+  const diff = 100 - floorSum;
+  items
+    .slice()
+    .sort((a, b) => b.remainder - a.remainder)
+    .slice(0, diff)
+    .forEach((item) => { item.percent += 1; });
+
+  return items.map(({ remainder: _r, ...rest }) => rest);
 });
 
 const topCategory = computed(() => categoryData.value[0] ?? null);
@@ -157,22 +171,31 @@ const memberExpenseData = computed(() => {
       (e) => e.userId === member.id,
     );
     const total = memberExpenses.reduce((sum, e) => sum + e.amount, 0);
-    const groupPercent =
-      groupTotal > 0 ? Math.round((total / groupTotal) * 100) : 0;
+    const exact = groupTotal > 0 ? (total / groupTotal) * 100 : 0;
     const color = DEFAULT_COLORS[i % DEFAULT_COLORS.length];
     const isMe = currentUser.value?.id === member.id;
     return {
       id: member.id,
       nickname: member.nickname,
       total,
-      groupPercent,
+      groupPercent: Math.floor(exact),
+      remainder: exact - Math.floor(exact),
       color,
       isMe,
     };
   });
 
+  // largest remainder method로 합계 100% 보정
+  const floorSum = mapped.reduce((s, m) => s + m.groupPercent, 0);
+  const diff = 100 - floorSum;
+  mapped
+    .slice()
+    .sort((a, b) => b.remainder - a.remainder)
+    .slice(0, diff)
+    .forEach((m) => { m.groupPercent += 1; });
+
   const maxTotal = Math.max(...mapped.map((m) => m.total), 1);
-  return mapped.map((m) => ({
+  return mapped.map(({ remainder: _r, ...m }) => ({
     ...m,
     barPercent: Math.round((m.total / maxTotal) * 100),
   }));
@@ -254,7 +277,7 @@ const memberExpenseData = computed(() => {
   <div class="mx-5 mt-4 rounded-2xl bg-white p-4 shadow-sm">
     <h3 class="text-base font-bold text-gray-800 mb-3">월별 소비 추이</h3>
     <ChartContainer :config="barConfig" class="h-36">
-      <VisXYContainer :data="monthlyData" :height="144">
+      <VisXYContainer :key="monthlyData.map(d => d.amount).join(',')" :data="monthlyData" :height="144">
         <VisGroupedBar
           :x="barX"
           :y="barY"

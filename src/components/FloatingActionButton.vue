@@ -143,11 +143,11 @@ const handleLeaveGroup = () => {
         <!-- 공통: 수입/지출 추가 -->
         <button
           @click="goToAddRecord"
-          class="flex items-center gap-3 px-4 py-2 bg-white rounded-full shadow-lg border border-gray-100 text-sm font-bold text-gray-700 hover:bg-gray-50 transition"
+          class="w-44 flex items-center justify-between gap-3 px-4 py-2 bg-white rounded-full shadow-lg border border-gray-100 text-sm font-bold text-gray-700 hover:bg-gray-50 transition"
         >
-          <span>수입/지출 추가</span>
+          <span class="flex-1 text-center">수입/지출 추가</span>
           <div
-            class="w-8 h-8 rounded-full bg-violet-100 text-violet-600 flex items-center justify-center text-lg"
+            class="w-8 h-8 rounded-full bg-violet-100 text-violet-600 flex items-center justify-center text-lg shrink-0"
           >
             📝
           </div>
@@ -156,11 +156,11 @@ const handleLeaveGroup = () => {
         <!-- 공통: 모임 추가 -->
         <button
           @click="goToAddGroup"
-          class="flex items-center gap-3 px-4 py-2 bg-white rounded-full shadow-lg border border-gray-100 text-sm font-bold text-gray-700 hover:bg-gray-50 transition"
+          class="w-44 flex items-center justify-between gap-3 px-4 py-2 bg-white rounded-full shadow-lg border border-gray-100 text-sm font-bold text-gray-700 hover:bg-gray-50 transition"
         >
-          <span>모임 추가</span>
+          <span class="flex-1 text-center">모임 추가</span>
           <div
-            class="w-8 h-8 rounded-full bg-violet-100 text-violet-600 flex items-center justify-center text-lg"
+            class="w-8 h-8 rounded-full bg-violet-100 text-violet-600 flex items-center justify-center text-lg shrink-0"
           >
             🤝
           </div>
@@ -170,11 +170,11 @@ const handleLeaveGroup = () => {
         <button
           v-if="currentGroup"
           @click="handleInviteFriend"
-          class="flex items-center gap-3 px-4 py-2 bg-white rounded-full shadow-lg border border-gray-100 text-sm font-bold text-gray-700 hover:bg-gray-50 transition"
+          class="w-44 flex items-center justify-between gap-3 px-4 py-2 bg-white rounded-full shadow-lg border border-gray-100 text-sm font-bold text-gray-700 hover:bg-gray-50 transition"
         >
-          <span>친구 초대</span>
+          <span class="flex-1 text-center">친구 초대</span>
           <div
-            class="w-8 h-8 rounded-full bg-violet-100 text-red-500 flex items-center justify-center text-lg"
+            class="w-8 h-8 rounded-full bg-violet-100 text-red-500 flex items-center justify-center text-lg shrink-0"
           >
             👋
           </div>
@@ -184,11 +184,11 @@ const handleLeaveGroup = () => {
         <button
           v-if="currentGroup"
           @click="handleLeaveGroup"
-          class="flex items-center gap-3 px-4 py-2 bg-white rounded-full shadow-lg border border-gray-100 text-sm font-bold text-red-500 hover:bg-red-50 transition"
+          class="w-44 flex items-center justify-between gap-3 px-4 py-2 bg-white rounded-full shadow-lg border border-gray-100 text-sm font-bold text-red-500 hover:bg-red-50 transition"
         >
-          <span>모임 떠나기</span>
+          <span class="flex-1 text-center">모임 떠나기</span>
           <div
-            class="w-8 h-8 rounded-full bg-red-100 text-red-500 flex items-center justify-center text-lg"
+            class="w-8 h-8 rounded-full bg-red-100 text-red-500 flex items-center justify-center text-lg shrink-0"
           >
             👋
           </div>

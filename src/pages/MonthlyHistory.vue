@@ -296,7 +296,7 @@ onBeforeUnmount(() => {
         </p>
         <p class="text-xs mt-0.5">
           <span class="text-red-500"
-            >지출 {{ Math.abs(monthlyExpense).toLocaleString() }}원</span
+            >지출 -{{ Math.abs(monthlyExpense).toLocaleString() }}원</span
           >
           <span class="text-blue-500 ml-2"
             >수입 +{{ monthlyIncome.toLocaleString() }}원</span
@@ -475,8 +475,18 @@ onBeforeUnmount(() => {
       @click="scrollToTop"
       class="fixed bottom-36 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-gray-500 hover:text-[#7c4dff] hover:border-[#7c4dff] transition z-40"
     >
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7" />
+      <svg
+        class="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2.5"
+          d="M5 15l7-7 7 7"
+        />
       </svg>
     </button>
   </transition>
