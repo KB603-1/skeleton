@@ -2,14 +2,13 @@
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user.js';
 import { storeToRefs } from 'pinia';
-import { User, Bell, UserX, ChevronRight } from 'lucide-vue-next';
+import { Bell, UserX, ChevronRight } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useModalStore } from '@/stores/modal.js';
 import EditProfileModal from '@/components/EditProfileModal.vue';
-import EditUsernameModal from '@/components/EditUsernameModal.vue';
 import EditPasswordModal from '@/components/EditPasswordModal.vue';
 import DeleteAccountModal from '@/components/DeleteAccountModal.vue';
 
@@ -36,11 +35,6 @@ function handleLogout() {
 
 const menuItems = [
   {
-    icon: User,
-    label: '아이디 변경',
-    action: () => modalStore.openModal(EditUsernameModal, { userId: getUserId() }),
-  },
-  {
     icon: Bell,
     label: '비밀번호 변경',
     action: () => modalStore.openModal(EditPasswordModal, { userId: getUserId() }),
@@ -57,7 +51,7 @@ const menuItems = [
   <div class="flex flex-col min-h-full">
     <!-- Header -->
     <div
-      class="bg-gradient-to-br from-violet-600 to-purple-500 px-5 pt-6 pb-16 relative overflow-hidden"
+      class="bg-linear-to-br from-violet-600 to-purple-500 px-5 pt-6 pb-16 relative overflow-hidden"
     >
       <div class="absolute -top-6 right-4 w-28 h-28 bg-white/10 rounded-full" />
       <div class="absolute top-4 right-16 w-14 h-14 bg-white/10 rounded-full" />
