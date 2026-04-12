@@ -164,7 +164,7 @@ const menuItems = [
     <!-- Body -->
     <div class="flex-1 px-4 pt-6 pb-4 space-y-4">
       <!-- 이번 달 예산 목표 (개인 모드에서만) -->
-      <div v-if="!currentGroup">
+      <div>
         <p class="text-muted-foreground text-sm mb-2 px-1">이번 달 예산 목표</p>
         <Card class="py-0 overflow-hidden">
           <CardContent class="p-4">
