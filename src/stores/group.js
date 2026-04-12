@@ -71,9 +71,10 @@ export const useGroupStore = defineStore('group', () => {
           id: group.id,
           name: group.name,
           password: group.password,
-          isOwner: group.userId === user.id,
+          isOwner: group.userId == user.id,
           ownerId: group.userId,
           notice: group.notice || '',
+          budgetGoal: group.budgetGoal || 0,
           members: [],
         };
       });
@@ -293,6 +294,16 @@ export const useGroupStore = defineStore('group', () => {
     }
   }
 
+  // 그룹 예산 설정 (전체 멤버)
+  async function updateGroupBudget(groupId, budget) {
+    if (!isLoggedIn.value) throw new Error('로그인이 필요합니다.');
+    const group = myGroups.value.find((g) => g.id === groupId);
+    if (!group) throw new Error('그룹을 찾을 수 없습니다.');
+    await api.patch(`/groups/${groupId}`, { budgetGoal: budget });
+    group.budgetGoal = budget;
+    if (currentGroup.value?.id === groupId) currentGroup.value.budgetGoal = budget;
+  }
+
   // 공지사항 저장 (방장 전용)
   async function updateNotice(groupId, notice) {
     const user = getLoggedInUser();
@@ -322,6 +333,7 @@ export const useGroupStore = defineStore('group', () => {
     joinGroup,
     leaveGroup,
     removeMember,
+    updateGroupBudget,
     updateNotice,
   };
 });

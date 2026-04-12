@@ -223,6 +223,17 @@ const removeMember = (member) => {
   });
 };
 
+// 그룹 예산 설정
+const handleSetBudget = async (val) => {
+  if (!currentGroup.value) return;
+  try {
+    await groupStore.updateGroupBudget(currentGroup.value.id, val);
+    toast.success(val > 0 ? '목표 예산이 저장되었습니다.' : '목표 예산이 삭제되었습니다.');
+  } catch (e) {
+    toast.error(e.message || '오류가 발생했습니다.');
+  }
+};
+
 // currentGroup의 상태 변화를 감지하여 의도적으로 그룹이 해제될 때만 메인으로 이동 (새로고침 시 튕김 방지)
 watch(currentGroup, (newGroup, oldGroup) => {
   if (oldGroup && !newGroup) {
@@ -254,8 +265,11 @@ watch(currentGroup, (newGroup, oldGroup) => {
       <TabMembers
         v-show="activeTab === 'members'"
         :members="members"
+        :isOwner="currentGroup?.isOwner ?? false"
+        :budgetGoal="currentGroup?.budgetGoal ?? 0"
         @copyLink="copyInviteLink"
         @removeMember="removeMember"
+        @setBudget="handleSetBudget"
       />
       <TabPlay v-show="activeTab === 'play'" :members="members" />
     </main>

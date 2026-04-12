@@ -98,6 +98,61 @@ async function clearBudget() {
   }
 }
 
+// ── 그룹 예산 설정 ──────────────────────────────────
+const savedGroupBudget = ref(0);
+const groupBudgetInput = ref('');
+const isEditingGroupBudget = ref(false);
+
+watch(
+  currentGroup,
+  (g) => {
+    if (g) {
+      const val = g.budgetGoal || 0;
+      savedGroupBudget.value = val;
+      groupBudgetInput.value = val ? String(val) : '';
+      isEditingGroupBudget.value = val === 0;
+    }
+  },
+  { immediate: true },
+);
+
+const displayGroupBudgetInput = computed(() =>
+  groupBudgetInput.value
+    ? Number(groupBudgetInput.value.replace(/[^0-9]/g, '')).toLocaleString()
+    : '',
+);
+
+function onGroupBudgetInput(e) {
+  const digits = e.target.value.replace(/[^0-9]/g, '');
+  groupBudgetInput.value = digits;
+  e.target.value = digits ? Number(digits).toLocaleString() : '';
+}
+
+async function saveGroupBudget() {
+  const val = Number(groupBudgetInput.value.replace(/[^0-9]/g, ''));
+  if (!val || val <= 0) return;
+  try {
+    await groupStore.updateGroupBudget(currentGroup.value.id, val);
+    savedGroupBudget.value = val;
+    isEditingGroupBudget.value = false;
+    toast.success('그룹 예산 목표가 저장되었습니다.');
+  } catch (e) {
+    toast.error(e.message || '오류가 발생했습니다.');
+  }
+}
+
+async function clearGroupBudget() {
+  try {
+    await groupStore.updateGroupBudget(currentGroup.value.id, 0);
+    savedGroupBudget.value = 0;
+    groupBudgetInput.value = '';
+    isEditingGroupBudget.value = true;
+    toast.success('그룹 예산 목표가 삭제되었습니다.');
+  } catch (e) {
+    toast.error(e.message || '오류가 발생했습니다.');
+  }
+}
+
 const menuItems = [
   {
     icon: Bell,
@@ -164,7 +219,7 @@ const menuItems = [
     <!-- Body -->
     <div class="flex-1 px-4 pt-6 pb-4 space-y-4">
       <!-- 이번 달 예산 목표 (개인 모드에서만) -->
-      <div>
+      <div v-if="!currentGroup">
         <p class="text-muted-foreground text-sm mb-2 px-1">이번 달 예산 목표</p>
         <Card class="py-0 overflow-hidden">
           <CardContent class="p-4">
@@ -235,6 +290,50 @@ const menuItems = [
                   @click="clearBudget"
                   >삭제</Button
                 >
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <!-- 그룹 예산 목표 (그룹 모드 전체 멤버) -->
+      <div v-if="currentGroup">
+        <p class="text-muted-foreground text-sm mb-2 px-1">그룹 예산 목표</p>
+        <Card class="py-0 overflow-hidden">
+          <CardContent class="p-4">
+            <!-- 설정 모드 -->
+            <div v-if="isEditingGroupBudget" class="space-y-3">
+              <p class="text-sm text-gray-500">
+                {{ savedGroupBudget === 0 ? '그룹 예산을 설정하면 홈에서 1인당 하루 권장 금액을 알려드려요!' : '그룹 예산 목표를 수정해요' }}
+              </p>
+              <div class="flex gap-2">
+                <div class="relative flex-1">
+                  <input
+                    type="text"
+                    inputmode="numeric"
+                    placeholder="예: 500,000"
+                    :value="displayGroupBudgetInput"
+                    @input="onGroupBudgetInput"
+                    class="w-full h-9 rounded-md border border-input bg-transparent px-3 py-1 pr-8 text-base shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                  />
+                  <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">원</span>
+                </div>
+                <Button size="sm" @click="saveGroupBudget" class="bg-[#836BC2] hover:bg-[#836BC2]/90 text-white">저장</Button>
+                <Button v-if="savedGroupBudget > 0" size="sm" variant="ghost" @click="isEditingGroupBudget = false">취소</Button>
+              </div>
+            </div>
+
+            <!-- 설정됨 -->
+            <div v-else class="flex items-center justify-between">
+              <div>
+                <p class="text-xs text-gray-400 mb-0.5">{{ year }}년 {{ month }}월 그룹 예산</p>
+                <p class="text-lg font-bold text-gray-800">
+                  {{ savedGroupBudget.toLocaleString() }}<span class="text-sm font-medium text-gray-500 ml-1">원</span>
+                </p>
+              </div>
+              <div class="flex gap-2">
+                <Button size="sm" variant="outline" @click="isEditingGroupBudget = true">수정</Button>
+                <Button size="sm" variant="ghost" class="text-rose-400 hover:text-rose-500 hover:bg-rose-50" @click="clearGroupBudget">삭제</Button>
               </div>
             </div>
           </CardContent>

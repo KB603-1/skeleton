@@ -7,9 +7,13 @@ import {
 } from '@/components/ui/carousel/index.js';
 import { computed } from 'vue';
 import { useRecordStore } from '@/stores/record.js';
+import { useGroupStore } from '@/stores/group.js';
+import { storeToRefs } from 'pinia';
 import GroupBudgetStatusCarousel from './main/GroupBudgetStatusCarousel.vue';
 
 const recordStore = useRecordStore();
+const groupStore = useGroupStore();
+const { currentGroup } = storeToRefs(groupStore);
 
 const currentMonthRecords = computed(() => {
   const now = new Date();
@@ -105,7 +109,8 @@ const top3CategoryExpense = computed(() => {
       <!-- 슬라이드 1: 그룹 예산 현황 -->
       <GroupBudgetStatusCarousel
         :totalExpense="summary.totalExpense"
-        :groupedRecord="summary.groupedRecord"
+        :budgetGoal="currentGroup?.budgetGoal || 0"
+        :memberCount="currentGroup?.members?.length || 1"
       />
       <!-- 슬라이드 2: 멍청 비용 -->
       <CarouselItem>
