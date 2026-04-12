@@ -118,7 +118,7 @@ const menuItems = [
   <div class="flex flex-col min-h-full">
     <!-- Header -->
     <div
-      class="bg-linear-to-br from-violet-600 to-purple-500 px-5 pt-6 pb-16 relative overflow-hidden"
+      class="bg-[#836BC2] px-5 pt-6 pb-16 relative overflow-hidden"
     >
       <div class="absolute -top-6 right-4 w-28 h-28 bg-white/10 rounded-full" />
       <div class="absolute top-4 right-16 w-14 h-14 bg-white/10 rounded-full" />
@@ -129,9 +129,9 @@ const menuItems = [
     <Card class="mx-4 -mt-10 relative z-10 py-4">
       <CardContent class="flex items-center gap-4 p-4 pt-0 pb-0">
         <div class="relative">
-          <Avatar class="size-16 rounded-2xl bg-violet-600">
+          <Avatar class="size-16 rounded-2xl bg-[#836BC2]">
             <AvatarFallback
-              class="rounded-2xl bg-violet-600 text-white text-2xl font-bold"
+              class="rounded-2xl bg-[#836BC2] text-white text-2xl font-bold"
             >
               {{ user?.nickname?.charAt(0) ?? '나' }}
             </AvatarFallback>

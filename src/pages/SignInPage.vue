@@ -150,6 +150,13 @@ const characterAnimation = computed(() => ({
   overflow: hidden;
 }
 
+@media (max-height: 650px) {
+  .login-bg {
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+}
+
 /* 배경 점 */
 .dots-layer {
   position: absolute;
@@ -173,6 +180,12 @@ const characterAnimation = computed(() => ({
   flex-direction: column;
   align-items: center;
   gap: 0;
+}
+
+@media (max-height: 650px) {
+  .login-wrap {
+    padding-top: 40px;
+  }
 }
 
 /* 캐릭터 */

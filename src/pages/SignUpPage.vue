@@ -211,6 +211,13 @@ async function signUp() {
   overflow: hidden;
 }
 
+@media (max-height: 780px) {
+  .login-bg {
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+}
+
 .dots-layer {
   position: absolute;
   inset: 0;
@@ -224,6 +231,12 @@ async function signUp() {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+@media (max-height: 780px) {
+  .login-wrap {
+    padding-top: 24px;
+  }
 }
 
 /* 뒤로가기 */

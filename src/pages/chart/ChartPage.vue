@@ -196,7 +196,7 @@ const memberExpenseData = computed(() => {
 
   <!-- 총 소비 카드 -->
   <div
-    class="mx-5 mt-3 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 p-5 shadow-lg relative overflow-hidden"
+    class="mx-5 mt-3 rounded-2xl bg-[#836BC2] p-5 shadow-lg relative overflow-hidden"
   >
     <div
       class="absolute -right-6 -top-6 w-32 h-32 rounded-full bg-purple-400/30"

@@ -90,42 +90,39 @@ const spendingType = computed(() => {
       />
 
       <CarouselItem>
-        <div
-          v-if="spendingType"
-          class="bg-linear-to-br from-[#836BC2] to-[#836BC2]/80 rounded-2xl p-5 flex flex-col gap-3 h-[300px]"
-        >
-          <span
-            class="inline-flex items-center gap-1.5 bg-[#836BC2] text-white text-xs font-semibold px-3 py-1 rounded-full self-start"
-          >
-            ✨ 나의 소비 유형
-          </span>
-          <div class="flex items-center gap-4">
-            <div
-              class="w-16 h-16 rounded-2xl bg-purple-400/30 flex items-center justify-center text-4xl shrink-0"
-            >
-              {{ spendingType.emoji }}
-            </div>
-            <div>
-              <p class="text-white text-xl font-bold">
-                {{ spendingType.label }}
-              </p>
-              <p class="text-purple-200 text-sm mt-1">
-                {{ spendingType.desc }}
-              </p>
-            </div>
+        <div class="bg-white rounded-2xl p-5 flex flex-col h-75 shadow-sm border border-gray-100">
+          <!-- 헤더 -->
+          <div class="flex justify-between items-center mb-1">
+            <h3 class="font-bold text-[#191919] text-base">✨ 나의 소비 유형</h3>
+            <span class="text-[10px] font-bold px-2 py-1 rounded-md bg-[#836BC2]/10 text-[#836BC2]">
+              이번 달
+            </span>
           </div>
-          <div class="bg-purple-400/20 rounded-xl px-4 py-3">
-            <p class="text-purple-100 text-xs">
-              이번 달 가장 많이 쓴 카테고리를 기반으로 분석했어요.
-            </p>
+
+          <!-- 소비 유형 있을 때 -->
+          <template v-if="spendingType">
+            <div class="flex items-center gap-4 mt-4">
+              <div class="w-16 h-16 rounded-2xl bg-[#836BC2]/10 flex items-center justify-center text-4xl shrink-0">
+                {{ spendingType.emoji }}
+              </div>
+              <div>
+                <p class="text-[#191919] text-xl font-bold">{{ spendingType.label }}</p>
+                <p class="text-gray-500 text-sm mt-1">{{ spendingType.desc }}</p>
+              </div>
+            </div>
+
+            <div class="mt-auto bg-gray-50 rounded-xl p-3 text-center border border-gray-100">
+              <p class="text-xs text-gray-500 font-medium">
+                이번 달 가장 많이 쓴 카테고리를 기반으로 분석했어요.
+              </p>
+            </div>
+          </template>
+
+          <!-- 소비 유형 없을 때 -->
+          <div v-else class="flex flex-col items-center justify-center flex-1 text-center">
+            <p class="text-gray-400 text-sm">아직 지출 내역이 없어요</p>
+            <p class="text-gray-700 font-semibold mt-1">기록을 시작해보세요! 📝</p>
           </div>
-        </div>
-        <div
-          v-else
-          class="bg-linear-to-br from-[#836BC2] to-[#836BC2]/80 rounded-2xl p-5 flex flex-col items-center justify-center text-center h-[300px]"
-        >
-          <p class="text-purple-200 text-sm">아직 지출 내역이 없어요</p>
-          <p class="text-white font-semibold mt-1">기록을 시작해보세요! 📝</p>
         </div>
       </CarouselItem>
     </CarouselContent>

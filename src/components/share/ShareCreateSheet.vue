@@ -94,7 +94,7 @@ const submit = () => {
                 :class="[
                   'flex h-12 w-12 items-center justify-center rounded-2xl border transition',
                   selectedIcon === icon
-                    ? 'border-violet-600 bg-violet-50 text-violet-700'
+                    ? 'border-[#836BC2] bg-[#836BC2]/10 text-[#836BC2]'
                     : 'border-slate-200 bg-slate-100 text-slate-500 hover:border-slate-300',
                 ]"
               >
@@ -129,7 +129,7 @@ const submit = () => {
 
         <button
           type="button"
-          class="mt-5 w-full rounded-3xl bg-violet-600 px-5 py-4 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition hover:bg-violet-700"
+          class="mt-5 w-full rounded-3xl bg-[#836BC2] px-5 py-4 text-sm font-semibold text-white shadow-lg shadow-[#836BC2]/30 transition hover:bg-[#836BC2]/90"
           @click="submit"
         >
           모임 만들기
