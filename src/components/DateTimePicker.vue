@@ -30,30 +30,30 @@ watch([date, time], () => {
 <template>
   <div class="mx-auto w-full flex flex-row gap-4">
     <!-- Date -->
-    <div class="flex flex-1 flex-col gap-1.5">
+    <div class="flex flex-1 min-w-0 flex-col gap-1.5">
       <Label for="date-picker">날짜<span class="text-red-500">*</span></Label>
       <Popover v-model:open="open">
         <PopoverTrigger as-child>
           <Button
-            id="date-picker"
-            variant="outline"
-            class="justify-between font-normal"
+              id="date-picker"
+              variant="outline"
+              class="w-full justify-between font-normal"
           >
             {{
               date
-                ? format(date.toDate(getLocalTimeZone()), 'yyyy년 MM월 dd일')
-                : '날짜를 선택해주세요.'
+                  ? format(date.toDate(getLocalTimeZone()), 'yyyy년 MM월 dd일')
+                  : '날짜를 선택해주세요.'
             }}
           </Button>
         </PopoverTrigger>
         <PopoverContent class="w-auto overflow-hidden p-0" align="start">
           <Calendar
-            mode="single"
-            :selected="date"
-            caption-layout="dropdown"
-            :default-month="date"
-            locale="ko"
-            @update:model-value="
+              mode="single"
+              :selected="date"
+              caption-layout="dropdown"
+              :default-month="date"
+              locale="ko"
+              @update:model-value="
               (v) => {
                 date = v;
                 open = false;
@@ -65,14 +65,14 @@ watch([date, time], () => {
     </div>
 
     <!-- Time -->
-    <div class="flex flex-1 flex-col gap-1.5">
+    <div class="flex flex-1 min-w-0 flex-col gap-1.5">
       <Label for="time-picker">시각<span class="text-red-500">*</span></Label>
       <Input
-        id="time-picker"
-        v-model="time"
-        type="time"
-        step="1"
-        class="appearance-none bg-background [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+          id="time-picker"
+          v-model="time"
+          type="time"
+          step="1"
+          class="w-full appearance-none bg-background [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
       />
     </div>
   </div>
