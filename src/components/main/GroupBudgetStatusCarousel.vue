@@ -10,8 +10,12 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  budgetGoal: {
+  totalIncome: {
     type: Number,
+    required: true,
+  },
+  budgetGoal: {
+    type: [Number, Object],
     required: true,
   },
   memberCount: {
@@ -20,15 +24,40 @@ const props = defineProps({
   },
 });
 
-const budgetUsagePercent = computed(() => {
-  if (props.budgetGoal <= 0) return 0;
+const spendingLimit = computed(() => {
+  if (typeof props.budgetGoal === 'object' && props.budgetGoal !== null) {
+    return props.budgetGoal.spendingLimit || 0;
+  }
+  return props.budgetGoal || 0;
+});
+
+const savingGoal = computed(() => {
+  if (typeof props.budgetGoal === 'object' && props.budgetGoal !== null) {
+    return props.budgetGoal.savingGoal || 0;
+  }
+  return 0;
+});
+
+const spendingPercent = computed(() => {
+  if (spendingLimit.value <= 0) return 0;
   return Math.min(
-    Math.round((props.totalExpense / props.budgetGoal) * 100),
+    Math.round((props.totalExpense / spendingLimit.value) * 100),
     100,
   );
 });
 
-const isOverBudget = computed(() => props.totalExpense > props.budgetGoal);
+const savingPercent = computed(() => {
+  if (savingGoal.value <= 0) return 0;
+  return Math.min(
+    Math.round((props.totalIncome / savingGoal.value) * 100),
+    100,
+  );
+});
+
+const isOverBudget = computed(() => props.totalExpense > spendingLimit.value);
+const isSavingGoalReached = computed(
+  () => savingGoal.value > 0 && props.totalIncome >= savingGoal.value,
+);
 
 const remainingDays = computed(() => {
   const now = new Date();
@@ -37,7 +66,7 @@ const remainingDays = computed(() => {
 });
 
 const dailyPerPerson = computed(() => {
-  const remaining = props.budgetGoal - props.totalExpense;
+  const remaining = spendingLimit.value - props.totalExpense;
   if (remaining <= 0) return 0;
   return Math.floor(remaining / remainingDays.value / props.memberCount);
 });
@@ -49,112 +78,229 @@ const dailyPerPerson = computed(() => {
       class="bg-white rounded-2xl p-5 flex flex-col h-75 shadow-sm border border-gray-100"
     >
       <!-- 예산 설정된 경우 -->
-      <template v-if="budgetGoal > 0">
+      <template v-if="spendingLimit > 0 || savingGoal > 0">
         <!-- 헤더 -->
         <div class="flex justify-between items-center mb-1">
-          <h3 class="font-bold text-[#191919] text-base">
-            🎯 이번 달 그룹 예산
+          <h3 class="font-bold text-[#5e5e5e] text-base">
+            이번 달 모임 예산 현황
           </h3>
-          <span
-            class="text-[10px] font-bold px-2 py-1 rounded-md"
-            :class="
-              isOverBudget
-                ? 'bg-red-50 text-red-500'
-                : 'bg-[#836BC2]/10 text-[#836BC2]'
-            "
-          >
-            {{ isOverBudget ? '예산 초과' : '순항 중' }}
-          </span>
         </div>
 
-        <div class="flex items-center mt-2 flex-1 w-full">
-          <!-- 좌측: 원형 그래프 -->
-          <div class="flex-1 flex justify-center">
-            <div class="relative w-30 h-30 shrink-0">
-              <svg viewBox="0 0 36 36" class="w-full h-full">
-                <path
-                  class="text-gray-100"
-                  stroke-width="3"
-                  stroke="currentColor"
-                  fill="none"
-                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                />
-                <path
-                  :class="isOverBudget ? 'text-red-500' : 'text-emerald-400'"
-                  stroke-dasharray="100, 100"
-                  :stroke-dashoffset="100 - budgetUsagePercent"
-                  stroke-linecap="round"
-                  stroke-width="3"
-                  stroke="currentColor"
-                  fill="none"
-                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                  class="transition-all duration-1000 ease-out"
-                />
-              </svg>
-              <div
-                class="absolute inset-0 flex flex-col items-center justify-center"
-              >
-                <span
-                  class="text-2xl font-bold text-[#191919] tracking-tighter"
+        <div class="flex items-center mt-3 flex-1 w-full gap-2">
+          <!-- 좌측: 회비통 (지출 한도) -->
+          <div class="flex-1 flex flex-col items-center">
+            <span class="text-xs font-bold text-gray-600 mb-2">지출 한도</span>
+            <template v-if="spendingLimit > 0">
+              <div class="relative w-20 h-20 shrink-0">
+                <svg viewBox="0 0 36 36" class="w-full h-full">
+                  <path
+                    class="text-gray-100"
+                    stroke-width="3"
+                    stroke="currentColor"
+                    fill="none"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <path
+                    :class="isOverBudget ? 'text-red-500' : 'text-[#836BC2]'"
+                    stroke-dasharray="100, 100"
+                    :stroke-dashoffset="100 - spendingPercent"
+                    stroke-linecap="round"
+                    stroke-width="3"
+                    stroke="currentColor"
+                    fill="none"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    class="transition-all duration-1000 ease-out"
+                  />
+                </svg>
+                <div
+                  class="absolute inset-0 flex flex-col items-center justify-center"
                 >
-                  {{ budgetUsagePercent
-                  }}<span class="text-xs font-semibold text-gray-500 ml-0.5"
-                    >%</span
+                  <span
+                    class="text-lg font-bold text-[#191919] tracking-tighter"
+                    >{{ spendingPercent
+                    }}<span
+                      class="text-[10px] font-semibold text-gray-500 ml-0.5"
+                      >%</span
+                    ></span
                   >
-                </span>
+                </div>
               </div>
-            </div>
-          </div>
-
-          <!-- 우측: 예산 상세 -->
-          <div class="flex-1 flex justify-start pl-2">
-            <div class="flex flex-col gap-3">
-              <div>
-                <p class="text-[10px] font-medium text-gray-400 mb-0.5">
-                  목표 예산
-                </p>
-                <p class="text-sm font-semibold text-gray-700">
-                  {{ budgetGoal.toLocaleString() }}원
-                </p>
-              </div>
-              <div>
-                <p class="text-[10px] font-medium text-gray-400 mb-0.5">
-                  현재 지출
-                </p>
+              <div class="mt-2 flex flex-col items-center text-center">
                 <p
-                  class="text-sm font-bold"
-                  :class="isOverBudget ? 'text-red-500' : 'text-[#836BC2]'"
+                  class="text-[11px] font-bold text-[#191919] truncate max-w-[80px]"
                 >
                   {{ totalExpense.toLocaleString() }}원
                 </p>
-              </div>
-              <div>
-                <p class="text-[10px] font-medium text-gray-400 mb-0.5">
-                  남은 예산
-                </p>
-                <p class="text-sm font-semibold text-gray-700">
-                  {{
-                    Math.max(0, budgetGoal - totalExpense).toLocaleString()
-                  }}원
+                <p class="text-[9px] text-gray-400 truncate max-w-[80px]">
+                  / {{ spendingLimit.toLocaleString() }}원
                 </p>
               </div>
-            </div>
+            </template>
+            <template v-else>
+              <div class="relative w-20 h-20 shrink-0">
+                <svg viewBox="0 0 36 36" class="w-full h-full">
+                  <path
+                    class="text-gray-200"
+                    stroke-width="2"
+                    stroke-dasharray="2, 2"
+                    stroke="currentColor"
+                    fill="none"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                </svg>
+                <div
+                  class="absolute inset-0 flex flex-col items-center justify-center"
+                >
+                  <span
+                    class="text-[11px] font-bold text-gray-400 tracking-tighter"
+                    >미설정</span
+                  >
+                </div>
+              </div>
+              <div class="mt-2 flex flex-col items-center text-center">
+                <p class="text-[9px] text-gray-400 leading-snug">
+                  상세 탭에서<br />설정해주세요
+                </p>
+              </div>
+            </template>
+          </div>
+
+          <!-- 중앙 구분선 -->
+          <div class="w-px h-24 bg-gray-100"></div>
+
+          <!-- 우측: 목표 금액 (저금통) -->
+          <div class="flex-1 flex flex-col items-center">
+            <span class="text-xs font-bold text-gray-700 mb-2">목표 금액</span>
+            <template v-if="savingGoal > 0">
+              <div class="relative w-20 h-20 shrink-0">
+                <svg viewBox="0 0 36 36" class="w-full h-full">
+                  <path
+                    class="text-gray-100"
+                    stroke-width="3"
+                    stroke="currentColor"
+                    fill="none"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <path
+                    :class="
+                      isSavingGoalReached ? 'text-blue-500' : 'text-emerald-400'
+                    "
+                    stroke-dasharray="100, 100"
+                    :stroke-dashoffset="100 - savingPercent"
+                    stroke-linecap="round"
+                    stroke-width="3"
+                    stroke="currentColor"
+                    fill="none"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    class="transition-all duration-1000 ease-out"
+                  />
+                </svg>
+                <div
+                  class="absolute inset-0 flex flex-col items-center justify-center"
+                >
+                  <span
+                    class="text-lg font-bold text-[#191919] tracking-tighter"
+                    >{{ savingPercent
+                    }}<span
+                      class="text-[10px] font-semibold text-gray-500 ml-0.5"
+                      >%</span
+                    ></span
+                  >
+                </div>
+              </div>
+              <div class="mt-2 flex flex-col items-center text-center">
+                <p
+                  class="text-[11px] font-bold text-[#191919] truncate max-w-[80px]"
+                >
+                  {{ totalIncome.toLocaleString() }}원
+                </p>
+                <p class="text-[9px] text-gray-400 truncate max-w-[80px]">
+                  / {{ savingGoal.toLocaleString() }}원
+                </p>
+              </div>
+            </template>
+            <template v-else>
+              <div class="relative w-20 h-20 shrink-0">
+                <svg viewBox="0 0 36 36" class="w-full h-full">
+                  <path
+                    class="text-gray-200"
+                    stroke-width="2"
+                    stroke-dasharray="2, 2"
+                    stroke="currentColor"
+                    fill="none"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                </svg>
+                <div
+                  class="absolute inset-0 flex flex-col items-center justify-center"
+                >
+                  <span
+                    class="text-[11px] font-bold text-gray-400 tracking-tighter"
+                    >미설정</span
+                  >
+                </div>
+              </div>
+              <div class="mt-2 flex flex-col items-center text-center">
+                <p class="text-[9px] text-gray-400 leading-snug">
+                  상세 탭에서<br />설정해주세요
+                </p>
+              </div>
+            </template>
           </div>
         </div>
 
         <!-- 하단 요약 -->
         <div
-          class="mt-auto bg-gray-50 rounded-xl p-3 text-center border border-gray-100"
+          class="mt-auto bg-gray-50 rounded-xl p-2.5 text-center border border-gray-100 flex flex-col gap-1.5"
         >
-          <p v-if="isOverBudget" class="text-xs text-red-500 font-bold">
-            앗, 목표 예산을 초과했어요! 🚨
-          </p>
-          <p v-else class="text-xs text-gray-500 font-medium tracking-tight">
-            남은 {{ remainingDays }}일 동안 1인당 하루
-            <strong class="text-[#836BC2] text-sm"
-              >{{ dailyPerPerson.toLocaleString() }}원</strong
-            >씩 쓸 수 있어요
-          </p>
+          <div
+            v-if="spendingLimit > 0"
+            class="flex justify-center items-center gap-1.5"
+          >
+            <span
+              class="text-[9px] bg-white px-1.5 py-0.5 rounded border border-gray-200 font-bold text-gray-600 shrink-0"
+              >지출</span
+            >
+            <span
+              v-if="isOverBudget"
+              class="text-[10px] sm:text-[11px] text-red-500 font-bold truncate"
+              >한도를 초과했어요! 🚨</span
+            >
+            <span
+              v-else
+              class="text-[10px] sm:text-[11px] text-gray-600 font-medium truncate"
+              >남은 {{ remainingDays }}일간 1인당 하루
+              <strong class="text-[#836BC2]"
+                >{{ dailyPerPerson.toLocaleString() }}원</strong
+              >
+              가능</span
+            >
+          </div>
+          <div
+            v-if="savingGoal > 0"
+            class="flex justify-center items-center gap-1.5"
+          >
+            <span
+              class="text-[9px] bg-white px-1.5 py-0.5 rounded border border-gray-200 font-bold text-gray-600 shrink-0"
+              >저축</span
+            >
+            <span
+              v-if="isSavingGoalReached"
+              class="text-[10px] sm:text-[11px] text-blue-500 font-bold truncate"
+              >목표를 달성했어요! 🎉</span
+            >
+            <span
+              v-else
+              class="text-[10px] sm:text-[11px] text-gray-600 font-medium truncate"
+              >앞으로
+              <strong class="text-emerald-500"
+                >{{
+                  Math.max(0, savingGoal - totalIncome).toLocaleString()
+                }}원</strong
+              >
+              더 모으면 달성!</span
+            >
+          </div>
         </div>
       </template>
 
@@ -313,7 +459,7 @@ const dailyPerPerson = computed(() => {
           그룹 예산을 설정해보세요!
         </h3>
         <p class="text-xs text-gray-500 mb-3 leading-relaxed">
-          방장이 목표 예산을 설정하면<br />1인당 하루 권장 지출액을 알려드려요.
+          그룹 예산을 설정하면<br />1인당 하루 권장 지출액을 알려드려요.
         </p>
         <button
           @click="router.push('/group')"

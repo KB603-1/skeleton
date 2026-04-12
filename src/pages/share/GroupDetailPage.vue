@@ -119,6 +119,20 @@ const totalInfo = computed(() => {
   return { totalExpense, totalIncome, perPersonExpense, perPersonIncome };
 });
 
+// 지출 한도와 목표 예산을 각각 분리해서 계산 (기존 호환성 유지)
+const spendingLimit = computed(() => {
+  const b = currentGroup.value?.budgetGoal;
+  if (typeof b === 'object' && b !== null) return b.spendingLimit || 0;
+  // 이전 데이터가 숫자형 하나만 있을 경우 지출 한도로 취급
+  return typeof b === 'number' ? b : 0;
+});
+
+const savingGoal = computed(() => {
+  const b = currentGroup.value?.budgetGoal;
+  if (typeof b === 'object' && b !== null) return b.savingGoal || 0;
+  return 0;
+});
+
 // 내가 결제한 총 금액
 const myTotalSpent = computed(() => {
   if (!user.value) return 0;
@@ -231,6 +245,21 @@ const handleSetBudget = async (val) => {
   }
 };
 
+// 헤더에서 지출한도와 목표예산을 동시에 설정할 때
+const handleUpdateBudgets = async ({ spendingLimit, savingGoal }) => {
+  if (!currentGroup.value) return;
+  try {
+    // 팀원이 작업 중인 스토어 구조에 맞춰 유연하게 객체 형태로 전달합니다.
+    await groupStore.updateGroupBudget(currentGroup.value.id, {
+      spendingLimit,
+      savingGoal,
+    });
+    toast.success('모임 예산이 성공적으로 설정되었습니다.');
+  } catch (e) {
+    toast.error(e.message || '오류가 발생했습니다.');
+  }
+};
+
 // currentGroup의 상태 변화를 감지하여 의도적으로 그룹이 해제될 때만 메인으로 이동 (새로고침 시 튕김 방지)
 watch(currentGroup, (newGroup, oldGroup) => {
   if (oldGroup && !newGroup) {
@@ -247,9 +276,11 @@ watch(currentGroup, (newGroup, oldGroup) => {
       :currentMonth="currentMonth"
       :totalInfo="totalInfo"
       :members="members"
-      :budgetGoal="currentGroup?.budgetGoal || 0"
+      :spendingLimit="spendingLimit"
+      :savingGoal="savingGoal"
       v-model:activeTab="activeTab"
       @changeMonth="changeMonth"
+      @updateBudgets="handleUpdateBudgets"
       @close="handleClose"
     />
 

@@ -12,18 +12,26 @@ const props = defineProps({
     required: true,
   },
   budgetGoal: {
-    type: Number,
+    type: [Number, Object],
     required: true,
   },
 });
 
+// budgetGoal이 객체(지출한도/목표예산)일 경우 지출한도(spendingLimit)를 사용합니다.
+const parsedBudget = computed(() => {
+  if (typeof props.budgetGoal === 'object' && props.budgetGoal !== null) {
+    return props.budgetGoal.spendingLimit || 0;
+  }
+  return props.budgetGoal || 0;
+});
+
 const budgetUsagePercent = computed(() => {
-  if (props.budgetGoal <= 0) return 0;
-  const percent = (props.totalExpense / props.budgetGoal) * 100;
+  if (parsedBudget.value <= 0) return 0;
+  const percent = (props.totalExpense / parsedBudget.value) * 100;
   return Math.min(percent, 100);
 });
 
-const isOverBudget = computed(() => props.totalExpense > props.budgetGoal);
+const isOverBudget = computed(() => props.totalExpense > parsedBudget.value);
 
 const remainingDays = computed(() => {
   const now = new Date();
@@ -38,12 +46,10 @@ const remainingDays = computed(() => {
       class="bg-white rounded-2xl p-5 flex flex-col h-75 shadow-sm border border-gray-100"
     >
       <!-- 예산이 설정된 경우 (기존 UI) -->
-      <template v-if="budgetGoal > 0">
+      <template v-if="parsedBudget > 0">
         <!-- 헤더 -->
         <div class="flex justify-between items-center mb-1">
-          <h3 class="font-bold text-[#191919] text-base">
-            🎯 이번 달 예산 현황
-          </h3>
+          <h3 class="font-bold text-[#5e5e5e] text-base">이번 달 예산 현황</h3>
           <span
             class="text-[10px] font-bold px-2 py-1 rounded-md"
             :class="
@@ -101,7 +107,7 @@ const remainingDays = computed(() => {
               <div>
                 <p class="text-[10px] font-medium text-gray-400 mb-0.5">예산</p>
                 <p class="text-sm font-semibold text-gray-700">
-                  {{ budgetGoal.toLocaleString() }}원
+                  {{ parsedBudget.toLocaleString() }}원
                 </p>
               </div>
               <div>
@@ -121,7 +127,7 @@ const remainingDays = computed(() => {
                 </p>
                 <p class="text-sm font-semibold text-gray-700">
                   {{
-                    Math.max(0, budgetGoal - totalExpense).toLocaleString()
+                    Math.max(0, parsedBudget - totalExpense).toLocaleString()
                   }}원
                 </p>
               </div>
@@ -141,7 +147,7 @@ const remainingDays = computed(() => {
             <strong class="text-[#836BC2] text-sm"
               >{{
                 Math.floor(
-                  (budgetGoal - totalExpense) / remainingDays,
+                  (parsedBudget - totalExpense) / remainingDays,
                 ).toLocaleString()
               }}원</strong
             >씩 쓸 수 있어요

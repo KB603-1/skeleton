@@ -9,13 +9,16 @@ const props = defineProps({
   totalInfo: Object,
   members: Array,
   activeTab: String, // 'expenses' | 'members' | 'play'
-  budgetGoal: {
-    type: Number,
-    default: 0,
-  },
+  spendingLimit: { type: Number, default: 0 },
+  savingGoal: { type: Number, default: 0 },
 });
 
-const emit = defineEmits(['close', 'changeMonth', 'update:activeTab']);
+const emit = defineEmits([
+  'close',
+  'changeMonth',
+  'update:activeTab',
+  'updateBudgets',
+]);
 
 const viewMode = ref('spending'); // 'spending' | 'saving'
 
@@ -31,21 +34,27 @@ const currentPerPerson = computed(() => {
     : props.totalInfo.perPersonIncome;
 });
 
+const currentBudget = computed(() => {
+  return viewMode.value === 'spending' ? props.spendingLimit : props.savingGoal;
+});
+
 const progressPercent = computed(() => {
-  if (props.budgetGoal <= 0) return 0;
+  if (currentBudget.value <= 0) return 0;
   return Math.min(
-    Math.round((currentTotal.value / props.budgetGoal) * 100),
+    Math.round((currentTotal.value / currentBudget.value) * 100),
     100,
   );
 });
 
 const isOverBudget = computed(() => {
-  return viewMode.value === 'spending' && currentTotal.value > props.budgetGoal;
+  return (
+    viewMode.value === 'spending' && currentTotal.value > currentBudget.value
+  );
 });
 
 // 예산 진행률에 따른 돼지 상태 및 애니메이션 계산
 const pigState = computed(() => {
-  if (props.budgetGoal <= 0)
+  if (currentBudget.value <= 0)
     return { variant: 'normal', class: 'animate-wiggle' };
   const p = progressPercent.value;
 
@@ -61,7 +70,7 @@ const pigState = computed(() => {
 
 // 예산 진행률에 따른 색상 (pigState 기준과 동일하게 적용)
 const progressColorClass = computed(() => {
-  if (props.budgetGoal <= 0) return 'text-white';
+  if (currentBudget.value <= 0) return 'text-white';
   const p = progressPercent.value;
 
   if (viewMode.value === 'spending') {
@@ -72,6 +81,36 @@ const progressColorClass = computed(() => {
     return 'text-emerald-400';
   }
 });
+
+// ─── 예산 설정(Edit) 모드 상태 관리 ───
+const isEditingBudgets = ref(false);
+const inputSpendingLimit = ref('');
+const inputSavingGoal = ref('');
+
+const startEditing = () => {
+  inputSpendingLimit.value = props.spendingLimit
+    ? props.spendingLimit.toLocaleString()
+    : '';
+  inputSavingGoal.value = props.savingGoal
+    ? props.savingGoal.toLocaleString()
+    : '';
+  isEditingBudgets.value = true;
+};
+
+const onInputLimit = (e) => {
+  const val = e.target.value.replace(/[^0-9]/g, '');
+  inputSpendingLimit.value = val ? Number(val).toLocaleString() : '';
+};
+const onInputGoal = (e) => {
+  const val = e.target.value.replace(/[^0-9]/g, '');
+  inputSavingGoal.value = val ? Number(val).toLocaleString() : '';
+};
+const saveBudgets = () => {
+  const limit = Number(inputSpendingLimit.value.replace(/[^0-9]/g, '')) || 0;
+  const goal = Number(inputSavingGoal.value.replace(/[^0-9]/g, '')) || 0;
+  emit('updateBudgets', { spendingLimit: limit, savingGoal: goal });
+  isEditingBudgets.value = false;
+};
 </script>
 
 <template>
@@ -169,11 +208,75 @@ const progressColorClass = computed(() => {
         </div>
       </div>
 
+      <!-- 예산 설정 폼 (Edit Mode) -->
       <div
+        v-if="isEditingBudgets"
+        class="bg-white/10 rounded-3xl p-5 border border-white/20 backdrop-blur-md shadow-lg shadow-[#836BC2]/20 transition-all duration-300"
+      >
+        <div class="flex justify-between items-center mb-5">
+          <h3 class="text-sm font-bold text-white">모임 예산 설정</h3>
+          <button
+            @click="isEditingBudgets = false"
+            class="text-white/50 hover:text-white"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <label class="text-[11px] text-white/80 font-medium mb-1 block"
+              >지출 한도</label
+            >
+            <div class="relative">
+              <input
+                v-model="inputSpendingLimit"
+                @input="onInputLimit"
+                type="text"
+                inputmode="numeric"
+                class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-sm font-bold text-white outline-none focus:border-[#836BC2] transition-colors placeholder-white/30"
+                placeholder="예: 500,000"
+              />
+              <span
+                class="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-white/50"
+                >원</span
+              >
+            </div>
+          </div>
+          <div>
+            <label class="text-[11px] text-white/80 font-medium mb-1 block"
+              >목표 예산</label
+            >
+            <div class="relative">
+              <input
+                v-model="inputSavingGoal"
+                @input="onInputGoal"
+                type="text"
+                inputmode="numeric"
+                class="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-sm font-bold text-white outline-none focus:border-[#836BC2] transition-colors placeholder-white/30"
+                placeholder="예: 1,000,000"
+              />
+              <span
+                class="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-white/50"
+                >원</span
+              >
+            </div>
+          </div>
+          <button
+            @click="saveBudgets"
+            class="w-full mt-2 py-3.5 rounded-xl bg-white text-[#836BC2] text-sm font-extrabold hover:bg-gray-100 transition shadow-md active:scale-[0.98]"
+          >
+            저장하기
+          </button>
+        </div>
+      </div>
+
+      <!-- 일반 화면 (View Mode) -->
+      <div
+        v-else
         class="bg-white/10 rounded-3xl p-5 border border-white/20 backdrop-blur-md shadow-lg shadow-[#836BC2]/20 transition-all duration-300"
       >
         <div
-          v-if="budgetGoal > 0"
+          v-if="currentBudget > 0"
           class="flex items-center gap-3 min-[360px]:gap-4 sm:gap-5"
         >
           <!-- 좌측: 원형 프로그레스 바 -->
@@ -248,16 +351,36 @@ const progressColorClass = computed(() => {
               </div>
             </div>
 
-            <div class="mt-3 bg-black/10 rounded-lg p-2 border border-white/5">
-              <div class="flex justify-between items-center mb-1">
+            <div
+              class="mt-3 bg-black/10 rounded-lg p-2 border border-white/5 relative group"
+            >
+              <button
+                @click="startEditing"
+                class="absolute top-1.5 right-1.5 p-1.5 bg-white/10 rounded-lg hover:bg-white/20 transition z-20"
+              >
+                <svg
+                  class="w-3 h-3 text-white/80"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2.5"
+                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                  />
+                </svg>
+              </button>
+              <div class="flex justify-between items-center mb-1 pr-8">
                 <span class="text-[10px] text-white/60">{{
                   viewMode === 'spending' ? '지출한도' : '목표예산'
                 }}</span>
                 <span class="text-[10px] text-white/90 font-bold"
-                  >{{ budgetGoal.toLocaleString() }}원</span
+                  >{{ currentBudget.toLocaleString() }}원</span
                 >
               </div>
-              <div class="flex justify-between items-center">
+              <div class="flex justify-between items-center pr-8">
                 <span class="text-[10px] text-white/60">1인 평균</span>
                 <span class="text-[10px] text-white/90 font-bold"
                   >{{ currentPerPerson.toLocaleString() }}원</span
@@ -267,10 +390,24 @@ const progressColorClass = computed(() => {
           </div>
         </div>
 
-        <div v-else class="mt-4 pt-3 border-t border-white/10 text-center">
-          <p class="text-[10px] text-white/60">
-            멤버 관리 탭에서 그룹 예산을 설정해보세요!
+        <!-- 예산 미설정 빈 화면 -->
+        <div
+          v-else
+          class="mt-4 pt-3 border-t border-white/10 flex flex-col items-center justify-center gap-2.5"
+        >
+          <p class="text-[11px] text-white/80">
+            {{
+              viewMode === 'spending'
+                ? '지출 한도를 설정하고 소비를 관리해보세요!'
+                : '목표 예산을 설정하고 저축을 시작해보세요!'
+            }}
           </p>
+          <button
+            @click="startEditing"
+            class="px-5 py-2 bg-white/20 hover:bg-white/30 transition rounded-full text-xs font-bold text-white shadow-sm border border-white/10 active:scale-95"
+          >
+            예산 설정하기
+          </button>
         </div>
       </div>
     </div>
