@@ -33,7 +33,7 @@ router.afterEach(async (to) => {
       ref="scrollContainer"
       class="flex-1 bg-[#F4F5F7] min-h-0 overflow-y-auto"
     >
-      <div class="py-2 pb-[calc(5rem+env(safe-area-inset-bottom))]">
+      <div class="pb-[calc(5rem+env(safe-area-inset-bottom))]">
         <!-- KeepAlive를 적용하여 탭 간 이동 시 컴포넌트 상태와 DOM을 유지합니다 -->
         <RouterView v-slot="{ Component }">
           <KeepAlive>

@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import { CarouselItem } from '@/components/ui/carousel/index.js';
 import { useRouter } from 'vue-router';
+import { ChevronRight } from 'lucide-vue-next';
 
 const router = useRouter();
 
@@ -155,10 +156,125 @@ const remainingDays = computed(() => {
         v-else
         class="flex flex-col items-center justify-center h-full text-center px-4"
       >
-        <div
-          class="w-16 h-16 bg-[#836BC2]/10 rounded-full flex items-center justify-center text-3xl mb-4 shadow-inner"
-        >
-          🎯
+        <!-- 비행기 타는 돼지와 금화 SVG 애니메이션 -->
+        <div class="w-48 h-32 mb-2 relative">
+          <svg
+            viewBox="0 0 200 150"
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-full h-full overflow-visible"
+          >
+            <!-- 흩날리는 금색 동전들 -->
+            <g class="animate-float" style="animation-delay: 0s">
+              <circle cx="30" cy="40" r="10" fill="#FFD54F" />
+              <circle cx="30" cy="40" r="7" fill="#FBC02D" />
+              <text
+                x="30"
+                y="44"
+                font-size="12"
+                font-weight="bold"
+                fill="#FFF"
+                text-anchor="middle"
+              >
+                ₩
+              </text>
+            </g>
+            <g class="animate-float" style="animation-delay: 0.5s">
+              <circle cx="15" cy="90" r="12" fill="#FFD54F" />
+              <circle cx="15" cy="90" r="8" fill="#FBC02D" />
+              <text
+                x="15"
+                y="94.5"
+                font-size="14"
+                font-weight="bold"
+                fill="#FFF"
+                text-anchor="middle"
+              >
+                ₩
+              </text>
+            </g>
+            <g class="animate-float" style="animation-delay: 1s">
+              <circle cx="50" cy="120" r="8" fill="#FFD54F" />
+              <circle cx="50" cy="120" r="5" fill="#FBC02D" />
+              <text
+                x="50"
+                y="123"
+                font-size="9"
+                font-weight="bold"
+                fill="#FFF"
+                text-anchor="middle"
+              >
+                ₩
+              </text>
+            </g>
+
+            <!-- 비행기를 탄 돼지 -->
+            <g class="animate-float" style="animation-delay: 0.2s">
+              <!-- 꼬리 날개 -->
+              <path d="M 110 50 L 130 50 L 140 65 Z" fill="#6B53A6" />
+              <path d="M 50 55 L 70 75 L 45 85 Z" fill="#836BC2" />
+
+              <!-- 비행기 몸통 -->
+              <path
+                d="M 60 75 Q 120 50 165 70 Q 170 75 165 80 Q 120 100 60 75"
+                fill="#836BC2"
+              />
+              <path d="M 65 75 Q 120 60 160 75 Q 120 68 65 75" fill="#F4F5F7" />
+
+              <!-- 조종석의 돼지 -->
+              <circle cx="115" cy="55" r="16" fill="#f3eeff" />
+              <path d="M 102 45 Q 105 35 110 40 Z" fill="#e0ccf5" />
+              <path d="M 120 40 Q 125 35 128 45 Z" fill="#e0ccf5" />
+              <ellipse cx="122" cy="58" rx="7" ry="5" fill="#e0ccf5" />
+              <circle cx="120" cy="58" r="1.5" fill="#836BC2" />
+              <circle cx="124" cy="58" r="1.5" fill="#836BC2" />
+              <circle cx="114" cy="51" r="2" fill="#191919" />
+              <circle cx="126" cy="51" r="2" fill="#191919" />
+              <ellipse
+                cx="110"
+                cy="56"
+                rx="2.5"
+                ry="1.5"
+                fill="#fbcfe8"
+                opacity="0.8"
+              />
+
+              <!-- 앞 날개 -->
+              <path d="M 90 80 L 120 80 L 100 110 L 80 110 Z" fill="#836BC2" />
+              <path
+                d="M 80 110 L 100 110 L 105 105 L 85 105 Z"
+                fill="#6B53A6"
+              />
+
+              <!-- 회전하는 프로펠러 -->
+              <ellipse cx="165" cy="75" rx="4" ry="8" fill="#94A3B8" />
+              <g>
+                <animateTransform
+                  attributeName="transform"
+                  type="rotate"
+                  from="0 165 75"
+                  to="360 165 75"
+                  dur="0.3s"
+                  repeatCount="indefinite"
+                />
+                <ellipse
+                  cx="165"
+                  cy="55"
+                  rx="3"
+                  ry="18"
+                  fill="#CBD5E1"
+                  opacity="0.7"
+                />
+                <ellipse
+                  cx="165"
+                  cy="95"
+                  rx="3"
+                  ry="18"
+                  fill="#CBD5E1"
+                  opacity="0.7"
+                />
+              </g>
+            </g>
+          </svg>
         </div>
         <h3 class="text-base font-bold text-[#191919] mb-1.5">
           이번 달 예산을 설정해보세요!
@@ -168,13 +284,27 @@ const remainingDays = computed(() => {
         </p>
         <button
           @click="router.push('/mypage')"
-          class="bg-[#836BC2] text-white text-sm font-semibold py-2.5 px-6 rounded-full shadow-md hover:bg-[#836BC2]/90 transition active:scale-95"
+          class="flex items-center justify-center gap-1.5 bg-[#836BC2]/10 text-[#836BC2] text-sm font-bold py-2.5 px-5 rounded-2xl hover:bg-[#836BC2]/20 transition active:scale-95"
         >
           예산 설정하러 가기
+          <ChevronRight class="w-5 h-5 text-[#836BC2]" />
         </button>
       </div>
     </div>
   </CarouselItem>
 </template>
 
-<style lang="scss" scoped></style>
+<style scoped>
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+</style>

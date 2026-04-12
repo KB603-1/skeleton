@@ -6,6 +6,7 @@ import { useModalStore } from '@/stores/modal.js';
 import { storeToRefs } from 'pinia';
 import TransactionItem from '@/components/TransactionItem.vue';
 import RecordDetailModal from '@/components/RecordDetailModal.vue';
+import PigIcon from '../PigIcon.vue';
 
 const recordStore = useRecordStore();
 const userStore = useUserStore();
@@ -128,12 +129,25 @@ function openDetailModal(item) {
     </div>
 
     <div class="flex flex-col gap-2">
-      <p
+      <!-- 최근 내역이 없을 때 (Empty State) -->
+      <div
         v-if="groupedRecentTransactions.length === 0"
-        class="text-center text-sm text-gray-400 py-6"
+        class="flex flex-col items-center justify-center py-10"
       >
-        최근 7일간 내역이 없습니다
-      </p>
+        <div class="w-16 h-16 mb-3 opacity-50 grayscale">
+          <PigIcon
+            eye-color="#94A3B8"
+            nose-spot-color="#CBD5E1"
+            :show-ear-tag="false"
+          />
+        </div>
+        <p class="text-sm font-bold text-[#191919]">최근 7일간 내역이 없어요</p>
+        <p class="text-xs text-gray-400 mt-1">
+          새로운 수입/지출을 기록해보세요!
+        </p>
+      </div>
+
+      <!-- 최근 내역이 있을 때 -->
       <div v-else class="flex flex-col gap-4">
         <div v-for="group in groupedRecentTransactions" :key="group.date">
           <!-- 날짜 헤더 -->
