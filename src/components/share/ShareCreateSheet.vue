@@ -60,10 +60,10 @@ const submit = () => {
 </script>
 
 <template>
-  <Transition name="sheet">
+  <Transition name="sheet" :duration="300">
     <div v-if="props.modelValue" class="fixed inset-0 z-[100]">
       <div
-        class="absolute inset-0 bg-black/30 backdrop-blur-sm"
+        class="backdrop-bg absolute inset-0 bg-black/30 backdrop-blur-sm"
         @click="close"
       />
 
@@ -94,7 +94,7 @@ const submit = () => {
                 :class="[
                   'flex h-12 w-12 items-center justify-center rounded-2xl border transition',
                   selectedIcon === icon
-                    ? 'border-[#836BC2] bg-[#836BC2]/10 text-[#836BC2]'
+                    ? 'border-violet-600 bg-violet-50 text-violet-700'
                     : 'border-slate-200 bg-slate-100 text-slate-500 hover:border-slate-300',
                 ]"
               >
@@ -129,7 +129,7 @@ const submit = () => {
 
         <button
           type="button"
-          class="mt-5 w-full rounded-3xl bg-[#836BC2] px-5 py-4 text-sm font-semibold text-white shadow-lg shadow-[#836BC2]/30 transition hover:bg-[#836BC2]/90"
+          class="mt-5 w-full rounded-3xl bg-violet-600 px-5 py-4 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition hover:bg-violet-700"
           @click="submit"
         >
           모임 만들기
@@ -140,21 +140,20 @@ const submit = () => {
 </template>
 
 <style scoped>
-/* 전체 배경(백드롭) 페이드 효과 */
-.sheet-enter-active,
-.sheet-leave-active {
+/* 딤 배경(백드롭) 페이드 효과 */
+.sheet-enter-active .backdrop-bg,
+.sheet-leave-active .backdrop-bg {
   transition: opacity 0.3s ease;
 }
-/* 하단 시트 슬라이드 효과 (iOS 스타일의 부드러운 감속 곡선 적용) */
+.sheet-enter-from .backdrop-bg,
+.sheet-leave-to .backdrop-bg {
+  opacity: 0;
+}
+
+/* 하단 시트 슬라이드 효과 */
 .sheet-enter-active .sheet-content,
 .sheet-leave-active .sheet-content {
   transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-/* 진입 시작 / 퇴장 끝 상태 */
-.sheet-enter-from,
-.sheet-leave-to {
-  opacity: 0;
 }
 .sheet-enter-from .sheet-content,
 .sheet-leave-to .sheet-content {
