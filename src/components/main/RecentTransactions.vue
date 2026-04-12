@@ -61,6 +61,8 @@ const groupedRecentTransactions = computed(() => {
       category: e.category?.name || '기타',
       amount: (e.type === 'income' ? 1 : -1) * e.amount,
       isOwner: user.value && e.userId === user.value.id,
+      payerName: e.user?.nickname,
+      date: e.date,
     });
   });
 

@@ -3,6 +3,7 @@ import { useModalStore } from '@/stores/modal.js';
 import { Pencil, Trash2 } from 'lucide-vue-next';
 import EditRecordModal from '@/components/EditRecordModal.vue';
 import { useRecordStore } from '@/stores/record.js';
+import {format} from "date-fns";
 
 const props = defineProps({
   record: {
@@ -70,6 +71,10 @@ async function deleteRecord() {
               나간 멤버
             </span>
           </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-sm font-medium text-gray-500">결제일시</span>
+          <span class="text-sm font-bold text-gray-900">{{format(record.date, "yyyy년 MM월 dd일 hh시 mm분") }}</span>
         </div>
         <div class="space-y-2">
           <span class="text-sm font-medium text-gray-500">메모</span>
