@@ -1,12 +1,13 @@
 <script setup>
 import { ref, nextTick } from 'vue';
-import { useRouter } from 'vue-router';
+import {useRoute, useRouter} from 'vue-router';
 import BottomNav from '@/components/BottomNav.vue';
 import TopBar from '@/components/TopBar.vue';
 import FloatingActionButton from '@/components/FloatingActionButton.vue';
 import { Toaster } from '@/components/ui/sonner';
 
 const router = useRouter();
+const route = useRoute();
 const scrollContainer = ref(null);
 const scrollPositions = ref({});
 
@@ -28,7 +29,7 @@ router.afterEach(async (to) => {
 
 <template>
   <div class="h-full flex flex-col">
-    <TopBar />
+    <TopBar v-if="route.meta.requiresTopbar" />
     <main
       ref="scrollContainer"
       class="flex-1 bg-[#F4F5F7] min-h-0 overflow-y-auto"
