@@ -6,7 +6,7 @@ export const copyToClipboard = (text, successMessage = '복사되었습니다!')
     navigator.clipboard
       .writeText(text)
       .then(() => {
-        toast.success(successMessage, { description: text });
+        toast.success('', { description: '링크 복사 성공!' });
       })
       .catch(() => {
         toast.error('복사에 실패했습니다.', { description: text });

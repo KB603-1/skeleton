@@ -138,6 +138,13 @@
       "userId": "user05",
       "id": "KJq5EXXNQe0",
       "notice": "하"
+    },
+    {
+      "name": "내전",
+      "icon": "🌊",
+      "password": "skd1rnip",
+      "userId": "user08",
+      "id": "dFhuzUF9a_I"
     }
   ],
   "groupMembers": [
@@ -385,6 +392,11 @@
       "userId": "user05",
       "groupId": "KJq5EXXNQe0",
       "id": "O9eJIvnrMSs"
+    },
+    {
+      "userId": "user08",
+      "groupId": "dFhuzUF9a_I",
+      "id": "lQj129lffmo"
     }
   ],
   "categories": [

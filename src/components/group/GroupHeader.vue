@@ -131,10 +131,10 @@ const saveBudgets = () => {
           ✕
         </button>
         <h1 class="text-xl font-bold flex items-center gap-2">
-          🏠 {{ groupName }}
+          {{ groupName }}
         </h1>
       </div>
-      <div class="flex -space-x-2">
+      <!-- <div class="flex -space-x-2">
         <div
           v-for="member in members"
           :key="member.id"
@@ -142,7 +142,7 @@ const saveBudgets = () => {
         >
           {{ member.icon }}
         </div>
-      </div>
+      </div> -->
     </div>
 
     <div class="px-5 mb-5 flex items-center justify-center gap-4 relative z-10">
@@ -395,7 +395,7 @@ const saveBudgets = () => {
           v-else
           class="mt-4 pt-3 border-t border-white/10 flex flex-col items-center justify-center gap-2.5"
         >
-          <p class="text-[11px] text-white/80">
+          <p class="text-[12px] text-white/80">
             {{
               viewMode === 'spending'
                 ? '지출 한도를 설정하고 소비를 관리해보세요!'
@@ -404,7 +404,7 @@ const saveBudgets = () => {
           </p>
           <button
             @click="startEditing"
-            class="px-5 py-2 bg-white/20 hover:bg-white/30 transition rounded-full text-xs font-bold text-white shadow-sm border border-white/10 active:scale-95"
+            class="px-5 py-2 bg-white/20 hover:bg-white/30 transition rounded-full text-sm font-bold text-white shadow-sm border border-white/10 active:scale-95"
           >
             예산 설정하기
           </button>
