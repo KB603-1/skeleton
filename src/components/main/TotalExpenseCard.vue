@@ -10,47 +10,45 @@ import PigIcon from '@/components/PigIcon.vue';
 const router = useRouter();
 const recordStore = useRecordStore();
 const groupStore = useGroupStore();
-const { expenses } = storeToRefs(recordStore);
+const { records } = storeToRefs(recordStore);
 const { currentGroup } = storeToRefs(groupStore);
 
 const today = new Date();
 const currentYear = today.getFullYear();
 const currentMonth = today.getMonth();
 
-const lastMonthDate = new Date(today.getFullYear(), today.getMonth() - 1);
-const lastYear = lastMonthDate.getFullYear();
-const lastMonth = lastMonthDate.getMonth();
-
-const getMonthSum = (month, year) =>
-  expenses.value
-    .filter((e) => {
-      const d = new Date(e.date);
-      return d.getMonth() === month && d.getFullYear() === year;
-    })
-    .reduce((acc, e) => acc + e.amount, 0);
-
-const monthTotalExpenses = computed(() =>
-  getMonthSum(currentMonth, currentYear),
-);
-
-const lastMonthTotalExpenses = computed(() => getMonthSum(lastMonth, lastYear));
-
-// 1인당 예상 지출액 (모임 모드일 때 1/N 계산)
-const perPersonAmount = computed(() => {
-  if (!currentGroup.value) return 0;
-  const memberCount = currentGroup.value.members?.length || 1;
-  return Math.floor(monthTotalExpenses.value / memberCount);
+const currentMonthRecords = computed(() => {
+  if (!records.value) return [];
+  return records.value.filter((r) => {
+    const d = new Date(r.date);
+    return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+  });
 });
 
-const lastMonthResult = computed(() => {
-  if (lastMonthTotalExpenses.value === 0) return { hasData: false };
+const monthIncome = computed(() =>
+  currentMonthRecords.value
+    .filter((r) => r.type === 'income')
+    .reduce((acc, r) => acc + r.amount, 0),
+);
 
-  const percent = Math.round(
-    ((lastMonthTotalExpenses.value - monthTotalExpenses.value) /
-      lastMonthTotalExpenses.value) *
-      100,
-  );
-  return { hasData: true, percent };
+const monthExpense = computed(() =>
+  currentMonthRecords.value
+    .filter((r) => r.type === 'expense')
+    .reduce((acc, r) => acc + r.amount, 0),
+);
+
+const remainingAmount = computed(() => monthIncome.value - monthExpense.value);
+
+const perPersonExpense = computed(() => {
+  if (!currentGroup.value) return 0;
+  const memberCount = currentGroup.value.members?.length || 1;
+  return Math.floor(monthExpense.value / memberCount);
+});
+
+const pigVariant = computed(() => {
+  if (remainingAmount.value < 0) return 'panic';
+  if (remainingAmount.value > 0) return 'happy';
+  return 'normal';
 });
 </script>
 
@@ -71,10 +69,13 @@ const lastMonthResult = computed(() => {
 
       <!-- 돼지 저금통 & 떨어지는 동전 애니메이션 영역 -->
       <div
-        class="absolute bottom-0 right-5 w-28 h-28 opacity-95 pointer-events-none translate-y-3 translate-x-3 scale-[0.85] origin-bottom-right sm:scale-100 transition-transform"
+        class="absolute bottom-0 right-0 w-28 h-28 opacity-95 pointer-events-none translate-y-1 translate-x-1 scale-[0.8] sm:translate-y-2 sm:translate-x-2 sm:scale-95 origin-bottom-right transition-transform"
       >
         <!-- 은색 동전 -->
-        <div class="absolute right-[2.8rem] -top-1 animate-coin-drop">
+        <div
+          v-if="remainingAmount >= 0"
+          class="absolute right-[2.8rem] -top-1 animate-coin-drop"
+        >
           <svg
             width="26"
             height="26"
@@ -122,6 +123,7 @@ const lastMonthResult = computed(() => {
         <!-- 돼지 이미지 -->
         <div class="w-full h-full animate-pig-bounce">
           <PigIcon
+            :variant="pigVariant"
             eye-color="#5b21b6"
             nose-spot-color="#9333ea"
             :show-ear-tag="false"
@@ -129,36 +131,44 @@ const lastMonthResult = computed(() => {
         </div>
       </div>
 
-      <p class="text-purple-200 text-sm relative z-10">
-        {{ currentMonth + 1 }}월 총 지출
+      <p class="text-purple-200 text-sm relative z-10 font-medium">
+        이번 달 남은 금액
       </p>
       <h1
-        class="text-white font-bold mt-1 relative z-10"
+        class="text-white font-bold mt-1 relative z-10 truncate"
         :class="currentGroup ? 'text-3xl' : 'text-4xl'"
       >
-        {{ monthTotalExpenses.toLocaleString() }}
+        {{ remainingAmount.toLocaleString() }}
         <span
           class="font-semibold"
           :class="currentGroup ? 'text-xl' : 'text-2xl'"
           >원</span
         >
       </h1>
-      <div
-        class="mt-3 inline-flex items-center gap-1.5 bg-white/20 rounded-full px-3 py-1 text-white text-[11px] self-start relative z-10"
-      >
-        <span
-          v-if="!lastMonthResult.hasData"
-          class="text-green-300 font-semibold"
-          >지난 달 데이터가 없어요!</span
+
+      <div class="mt-3 flex flex-col gap-1.5 relative z-10 w-fit">
+        <div
+          class="flex items-center gap-1.5 bg-black/10 rounded-md px-2 py-1 border border-white/5 backdrop-blur-sm"
         >
-        <span
-          v-else-if="lastMonthResult.percent > 0"
-          class="text-green-300 font-semibold"
-          >지난 달 대비 ▼ {{ lastMonthResult.percent }}% 절약</span
+          <span
+            class="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_4px_rgba(52,211,153,0.5)]"
+          ></span>
+          <span class="text-[10px] font-medium text-white/80">수입</span>
+          <span class="text-xs font-bold text-white ml-1"
+            >{{ monthIncome.toLocaleString() }}원</span
+          >
+        </div>
+        <div
+          class="flex items-center gap-1.5 bg-black/10 rounded-md px-2 py-1 border border-white/5 backdrop-blur-sm"
         >
-        <span v-else class="text-red-300 font-semibold"
-          >지난 달 대비 ▲ {{ Math.abs(lastMonthResult.percent) }}% 증가</span
-        >
+          <span
+            class="w-1.5 h-1.5 rounded-full bg-rose-400 shadow-[0_0_4px_rgba(251,113,133,0.5)]"
+          ></span>
+          <span class="text-[10px] font-medium text-white/80">지출</span>
+          <span class="text-xs font-bold text-white ml-1"
+            >{{ monthExpense.toLocaleString() }}원</span
+          >
+        </div>
       </div>
     </div>
 
@@ -177,11 +187,11 @@ const lastMonthResult = computed(() => {
         </div>
 
         <div class="hidden sm:block mt-2">
-          <p class="text-xs font-medium text-gray-400">1인당 예상</p>
+          <p class="text-xs font-medium text-gray-400">1인당 지출</p>
           <p
             class="text-sm font-extrabold text-gray-800 tracking-tight mt-0.5 truncate"
           >
-            {{ perPersonAmount.toLocaleString()
+            {{ perPersonExpense.toLocaleString()
             }}<span class="text-xs font-medium ml-0.5 text-gray-500">원</span>
           </p>
         </div>

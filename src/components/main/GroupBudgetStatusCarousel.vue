@@ -136,7 +136,7 @@ const dailyPerPerson = computed(() => {
               </div>
               <div>
                 <p class="text-[10px] font-medium text-gray-400 mb-0.5">
-                  남은 예산
+                  남은 한도
                 </p>
                 <p class="text-sm font-semibold text-gray-700">
                   {{
