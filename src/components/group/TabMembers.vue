@@ -1,5 +1,9 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useUserStore } from '@/stores/user.js';
+import { useGroupStore } from '@/stores/group.js';
+import { useRouter } from 'vue-router';
+import { toast } from 'vue-sonner';
 
 const props = defineProps({
   members: { type: Array, required: true },
@@ -8,6 +12,12 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['copyLink', 'removeMember', 'setBudget']);
+
+const userStore = useUserStore();
+const groupStore = useGroupStore();
+const router = useRouter();
+
+const currentUserId = computed(() => userStore.user?.id);
 
 const isEditingBudget = ref(false);
 const budgetInput = ref('');
@@ -34,6 +44,29 @@ function clearBudget() {
   emit('setBudget', 0);
   budgetInput.value = '';
   isEditingBudget.value = false;
+}
+
+function handleLeaveGroup() {
+  if (!groupStore.currentGroup) return;
+  toast('모임 떠나기', {
+    description: `정말로 '${groupStore.currentGroup.name}' 모임을 떠나시겠습니까?`,
+    action: {
+      label: '떠나기',
+      onClick: async () => {
+        try {
+          await groupStore.leaveGroup(groupStore.currentGroup.id);
+          toast.success('모임에서 성공적으로 탈퇴했습니다.');
+          groupStore.changeCurrentGroup(null);
+          router.push('/');
+        } catch (e) {
+          toast.error(e.message || '오류가 발생했습니다.');
+        }
+      },
+    },
+    cancel: {
+      label: '취소',
+    },
+  });
 }
 </script>
 
@@ -71,16 +104,31 @@ function clearBudget() {
                 >방장</span
               >
             </div>
-            <p class="text-xs text-slate-500">결제액: {{ member.amount }}원</p>
+            <!-- <p class="text-xs text-slate-500">결제액: {{ member.amount }}원</p> -->
           </div>
         </div>
-        <button
-          v-if="member.role !== 'owner'"
-          @click="emit('removeMember', member)"
-          class="text-xs font-medium text-slate-400 hover:text-red-500 bg-slate-50 hover:bg-red-50 px-3 py-2 rounded-lg transition"
-        >
-          내보내기
-        </button>
+
+        <!-- 방장인 경우: 다른 멤버 내보내기 -->
+        <template v-if="isOwner">
+          <button
+            v-if="member.role !== 'owner'"
+            @click="emit('removeMember', member)"
+            class="text-xs font-medium text-slate-400 hover:text-red-500 bg-slate-50 hover:bg-red-50 px-3 py-2 rounded-lg transition"
+          >
+            내보내기
+          </button>
+        </template>
+
+        <!-- 방장이 아닌 일반 멤버인 경우: 내 카드에만 떠나기 표시 -->
+        <template v-else>
+          <button
+            v-if="member.id === currentUserId"
+            @click="handleLeaveGroup"
+            class="text-xs font-medium text-slate-400 hover:text-red-500 bg-slate-50 hover:bg-red-50 px-3 py-2 rounded-lg transition"
+          >
+            떠나기
+          </button>
+        </template>
       </div>
     </div>
   </div>

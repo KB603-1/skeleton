@@ -86,7 +86,11 @@
       "id": "grp04",
       "name": "모임4",
       "userId": "user04",
-      "password": "g4"
+      "password": "g4",
+      "budgetGoal": {
+        "spendingLimit": 1000000,
+        "savingGoal": 2000000
+      }
     },
     {
       "id": "grp05",
