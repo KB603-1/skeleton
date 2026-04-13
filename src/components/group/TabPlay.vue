@@ -67,7 +67,7 @@ const spinRoulette = () => {
 <template>
   <div class="animate-in fade-in duration-300 space-y-6 pb-10">
     <div>
-      <h2 class="text-lg font-bold text-slate-800 mb-3 ml-1">🏆 명예의 전당</h2>
+      <!-- <h2 class="text-lg font-bold text-slate-800 mb-3 ml-1">🏆 명예의 전당</h2>
       <div
         v-if="rankings.length === 0"
         class="text-center text-slate-400 py-6 bg-white rounded-2xl"
@@ -105,7 +105,7 @@ const spinRoulette = () => {
             {{ rank.desc }}
           </p>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <div
